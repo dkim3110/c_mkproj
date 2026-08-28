@@ -8,6 +8,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+
+#if !defined _WIN32
+  #include <unistd.h>
+#endif
 // ============================================================ INCLUDES ==
 
 // == CONSTANTS & ENUMS ===================================================
