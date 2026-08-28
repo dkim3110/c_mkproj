@@ -1,0 +1,92 @@
+# mkproj | Automatic Project Maker
+
+A simple CLI tool to generate C project templates.
+
+## Description
+
+mkproj is a lightweight, zero-dependency command-line utility written in C that automates the scaffolding of new C programming projects. It offers three different initialization modes ranging from a barebones setup to a fully structured layout with src, build, include, and lib directories, alongside an auto-dependency tracking Makefile.
+
+Projects generated with `--default` and `--full` modes come with ready-to-use Makefiles out of the box.
+
+## Getting Started
+
+### Dependencies
+
+- A standard C compiler (GCC or Clang)
+- GNU Make (to build this tool and to use the generated project Makefiles)
+- Compatible with Linux, macOS, and Windows (via MSYS2/MinGW or WSL)
+
+### Installing
+
+1. Build
+```bash
+git clone https://github.com/dkim3110/c_mkproj.git
+cd c_mkproj
+make
+```
+2. Deploy
+```bash
+sudo make install
+```
+
+### Executing program
+
+- Navigate to the directory where you want to create your new project.
+- Run the program using the --name flag followed by your desired project name, and an optional mode flag.
+
+Default mode:
+```
+mkproj --name project_name [--default]
+```
+```
+project_name/
+├── build/
+├── include/
+├── src/
+│   └── main.c
+├── Makefile
+├── LICENSE.md
+└── README.md
+```
+
+Full mode:
+```
+mkproj --name project_name --full
+```
+```
+project_name/
+├── bin/
+├── build/
+├── include/
+├── lib/
+├── src/
+│   └── main.c
+├── Makefile
+├── LICENSE.md
+└── README.md
+```
+
+Bare mode:
+```
+mkproj --name project_name --bare
+```
+```
+project_name/
+├── main.c
+├── LICENSE.md
+└── README.md
+```
+
+You can use the `--help` to see the exact folder structures whenever you want.
+```
+mkproj --help
+```
+
+## License
+
+**MIT** - see [LICENSE.md](LICENSE.md).
+
+## Acknowledgments
+
+- Inspired by [JackWetherel](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git).
+- README template by [DomPizzie](https://gist.github.com/DomPizzie). You can see it [here](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc).
