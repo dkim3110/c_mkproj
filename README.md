@@ -42,6 +42,17 @@ sudo make install
 - Navigate to the directory where you want to create your new project.
 - Run the program using the --name flag followed by your desired project name, and an optional mode flag.
 ---
+**Bare:** a minimal setup for quick scripts and tests.
+```
+mkproj --name project_name --bare
+```
+```
+project_name/
+├── LICENSE.md
+├── main.c
+└── README.md
+```
+---
 **Default:** creates a standard project structure with a ready-to-use Makefile.
 ```
 mkproj --name project_name [--default]
@@ -52,8 +63,8 @@ project_name/
 ├── include/
 ├── src/
 │   └── main.c
-├── Makefile
 ├── LICENSE.md
+├── Makefile
 └── README.md
 ```
 ---
@@ -69,19 +80,8 @@ project_name/
 ├── lib/
 ├── src/
 │   └── main.c
+├── LICENSE.md
 ├── Makefile
-├── LICENSE.md
-└── README.md
-```
----
-**Bare:** a minimal setup for quick scripts and tests.
-```
-mkproj --name project_name --bare
-```
-```
-project_name/
-├── main.c
-├── LICENSE.md
 └── README.md
 ```
 ---
