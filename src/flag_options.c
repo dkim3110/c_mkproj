@@ -41,13 +41,6 @@ static FILE *file_opener(const char *file_path) {
 
   return fptr;
 }
-
-static int file_exists(const char* filename) {
-  struct stat buffer;
-  int exist = stat(filename, &buffer);
-
-  return !exist;
-}
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
@@ -56,26 +49,20 @@ int option_bare(const char *dir_name) {
   if (file_path_maker(dir_name, g_readme_path, "README.md") == EXIT_FAILURE) return EXIT_FAILURE;
   if (file_path_maker(dir_name, g_lic_path, "LICENSE.md") == EXIT_FAILURE) return EXIT_FAILURE;
 
-  if (!file_exists(g_main_path)) {
-    FILE *main_fptr = file_opener(g_main_path);
-    if (!main_fptr) return EXIT_FAILURE;
-    populate_main(main_fptr);
-    fclose(main_fptr);
-  }
+  FILE *main_fptr = file_opener(g_main_path);
+  if (!main_fptr) return EXIT_FAILURE;
+  populate_main(main_fptr);
+  fclose(main_fptr);
 
-  if (!file_exists(g_readme_path)) {
-    FILE *readme_fptr = file_opener(g_readme_path);
-    if (!readme_fptr) goto cleanup_main;
-    populate_md(readme_fptr, README);
-    fclose(readme_fptr);
-  }
+  FILE *readme_fptr = file_opener(g_readme_path);
+  if (!readme_fptr) goto cleanup_main;
+  populate_md(readme_fptr, README);
+  fclose(readme_fptr);
 
-  if (!file_exists(g_lic_path)) {
-    FILE *lic_fptr = file_opener(g_lic_path);
-    if (!lic_fptr) goto cleanup_readme;
-    populate_md(lic_fptr, LICENSE);
-    fclose(lic_fptr);
-  }
+  FILE *lic_fptr = file_opener(g_lic_path);
+  if (!lic_fptr) goto cleanup_readme;
+  populate_md(lic_fptr, LICENSE);
+  fclose(lic_fptr);
 
   return EXIT_SUCCESS;
 
@@ -96,37 +83,28 @@ int option_default(const char *dir_name) {
   if (directory_maker(g_src_path) == EXIT_FAILURE) goto cleanup_include;
 
   if (file_path_maker(g_src_path, g_main_path, "main.c") == EXIT_FAILURE) goto cleanup_src;
-  if (!file_exists(g_main_path)) {
-    FILE *main_fptr = file_opener(g_main_path);
-    if (!main_fptr) return EXIT_FAILURE;
-    populate_main(main_fptr);
-    fclose(main_fptr);
-  }
+  FILE *main_fptr = file_opener(g_main_path);
+  if (!main_fptr) return EXIT_FAILURE;
+  populate_main(main_fptr);
+  fclose(main_fptr);
 
   if (file_path_maker(dir_name, g_makefile_path, "Makefile") == EXIT_FAILURE) goto cleanup_main;
-  if (!file_exists(g_makefile_path)) {
-    FILE *makefile_fptr = file_opener(g_makefile_path);
-    if (!makefile_fptr) goto cleanup_main;
-    populate_makefile(makefile_fptr, DEFAULT);
-    fclose(makefile_fptr);
-  }
+  FILE *makefile_fptr = file_opener(g_makefile_path);
+  if (!makefile_fptr) goto cleanup_main;
+  populate_makefile(makefile_fptr, DEFAULT);
+  fclose(makefile_fptr);
 
   if (file_path_maker(dir_name, g_readme_path, "README.md") == EXIT_FAILURE) goto cleanup_makefile;
-  if (!file_exists(g_readme_path)) {
-    FILE *readme_fptr = file_opener(g_readme_path);
-    if (!readme_fptr) goto cleanup_makefile;
-    populate_md(readme_fptr, README);
-    fclose(readme_fptr);
-  }
+  FILE *readme_fptr = file_opener(g_readme_path);
+  if (!readme_fptr) goto cleanup_makefile;
+  populate_md(readme_fptr, README);
+  fclose(readme_fptr);
 
   if (file_path_maker(dir_name, g_lic_path, "LICENSE.md") == EXIT_FAILURE) goto cleanup_readme;
-  if (!file_exists(g_lic_path)) {
-    FILE *lic_fptr = file_opener(g_lic_path);
-    if (!lic_fptr) goto cleanup_readme;
-    populate_md(lic_fptr, LICENSE);
-    fclose(lic_fptr);
-  }
-
+  FILE *lic_fptr = file_opener(g_lic_path);
+  if (!lic_fptr) goto cleanup_readme;
+  populate_md(lic_fptr, LICENSE);
+  fclose(lic_fptr);
 
   return EXIT_SUCCESS;
 
@@ -159,37 +137,28 @@ int option_full(const char *dir_name) {
   if (directory_maker(g_src_path) == EXIT_FAILURE) goto cleanup_lib;
 
   if (file_path_maker(g_src_path, g_main_path, "main.c") == EXIT_FAILURE) goto cleanup_src;
-  if (!file_exists(g_main_path)) {
-    FILE *main_fptr = file_opener(g_main_path);
-    if (!main_fptr) return EXIT_FAILURE;
-    populate_main(main_fptr);
-    fclose(main_fptr);
-  }
+  FILE *main_fptr = file_opener(g_main_path);
+  if (!main_fptr) return EXIT_FAILURE;
+  populate_main(main_fptr);
+  fclose(main_fptr);
 
   if (file_path_maker(dir_name, g_makefile_path, "Makefile") == EXIT_FAILURE) goto cleanup_main;
-  if (!file_exists(g_makefile_path)) {
-    FILE *makefile_fptr = file_opener(g_makefile_path);
-    if (!makefile_fptr) goto cleanup_main;
-    populate_makefile(makefile_fptr, DEFAULT);
-    fclose(makefile_fptr);
-  }
+  FILE *makefile_fptr = file_opener(g_makefile_path);
+  if (!makefile_fptr) goto cleanup_main;
+  populate_makefile(makefile_fptr, DEFAULT);
+  fclose(makefile_fptr);
 
   if (file_path_maker(dir_name, g_readme_path, "README.md") == EXIT_FAILURE) goto cleanup_makefile;
-  if (!file_exists(g_readme_path)) {
-    FILE *readme_fptr = file_opener(g_readme_path);
-    if (!readme_fptr) goto cleanup_makefile;
-    populate_md(readme_fptr, README);
-    fclose(readme_fptr);
-  }
+  FILE *readme_fptr = file_opener(g_readme_path);
+  if (!readme_fptr) goto cleanup_makefile;
+  populate_md(readme_fptr, README);
+  fclose(readme_fptr);
 
   if (file_path_maker(dir_name, g_lic_path, "LICENSE.md") == EXIT_FAILURE) goto cleanup_readme;
-  if (!file_exists(g_lic_path)) {
-    FILE *lic_fptr = file_opener(g_lic_path);
-    if (!lic_fptr) goto cleanup_readme;
-    populate_md(lic_fptr, LICENSE);
-    fclose(lic_fptr);
-  }
-
+  FILE *lic_fptr = file_opener(g_lic_path);
+  if (!lic_fptr) goto cleanup_readme;
+  populate_md(lic_fptr, LICENSE);
+  fclose(lic_fptr);
 
   return EXIT_SUCCESS;
 
