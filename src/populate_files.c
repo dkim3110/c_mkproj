@@ -62,11 +62,15 @@ void populate_md(FILE *fptr, md_type_t file_type) {
         "Inspiration, code snippets, etc\n"
       );
       break;
-    case LICENSE:
+    case LICENSE: {
+      time_t now = time(NULL);
+      struct tm *date = localtime(&now);
+      int year = t->tm_year + 1900;
+      
       fprintf(fptr,
         "MIT License\n"
         "\n"
-        "Copyright (c) %c%c%c%c [Your Name]\n"
+        "Copyright (c) %d [Your Name]\n"
         "\n"
         "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
         "of this software and associated documentation files (the \"Software\"), to deal\n"
@@ -85,9 +89,10 @@ void populate_md(FILE *fptr, md_type_t file_type) {
         "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
         "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
         "SOFTWARE.\n",
-        __DATE__[7], __DATE__[8], __DATE__[9], __DATE__[10] 
+        year
       );
       break;
+    }
     default:
       fprintf(stderr, "-error: failed to fill %s", (file_type == README) ? "README.md" : "LICENSE.md");
       break;
