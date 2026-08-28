@@ -52,6 +52,7 @@ static void print_usage(char *program) {
     "                   |--Makefile\n"
     "                   |--LICENSE.md\n"
     "                   |--README.md\n"
+    "\n"
     , program, program
   );
 }
