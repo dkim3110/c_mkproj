@@ -6,7 +6,6 @@ static char *g_flags_list[] = {
   "--full",
   "--help",
   "--name",
-  // more will be added
 };
 
 // == USAGE ===============================================================
