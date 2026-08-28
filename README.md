@@ -77,7 +77,7 @@ project_name/
 └── README.md
 ```
 
-You can use the `--help` to see the exact folder structures whenever you want.
+You can use `--help` to see the exact folder structures whenever you want.
 ```
 mkproj --help
 ```
