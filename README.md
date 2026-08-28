@@ -1,6 +1,8 @@
 # mkproj | Automatic Project Maker
 
-A simple CLI tool to generate C project templates.
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+
+A lightweight command-line utility to generate C project scaffolding.
 
 ## Description
 
@@ -14,27 +16,33 @@ Projects generated with `--default` and `--full` modes come with ready-to-use Ma
 
 - A standard C compiler (GCC or Clang)
 - GNU Make (to build this tool and to use the generated project Makefiles)
-- Compatible with Linux, macOS, and Windows (via MSYS2/MinGW or WSL)
+- Compatible with Linux and Windows (via MSYS2/MinGW or WSL)
 
 ### Installing
 
-1. Build
+1. Build (Linux and Windows)
 ```bash
 git clone https://github.com/dkim3110/c_mkproj.git
 cd c_mkproj
 make
 ```
-2. Deploy
+
+2. Deploy (Linux)
 ```bash
 sudo make install
+# To uninstall, run 'sudo make uninstall'
 ```
 
-### Executing program
+2. Deploy (Windows)
+
+Move the compiled `mkproj.exe` to a directory included in your system's `PATH`.
+
+### Usage
 
 - Navigate to the directory where you want to create your new project.
 - Run the program using the --name flag followed by your desired project name, and an optional mode flag.
-
-Default mode:
+---
+**Default:** creates a standard project structure with a ready-to-use Makefile.
 ```
 mkproj --name project_name [--default]
 ```
@@ -48,8 +56,8 @@ project_name/
 ├── LICENSE.md
 └── README.md
 ```
-
-Full mode:
+---
+**Full:** includes additional `bin` and `lib` directories for larger, more complex projects.
 ```
 mkproj --name project_name --full
 ```
@@ -65,8 +73,8 @@ project_name/
 ├── LICENSE.md
 └── README.md
 ```
-
-Bare mode:
+---
+**Bare:** a minimal setup for quick scripts and tests.
 ```
 mkproj --name project_name --bare
 ```
@@ -76,7 +84,7 @@ project_name/
 ├── LICENSE.md
 └── README.md
 ```
-
+---
 You can use `--help` to see the exact folder structures whenever you want.
 ```
 mkproj --help
