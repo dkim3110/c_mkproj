@@ -66,7 +66,7 @@ void populate_md(FILE *fptr, md_type_t file_type) {
       fprintf(fptr,
         "MIT License\n"
         "\n"
-        "Copyright (c) [%s] [Name]\n"
+        "Copyright (c) %c%c%c%c [Your Name]\n"
         "\n"
         "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
         "of this software and associated documentation files (the \"Software\"), to deal\n"
@@ -85,7 +85,7 @@ void populate_md(FILE *fptr, md_type_t file_type) {
         "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
         "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
         "SOFTWARE.\n",
-        __DATE__
+        __DATE__[7], __DATE__[8], __DATE__[9], __DATE__[10] 
       );
       break;
     default:
