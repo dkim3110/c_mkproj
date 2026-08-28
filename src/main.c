@@ -93,7 +93,7 @@ static int has_valid_flag(int argc, char **argv, int *flag_count) {
 static const char *find_arg(int argc, char **argv, const char *flag) {
   for (int n = 1; n < argc - 1; n++) {
     if (strcmp(argv[n], flag) == 0) {
-      return argv[n + 1];
+      if (strncmp(argv[n + 1], "--", 2) != 0) return argv[n + 1];
     }
   }
 
