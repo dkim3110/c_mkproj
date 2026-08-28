@@ -89,9 +89,9 @@ static int has_valid_flag(int argc, char **argv, int *flag_count) {
   return 1;
 }
 
-static const char *find_arg(int argc, char **argv, const char *flag) {
+static const char *get_dir_name(int argc, char **argv) {
   for (int n = 1; n < argc - 1; n++) {
-    if (strcmp(argv[n], flag) == 0) {
+    if (strcmp(argv[n], "--name") == 0) {
       if (strncmp(argv[n + 1], "--", 2) != 0) return argv[n + 1];
     }
   }
@@ -125,7 +125,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  const char *dir_name = find_arg(argc, argv, "--name");
+  const char *dir_name = get_dir_name(argc, argv);
 
   if (!dir_name) {
     fprintf(stderr, "-fatal: unable to determine name\n");
