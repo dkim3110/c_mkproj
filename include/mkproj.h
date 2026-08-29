@@ -15,19 +15,40 @@
 #endif
 // ============================================================ INCLUDES ==
 
-// == CONSTANTS & ENUMS ===================================================
+// == CONSTANTS, ENUMS, & STRUCTS =========================================
 #define MAX_PATH_LEN (4096)
 
-typedef enum makefile_mode {
+typedef enum {
+  BARE,
   DEFAULT,
-  FULL
-} makefile_mode_t;
+  FULL,
+  UNKNOWN
+} project_mode_t;
 
-typedef enum populate_md_type {
+typedef enum {
   README,
   LICENSE
 } md_type_t;
-// =================================================== CONSTANTS & ENUMS ==
+
+typedef struct {
+  char root[MAX_PATH_LEN];
+  char bin[MAX_PATH_LEN];
+  char build[MAX_PATH_LEN];
+  char include[MAX_PATH_LEN];
+  char lib[MAX_PATH_LEN];
+  char src[MAX_PATH_LEN];
+  char main_c[MAX_PATH_LEN];
+  char readme[MAX_PATH_LEN];
+  char lic[MAX_PATH_LEN];
+  char makefile[MAX_PATH_LEN];
+} project_paths_t;
+
+typedef struct {
+  int flag_count;
+  project_mode_t flag;
+  char *dir_name;
+} config_t;
+// ========================================= CONSTANTS, ENUMS, & STRUCTS ==
 
 // == PREPROCESSORS =======================================================
 #ifdef _WIN32
@@ -47,7 +68,7 @@ extern int option_full(const char *);
   /* -- populate files -------------------------------------------------- */
 extern void populate_main(FILE *);
 extern void populate_md(FILE *, md_type_t);
-extern void populate_makefile(FILE *, makefile_mode_t);
+extern void populate_makefile(FILE *, project_mode_t);
   /* -------------------------------------------------- populate files -- */
 // =========================================================== FUNCTIONS ==
 

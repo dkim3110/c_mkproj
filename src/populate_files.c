@@ -4,7 +4,7 @@ void populate_main(FILE *fptr) {
   fprintf(fptr,
     "#include <stdio.h>\n"
     "\n"
-    "int main(void) { // main(int argc, char *argv[]) \n"
+    "int main(/* int argc, char *argv[] */) {\n"
     "  printf(\"Hello, World!\\n\");\n"
     "\n"
     "  return 0;\n"
@@ -99,7 +99,7 @@ void populate_md(FILE *fptr, md_type_t file_type) {
   }
 }
 
-void populate_makefile(FILE *fptr, makefile_mode_t mode) {
+void populate_makefile(FILE *fptr, project_mode_t mode) {
   switch (mode) {
     case FULL:
       fputs(

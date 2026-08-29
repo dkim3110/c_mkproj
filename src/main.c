@@ -1,5 +1,7 @@
 #include "mkproj.h"
 
+#define EXIT_HELP (2)
+
 static char *g_flags_list[] = {
   "--bare",
   "--default",
@@ -54,110 +56,99 @@ static void print_usage(char *program) {
 }
 // =============================================================== USAGE ==
 
-// == PARSE ARGS ==========================================================
-static int has_flag(int argc, char **argv, const char *flag) {
+// == HELPER ==============================================================
+static int parse_args(int argc, char **argv, config_t *config) {
   for (int n = 1; n < argc; n++) {
-    if (strncmp(argv[n], "--", 2) != 0) continue;
-    if (strcmp(argv[n], flag) == 0) {
-      return 1;
-    }
-  }
-
-  return 0;
-}
-
-static int has_valid_flag(int argc, char **argv, int *flag_count) {
-  int flag_list_size = sizeof(g_flags_list) / sizeof(g_flags_list[0]);
-  for (int n = 1; n < argc; n++) {
-    if (strncmp(argv[n], "--", 2) != 0) continue;
-
-    int is_known = 0;
-    for (int m = 0; m < flag_list_size; m++) {
-      if (strcmp(argv[n], g_flags_list[m]) == 0) {
-        is_known = 1;
-        (*flag_count)++;
-        break;
+    if (argv[n][0] != '-') {
+      if (config->dir_name) {
+        fprintf(stderr, "-fatal: too many arguments\n");
+        return EXIT_FAILURE;
       }
+
+      config->dir_name = argv[n];
     }
 
-    if (!is_known) return 0;
-  }
-
-  return 1;
-}
-
-static const char *get_dir_name(int argc, char **argv) {
-  for (int n = 1; n < argc; n++) {
     if (argv[n][0] == '-') {
-      printf("%s is a flag\n", argv[n]);
-      continue;
+      /* -- verify flag ------------------------------------------------ */
+      int flag_list_size = sizeof(g_flags_list) / sizeof(g_flags_list[0]);
+      int is_valid = 0;
+
+      for (int m = 0; m < flag_list_size; m++) {
+        if (strcmp(argv[n], g_flags_list[m]) == 0) {
+          is_valid = 1;
+          break;
+        }
+      }
+
+      if (!is_valid) {
+        config->flag = UNKNOWN;
+        return EXIT_FAILURE;
+      }
+      /* ------------------------------------------------ verify flag -- */
+
+      config->flag_count++;
+      if (config->flag_count > 1) return EXIT_FAILURE;
+
+      if (strncmp(argv[n], "--full", 6) == 0) config->flag = FULL;
+      if (strncmp(argv[n], "--bare", 6) == 0) config->flag = BARE;
+      if (strncmp(argv[n], "--help", 6) == 0) return EXIT_HELP;
     }
-    return argv[n];
   }
 
-  return NULL;
+  return (config->dir_name) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
-// ========================================================== PARSE ARGS ==
+// ============================================================== HELPER ==
 
 // == MAIN ================================================================
 int main(int argc, char *argv[]) {
-  int result, flag_count = 0;
-
   if (argc < 2) {
     fprintf(stderr, "-fatal: no arguments given\n");
     return EXIT_FAILURE;
   }
 
-  if (!has_valid_flag(argc, argv, &flag_count)) {
-    fprintf(stderr, "-fatal: unknown flag\n");
-    return EXIT_FAILURE;
-  }
+  config_t config = {0, DEFAULT, NULL};
+  int arg_check = parse_args(argc, argv, &config);
 
   // --help
-  if (has_flag(argc, argv, "--help")) {
+  if (arg_check == EXIT_HELP) {
     print_usage(argv[0]);
     return EXIT_SUCCESS;
   }
 
-  if (flag_count > 1) {
-    fprintf(stderr, "-fatal: conflicting flags\n");
+  if ((arg_check == EXIT_FAILURE)) {
+    if (config.flag == UNKNOWN) fprintf(stderr, "-fatal: unknown flag\n");
+    else if (config.flag_count > 1) fprintf(stderr, "-fatal: conflicting flags\n");
+    else if (!config.dir_name) fprintf(stderr, "-fatal: unable to determine name\n");
+
     return EXIT_FAILURE;
   }
 
-  const char *dir_name = get_dir_name(argc, argv);
-
-  if (!dir_name) {
-    fprintf(stderr, "-fatal: unable to determine name\n");
-    return EXIT_FAILURE;
-  }
-
-  int main_dir_failed = MAKE_DIR(dir_name);
+  int main_dir_failed = MAKE_DIR(config.dir_name);
 
   if (main_dir_failed) {
     fprintf(stderr, "-fatal: failed to create directory: %s\n", strerror(errno));
     return EXIT_FAILURE;
   }
 
-  /* -- flag check ------------------------------------------------------ */
-
-  // --bare
-  if (has_flag(argc, argv, "--bare")) {
-    result = option_bare(dir_name);
-    if (result == EXIT_FAILURE) rmdir(dir_name);
-    return result;
+  /* -- check flag ----------------------------------------------------- */
+  switch (config.flag) {
+    case BARE:
+      if (option_bare(config.dir_name) == EXIT_FAILURE) goto cleanup_dir_name;
+      break;
+    case FULL:
+      if (option_full(config.dir_name) == EXIT_FAILURE) goto cleanup_dir_name;
+      break;
+    case DEFAULT:
+    default:
+      if (option_default(config.dir_name) == EXIT_FAILURE) goto cleanup_dir_name;
+      break;
   }
+  /* ----------------------------------------------------- check flag -- */
 
-  // --full
-  if (has_flag(argc, argv, "--full")) {
-    result = option_full(dir_name);
-    if (result == EXIT_FAILURE) rmdir(dir_name);
-    return result;
-  }
+  return EXIT_SUCCESS;
 
-  // --default
-  result = option_default(dir_name);
-  if (result == EXIT_FAILURE) rmdir(dir_name);
-  return result;
-  /* ------------------------------------------------------ flag check -- */
+  cleanup_dir_name:
+  rmdir(config.dir_name);
+  return EXIT_FAILURE;
 }
 // ================================================================ MAIN ==
