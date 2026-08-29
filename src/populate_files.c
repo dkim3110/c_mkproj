@@ -4,7 +4,7 @@ void populate_main(FILE *fptr) {
   fprintf(fptr,
     "#include <stdio.h>\n"
     "\n"
-    "int main(int argc, char *argv[]) {\n"
+    "int main(void) { // main(int argc, char *argv[]) \n"
     "  printf(\"Hello, World!\");\n"
     "\n"
     "  return 0;\n"
