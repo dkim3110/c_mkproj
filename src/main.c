@@ -53,7 +53,7 @@ static void print_help_message(char *program) {
     "\n"
     , program, program
   );
-}
+} /* print_help_message() */
 
 static int parse_args(int argc, char **argv, config_t *config) {
   for (int n = 1; n < argc; n++) {
@@ -93,7 +93,7 @@ static int parse_args(int argc, char **argv, config_t *config) {
   }
 
   return (config->parent_directory) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
+} /* parse_args() */
 // ============================================================== HELPER ==
 
 // == MAIN ================================================================
@@ -145,5 +145,5 @@ int main(int argc, char *argv[]) {
   cleanup_parent_directory:
   rmdir(config.parent_directory);
   return EXIT_FAILURE;
-}
+} /* main() */
 // ================================================================ MAIN ==
