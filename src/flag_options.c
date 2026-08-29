@@ -14,7 +14,7 @@ static int file_path_maker(const char *parent, char *child, const char *child_na
   }
 
   return EXIT_SUCCESS;
-}
+} /* file_path_maker() */
 
 static int generate_paths(project_paths_t *path, const char *parent_directory, project_mode_t mode) {
   if (snprintf(path->root, MAX_PATH_LEN, "%s", parent_directory) >= MAX_PATH_LEN) return EXIT_FAILURE;
@@ -42,13 +42,13 @@ static int generate_paths(project_paths_t *path, const char *parent_directory, p
   }
 
   return EXIT_SUCCESS;
-}
+} /* generate_paths() */
 
 static int directory_maker(char *file_path) {
   int check = MAKE_DIR(file_path);
   if (check != 0) fprintf(stderr, "-fatal: failed to create directory %s: %s\n", file_path, strerror(errno));
   return (check == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
-}
+} /* directory_maker() */
 
 static FILE *file_opener(const char *file_path) {
   FILE *fptr = fopen(file_path, "w");
@@ -58,7 +58,7 @@ static FILE *file_opener(const char *file_path) {
   }
 
   return fptr;
-}
+} /* file_opener() */
 
 static int file_closer(FILE **fptr, const char *file_path) {
   if (fclose(*fptr) != 0) {
@@ -68,7 +68,7 @@ static int file_closer(FILE **fptr, const char *file_path) {
 
   *fptr = NULL;
   return EXIT_SUCCESS;
-}
+} /* file_closer() */
 
 static int file_maker(project_paths_t *path, project_mode_t mode) {
   FILE *main_c_fptr = file_opener(path->main_c);
@@ -104,7 +104,7 @@ static int file_maker(project_paths_t *path, project_mode_t mode) {
 	cleanup_main:
 	remove(path->main_c);
   return EXIT_FAILURE;
-}
+} /* file_maker() */
 
 static int generic_project_maker(project_paths_t *path, project_mode_t mode) {
   if (mode != BARE) {
@@ -128,7 +128,7 @@ static int generic_project_maker(project_paths_t *path, project_mode_t mode) {
   cleanup_build:
   rmdir(path->build);
   return EXIT_FAILURE;
-}
+} /* generic_project_maker() */
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
@@ -138,7 +138,7 @@ int option_default(const char *parent_directory) {
   if (generic_project_maker(&path, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
-}
+} /* option_default() */
 
 int option_bare(const char *parent_directory) {
   project_paths_t path = {0};
@@ -146,7 +146,7 @@ int option_bare(const char *parent_directory) {
   if (generic_project_maker(&path, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
-}
+} /* option_bare() */
 
 int option_full(const char *parent_directory) {
   project_paths_t path = {0};
@@ -163,5 +163,5 @@ int option_full(const char *parent_directory) {
   cleanup_bin:
   rmdir(path.bin);
   return EXIT_FAILURE;
-}
+} /* option_full() */
 // ============================================================= PRIMARY ==
