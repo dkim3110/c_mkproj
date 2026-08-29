@@ -1,7 +1,7 @@
 #include "mkproj.h"
 
 // == PRIMARY =============================================================
-void populate_main(FILE *fptr) {
+void populate_main_c(FILE *fptr) {
   fprintf(fptr,
     "#include <stdio.h>\n"
     "\n"
@@ -10,7 +10,7 @@ void populate_main(FILE *fptr) {
     "\n"
     "\treturn 0;\n"
     "}\n");
-} /* populate_main() */
+} /* populate_main_c() */
 
 void populate_md(FILE *fptr, md_type_t file_type) {
   switch (file_type) {

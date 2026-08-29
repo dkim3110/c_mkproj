@@ -73,7 +73,7 @@ static int file_closer(FILE **fptr, const char *file_path) {
 static int file_maker(project_paths_t *path, project_mode_t mode) {
   FILE *main_c_fptr = file_opener(path->main_c);
   if (!main_c_fptr) return EXIT_FAILURE;
-  populate_main(main_c_fptr);
+  populate_main_c(main_c_fptr);
   if (file_closer(&main_c_fptr, path->main_c) == EXIT_FAILURE) goto cleanup_main;
 
   if (mode != BARE) {
