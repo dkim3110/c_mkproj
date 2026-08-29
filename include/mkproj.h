@@ -18,10 +18,10 @@
 // == CONSTANTS & ENUMS ===================================================
 #define MAX_PATH_LEN (4096)
 
-typedef enum populate_file_mode {
+typedef enum makefile_mode {
   DEFAULT,
   FULL
-} file_mode_t;
+} makefile_mode_t;
 
 typedef enum populate_md_type {
   README,
@@ -47,7 +47,7 @@ extern int option_full(const char *);
   /* -- populate files -------------------------------------------------- */
 extern void populate_main(FILE *);
 extern void populate_md(FILE *, md_type_t);
-extern void populate_makefile(FILE *, file_mode_t);
+extern void populate_makefile(FILE *, makefile_mode_t);
   /* -------------------------------------------------- populate files -- */
 // =========================================================== FUNCTIONS ==
 

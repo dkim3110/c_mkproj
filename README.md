@@ -40,11 +40,12 @@ sudo make install
 ### Usage
 
 - Navigate to the directory where you want to create your new project.
-- Run the program using the --name flag followed by your desired project name, and an optional mode flag.
+- Run the program using your desired project name, and an optional mode flag.
+  - Note that the name of the project cannot start with a `-`.
 ---
 **Bare:** a minimal setup for quick scripts and tests.
 ```
-mkproj --name project_name --bare
+mkproj project_name --bare
 ```
 ```
 project_name/
@@ -55,7 +56,7 @@ project_name/
 ---
 **Default:** creates a standard project structure with a ready-to-use Makefile.
 ```
-mkproj --name project_name [--default]
+mkproj project_name [--default]
 ```
 ```
 project_name/
@@ -70,7 +71,7 @@ project_name/
 ---
 **Full:** includes additional `bin` and `lib` directories for larger, more complex projects.
 ```
-mkproj --name project_name --full
+mkproj project_name --full
 ```
 ```
 project_name/

@@ -66,7 +66,7 @@ void populate_md(FILE *fptr, md_type_t file_type) {
       time_t now = time(NULL);
       struct tm *date = localtime(&now);
       int year = date->tm_year + 1900;
-      
+
       fprintf(fptr,
         "MIT License\n"
         "\n"
@@ -99,17 +99,17 @@ void populate_md(FILE *fptr, md_type_t file_type) {
   }
 }
 
-void populate_makefile(FILE *fptr, file_mode_t mode) {
+void populate_makefile(FILE *fptr, makefile_mode_t mode) {
   switch (mode) {
     case FULL:
-      fprintf(fptr,
+      fputs(
         "CC := gcc\n"
         "SRCDIR := src\n"
         "BUILDDIR := build\n"
         "TARGET := bin/run\n"
         "SRCEXT := c\n"
         "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"
-        "OBJECTS := $(patsubst $(SRCDIR)/%%,$(BUILDDIR)/%%,$(SOURCES:.$(SRCEXT)=.o))\n"
+        "OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"
         "DEPS := $(OBJECTS:.o=.d)\n"
         "CFLAGS := -O0 -Wall -Wextra -Werror\n"
         "LIB := -L lib\n"
@@ -122,7 +122,7 @@ void populate_makefile(FILE *fptr, file_mode_t mode) {
         "\t@mkdir -p $(dir $@)\n"
         "\t@$(CC) $^ -o $@ $(LIB)\n"
         "\n"
-        "$(BUILDDIR)/%%.o: $(SRCDIR)/%%.$(SRCEXT)\n"
+        "$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)\n"
         "\t@echo \" Building...\"\n"
         "\t@mkdir -p $(dir $@)\n"
         "\t@$(CC) $(CFLAGS) $(INC) -MMD -MP -c -o $@ $<\n"
@@ -133,7 +133,7 @@ void populate_makefile(FILE *fptr, file_mode_t mode) {
         "\n"
         "clean:\n"
         "\t@echo \" Cleaning...\"\n"
-        "\t@$(RM) -r $(BUILDDIR) $(TARGET)\n"
+        "\t@$(RM) -r $(BUILDDIR)/* $(TARGET)\n"
         "\n"
         "-include $(DEPS)\n"
         "\n"
@@ -142,17 +142,18 @@ void populate_makefile(FILE *fptr, file_mode_t mode) {
         "\t@./$(TARGET)\n"
         "\n"
         ".PHONY: all clean debug run\n"
+        , fptr
       );
       break;
     case DEFAULT:
-      fprintf(fptr,
+      fputs(
         "CC := gcc\n"
         "SRCDIR := src\n"
         "BUILDDIR := build\n"
         "TARGET := run\n"
         "SRCEXT := c\n"
         "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"
-        "OBJECTS := $(patsubst $(SRCDIR)/%%,$(BUILDDIR)/%%,$(SOURCES:.$(SRCEXT)=.o))\n"
+        "OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"
         "DEPS := $(OBJECTS:.o=.d)\n"
         "CFLAGS := -O0 -Wall -Wextra -Werror\n"
         "INC := -I include\n"
@@ -163,7 +164,7 @@ void populate_makefile(FILE *fptr, file_mode_t mode) {
         "\t@echo \" Linking...\"\n"
         "\t@$(CC) $^ -o $@\n"
         "\n"
-        "$(BUILDDIR)/%%.o: $(SRCDIR)/%%.$(SRCEXT)\n"
+        "$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)\n"
         "\t@echo \" Building...\"\n"
         "\t@mkdir -p $(dir $@)\n"
         "\t@$(CC) $(CFLAGS) $(INC) -MMD -MP -c -o $@ $<\n"
@@ -174,7 +175,7 @@ void populate_makefile(FILE *fptr, file_mode_t mode) {
         "\n"
         "clean:\n"
         "\t@echo \" Cleaning...\"\n"
-        "\t@$(RM) -r $(BUILDDIR) $(TARGET)\n"
+        "\t@$(RM) -r $(BUILDDIR)/* $(TARGET)\n"
         "\n"
         "-include $(DEPS)\n"
         "\n"
@@ -183,6 +184,7 @@ void populate_makefile(FILE *fptr, file_mode_t mode) {
         "\t@./$(TARGET)\n"
         "\n"
         ".PHONY: all clean debug run\n"
+        , fptr
       );
     default:
       break;
