@@ -97,7 +97,7 @@ void populate_md(FILE *fptr, md_type_t file_type) {
       break;
     }
     default:
-      fprintf(stderr, "-error: failed to fill %s", (file_type == README) ? "README.md" : "LICENSE.md");
+      fprintf(stderr, "-error: failed to fill %s\n", (file_type == README) ? "README.md" : "LICENSE.md");
       break;
   }
 }
