@@ -8,15 +8,14 @@ A lightweight command-line utility to generate C project scaffolding.
 
 `mkproj` is a lightweight, zero-dependency command-line utility written in C that automates the scaffolding of new C programming projects. It offers different initialization modes ranging from a barebones setup to a fully structured layout with `src`, `build`, `include`, and `lib` directories, alongside an auto-dependency tracking `Makefile`.
 
-## Getting Started
+## Requirements
 
-### Dependencies
-
-- A standard C compiler (GCC or Clang)
+- A standard C compiler
+  - If you have Clang, override with `make CC=clang`. 
 - GNU Make (to build this tool and to use the generated project Makefiles)
 - Compatible with Linux and Windows (via MSYS2/MinGW or WSL)
 
-### Installing
+## Installation
 
 1. Build (Linux and Windows)
 ```bash
@@ -35,7 +34,7 @@ sudo make install
 
   Move the compiled `mkproj.exe` to a directory included in your system's `PATH`. If using MSYS2, simply ditch `sudo` and run the above.
 
-### Usage
+## Usage
 
 - Navigate to the directory where you want to create your new project.
 - Run the program using your desired project name, and an optional mode flag.
