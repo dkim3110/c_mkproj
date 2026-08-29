@@ -5,7 +5,6 @@ static char *g_flags_list[] = {
   "--default",
   "--full",
   "--help",
-  "--name",
 };
 
 // == USAGE ===============================================================
@@ -17,8 +16,6 @@ static void print_usage(char *program) {
     "  %s --name [project name] [flag]\n"
     "\n"
     "OPTIONS:\n"
-    "   --name\n"
-    "               Defines the name of directory; mandatory\n"
     "   --help\n"
     "               Prints this help message; overrides all arguments\n"
     "   --bare\n"
@@ -91,9 +88,7 @@ static int has_valid_flag(int argc, char **argv, int *flag_count) {
 
 static const char *get_dir_name(int argc, char **argv) {
   for (int n = 1; n < argc - 1; n++) {
-    if (strcmp(argv[n], "--name") == 0) {
-      if (strncmp(argv[n + 1], "--", 2) != 0) return argv[n + 1];
-    }
+    if (strncmp(argv[n], "--", 2) != 0) return argv[n];
   }
 
   return NULL;
@@ -120,7 +115,7 @@ int main(int argc, char *argv[]) {
     return EXIT_SUCCESS;
   }
 
-  if ((flag_count - has_flag(argc, argv, "--name")) > 1) {
+  if (flag_count > 1) {
     fprintf(stderr, "-fatal: conflicting flags\n");
     return EXIT_FAILURE;
   }
