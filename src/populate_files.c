@@ -10,7 +10,7 @@ void populate_main(FILE *fptr) {
     "\n"
     "\treturn 0;\n"
     "}\n");
-}
+} /* populate_main() */
 
 void populate_md(FILE *fptr, md_type_t file_type) {
   switch (file_type) {
@@ -100,7 +100,7 @@ void populate_md(FILE *fptr, md_type_t file_type) {
       fprintf(stderr, "-error: failed to fill %s\n", (file_type == README) ? "README.md" : "LICENSE.md");
       break;
   }
-}
+} /* populate_md() */
 
 void populate_makefile(FILE *fptr, project_mode_t mode) {
   switch (mode) {
@@ -184,5 +184,5 @@ void populate_makefile(FILE *fptr, project_mode_t mode) {
       );
       break;
   }
-}
+} /* populate_makefile() */
 // ============================================================= PRIMARY ==
