@@ -1,20 +1,21 @@
 #include "mkproj.h"
 
+// == PRIMARY =============================================================
 void populate_main(FILE *fptr) {
   fprintf(fptr,
     "#include <stdio.h>\n"
     "\n"
     "int main(/* int argc, char *argv[] */) {\n"
-    "  printf(\"Hello, World!\\n\");\n"
+    "\tprintf(\"Hello, World!\\n\");\n"
     "\n"
-    "  return 0;\n"
+    "\treturn 0;\n"
     "}\n");
 }
 
 void populate_md(FILE *fptr, md_type_t file_type) {
   switch (file_type) {
     case README:
-      fprintf(fptr,
+      fputs(
         "# Project Title\n"
         "\n"
         "Simple overview of use/purpose.\n"
@@ -59,7 +60,8 @@ void populate_md(FILE *fptr, md_type_t file_type) {
         "\n"
         "## Acknowledgments\n"
         "\n"
-        "Inspiration, code snippets, etc\n"
+        "Inspiration, code snippets, etc"
+        , fptr
       );
       break;
     case LICENSE: {
@@ -67,10 +69,11 @@ void populate_md(FILE *fptr, md_type_t file_type) {
       struct tm *date = localtime(&now);
       int year = date->tm_year + 1900;
 
-      fprintf(fptr,
+      fputs(
         "MIT License\n"
-        "\n"
-        "Copyright (c) %d [Your Name]\n"
+        "\n", fptr);
+      fprintf(fptr, "Copyright (c) %d [Your Name]\n", year);
+      fputs(
         "\n"
         "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
         "of this software and associated documentation files (the \"Software\"), to deal\n"
@@ -88,8 +91,8 @@ void populate_md(FILE *fptr, md_type_t file_type) {
         "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
         "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
         "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
-        "SOFTWARE.\n",
-        year
+        "SOFTWARE."
+        , fptr
       );
       break;
     }
@@ -182,3 +185,4 @@ void populate_makefile(FILE *fptr, project_mode_t mode) {
       break;
   }
 }
+// ============================================================= PRIMARY ==

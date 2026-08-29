@@ -46,8 +46,13 @@ typedef struct {
 typedef struct {
   int flag_count;
   project_mode_t flag;
-  char *dir_name;
+  char *parent_directory;
 } config_t;
+
+typedef struct {
+  char *name;
+  project_mode_t flag;
+} flag_t;
 // ========================================= CONSTANTS, ENUMS, & STRUCTS ==
 
 // == PREPROCESSORS =======================================================

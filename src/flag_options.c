@@ -16,8 +16,8 @@ static int file_path_maker(const char *parent, char *child, const char *child_na
   return EXIT_SUCCESS;
 }
 
-static int generate_paths(project_paths_t *path, const char *dir_name, project_mode_t mode) {
-  if (snprintf(path->root, MAX_PATH_LEN, "%s", dir_name) >= MAX_PATH_LEN) return EXIT_FAILURE;
+static int generate_paths(project_paths_t *path, const char *parent_directory, project_mode_t mode) {
+  if (snprintf(path->root, MAX_PATH_LEN, "%s", parent_directory) >= MAX_PATH_LEN) return EXIT_FAILURE;
 
   switch (mode) {
     case FULL:
@@ -132,25 +132,25 @@ static int generic_project_maker(project_paths_t *path, project_mode_t mode) {
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
-int option_default(const char *dir_name) {
+int option_default(const char *parent_directory) {
   project_paths_t path = {0};
-  if (generate_paths(&path, dir_name, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (generate_paths(&path, parent_directory, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
   if (generic_project_maker(&path, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 }
 
-int option_bare(const char *dir_name) {
+int option_bare(const char *parent_directory) {
   project_paths_t path = {0};
-  if (generate_paths(&path, dir_name, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (generate_paths(&path, parent_directory, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
   if (generic_project_maker(&path, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 }
 
-int option_full(const char *dir_name) {
+int option_full(const char *parent_directory) {
   project_paths_t path = {0};
-  if (generate_paths(&path, dir_name, FULL) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (generate_paths(&path, parent_directory, FULL) == EXIT_FAILURE) return EXIT_FAILURE;
   if (directory_maker(path.bin) == EXIT_FAILURE) return EXIT_FAILURE;
   if (directory_maker(path.lib) == EXIT_FAILURE) goto cleanup_bin;
 
