@@ -61,7 +61,7 @@ void populate_md(FILE *fptr, md_type_t file_type) {
         "## Acknowledgments\n"
         "\n"
         "Inspiration, code snippets, etc\n"
-        "README template by [DomPizzie](https://gist.github.com/DomPizzie). You can see it [here](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)."
+        "* README template by [DomPizzie](https://gist.github.com/DomPizzie). You can see it [here](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc)."
         , fptr
       );
       break;
