@@ -146,6 +146,7 @@ void populate_makefile(FILE *fptr, makefile_mode_t mode) {
       );
       break;
     case DEFAULT:
+    default:
       fputs(
         "CC := gcc\n"
         "SRCDIR := src\n"
@@ -186,7 +187,6 @@ void populate_makefile(FILE *fptr, makefile_mode_t mode) {
         ".PHONY: all clean debug run\n"
         , fptr
       );
-    default:
       break;
   }
 }
