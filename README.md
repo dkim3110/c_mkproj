@@ -6,9 +6,7 @@ A lightweight command-line utility to generate C project scaffolding.
 
 ## Description
 
-mkproj is a lightweight, zero-dependency command-line utility written in C that automates the scaffolding of new C programming projects. It offers three different initialization modes ranging from a barebones setup to a fully structured layout with src, build, include, and lib directories, alongside an auto-dependency tracking Makefile.
-
-Projects generated with `--default` and `--full` modes come with ready-to-use Makefiles out of the box.
+`mkproj` is a lightweight, zero-dependency command-line utility written in C that automates the scaffolding of new C programming projects. It offers different initialization modes ranging from a barebones setup to a fully structured layout with `src`, `build`, `include`, and `lib` directories, alongside an auto-dependency tracking `Makefile`.
 
 ## Getting Started
 
@@ -69,7 +67,7 @@ project_name/
 └── README.md
 ```
 ---
-**Full:** includes additional `bin` and `lib` directories for larger, more complex projects.
+**Full:** includes additional `bin` and `lib` directories to `--default` for larger, more complex projects.
 ```
 mkproj project_name --full
 ```
