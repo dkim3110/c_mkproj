@@ -10,7 +10,7 @@ A lightweight command-line utility to generate C project scaffolding.
 
 ## Requirements
 
-- A standard C compiler
+- `GCC`
   - If you have Clang, override with `make CC=clang`. 
 - GNU Make (to build this tool and to use the generated project Makefiles)
 - Compatible with Linux and Windows (via MSYS2/MinGW or WSL)
