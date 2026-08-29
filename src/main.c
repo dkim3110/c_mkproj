@@ -2,15 +2,15 @@
 
 #define EXIT_HELP (2)
 
-static char *g_flags_list[] = {
-  "--bare",
-  "--default",
-  "--full",
-  "--help",
+static flag_t g_flags_list[] = {
+  {"--bare", BARE},
+  {"--default", DEFAULT},
+  {"--full", FULL},
+  {"--help", UNKNOWN}
 };
 
-// == USAGE ===============================================================
-static void print_usage(char *program) {
+// == HELPER ==============================================================
+static void print_help_message(char *program) {
   fprintf(stderr,
     "\n"
     "USAGE:\n"
@@ -54,18 +54,18 @@ static void print_usage(char *program) {
     , program, program
   );
 }
-// =============================================================== USAGE ==
 
-// == HELPER ==============================================================
 static int parse_args(int argc, char **argv, config_t *config) {
   for (int n = 1; n < argc; n++) {
+    if (strncmp(argv[n], "--help", 6) == 0) return EXIT_HELP;
+
     if (argv[n][0] != '-') {
-      if (config->dir_name) {
+      if (config->parent_directory) {
         fprintf(stderr, "-fatal: too many arguments\n");
         return EXIT_FAILURE;
       }
 
-      config->dir_name = argv[n];
+      config->parent_directory = argv[n];
     }
 
     if (argv[n][0] == '-') {
@@ -74,8 +74,9 @@ static int parse_args(int argc, char **argv, config_t *config) {
       int is_valid = 0;
 
       for (int m = 0; m < flag_list_size; m++) {
-        if (strcmp(argv[n], g_flags_list[m]) == 0) {
+        if (strcmp(argv[n], g_flags_list[m].name) == 0) {
           is_valid = 1;
+          config->flag = g_flags_list[m].flag;
           break;
         }
       }
@@ -88,14 +89,10 @@ static int parse_args(int argc, char **argv, config_t *config) {
 
       config->flag_count++;
       if (config->flag_count > 1) return EXIT_FAILURE;
-
-      if (strncmp(argv[n], "--full", 6) == 0) config->flag = FULL;
-      if (strncmp(argv[n], "--bare", 6) == 0) config->flag = BARE;
-      if (strncmp(argv[n], "--help", 6) == 0) return EXIT_HELP;
     }
   }
 
-  return (config->dir_name) ? EXIT_SUCCESS : EXIT_FAILURE;
+  return (config->parent_directory) ? EXIT_SUCCESS : EXIT_FAILURE;
 }
 // ============================================================== HELPER ==
 
@@ -111,21 +108,19 @@ int main(int argc, char *argv[]) {
 
   // --help
   if (arg_check == EXIT_HELP) {
-    print_usage(argv[0]);
+    print_help_message(argv[0]);
     return EXIT_SUCCESS;
   }
 
   if ((arg_check == EXIT_FAILURE)) {
     if (config.flag == UNKNOWN) fprintf(stderr, "-fatal: unknown flag\n");
     else if (config.flag_count > 1) fprintf(stderr, "-fatal: conflicting flags\n");
-    else if (!config.dir_name) fprintf(stderr, "-fatal: unable to determine name\n");
+    else if (!config.parent_directory) fprintf(stderr, "-fatal: unable to determine name\n");
 
     return EXIT_FAILURE;
   }
 
-  int main_dir_failed = MAKE_DIR(config.dir_name);
-
-  if (main_dir_failed) {
+  if (MAKE_DIR(config.parent_directory)) {
     fprintf(stderr, "-fatal: failed to create directory: %s\n", strerror(errno));
     return EXIT_FAILURE;
   }
@@ -133,22 +128,22 @@ int main(int argc, char *argv[]) {
   /* -- check flag ----------------------------------------------------- */
   switch (config.flag) {
     case BARE:
-      if (option_bare(config.dir_name) == EXIT_FAILURE) goto cleanup_dir_name;
+      if (option_bare(config.parent_directory) == EXIT_FAILURE) goto cleanup_parent_directory;
       break;
     case FULL:
-      if (option_full(config.dir_name) == EXIT_FAILURE) goto cleanup_dir_name;
+      if (option_full(config.parent_directory) == EXIT_FAILURE) goto cleanup_parent_directory;
       break;
     case DEFAULT:
     default:
-      if (option_default(config.dir_name) == EXIT_FAILURE) goto cleanup_dir_name;
+      if (option_default(config.parent_directory) == EXIT_FAILURE) goto cleanup_parent_directory;
       break;
   }
   /* ----------------------------------------------------- check flag -- */
 
   return EXIT_SUCCESS;
 
-  cleanup_dir_name:
-  rmdir(config.dir_name);
+  cleanup_parent_directory:
+  rmdir(config.parent_directory);
   return EXIT_FAILURE;
 }
 // ================================================================ MAIN ==
