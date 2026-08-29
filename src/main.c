@@ -87,8 +87,12 @@ static int has_valid_flag(int argc, char **argv, int *flag_count) {
 }
 
 static const char *get_dir_name(int argc, char **argv) {
-  for (int n = 1; n < argc - 1; n++) {
-    if (strncmp(argv[n], "--", 2) != 0) return argv[n];
+  for (int n = 1; n < argc; n++) {
+    if (argv[n][0] == '-') {
+      printf("%s is a flag\n", argv[n]);
+      continue;
+    }
+    return argv[n];
   }
 
   return NULL;
