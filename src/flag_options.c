@@ -16,6 +16,34 @@ static int file_path_maker(const char *parent, char *child, const char *child_na
   return EXIT_SUCCESS;
 }
 
+static int generate_paths(project_paths_t *path, const char *dir_name, project_mode_t mode) {
+  if (snprintf(path->root, MAX_PATH_LEN, "%s", dir_name) >= MAX_PATH_LEN) return EXIT_FAILURE;
+
+  switch (mode) {
+    case FULL:
+      if (file_path_maker(path->root, path->bin, "bin") == EXIT_FAILURE) return EXIT_FAILURE;
+      if (file_path_maker(path->root, path->lib, "lib") == EXIT_FAILURE) return EXIT_FAILURE;
+    case DEFAULT:
+      if (file_path_maker(path->root, path->build, "build") == EXIT_FAILURE) return EXIT_FAILURE;
+      if (file_path_maker(path->root, path->include, "include") == EXIT_FAILURE) return EXIT_FAILURE;
+      if (file_path_maker(path->root, path->src, "src") == EXIT_FAILURE) return EXIT_FAILURE;
+
+      if (file_path_maker(path->root, path->makefile, "Makefile") == EXIT_FAILURE) return EXIT_FAILURE;
+    case BARE:
+      if (file_path_maker((mode == BARE) ? path->root : path->src, path->main_c, "main.c") == EXIT_FAILURE) {
+        return EXIT_FAILURE;
+      }
+
+      if (file_path_maker(path->root, path->readme, "README.md") == EXIT_FAILURE) return EXIT_FAILURE;
+      if (file_path_maker(path->root, path->lic, "LICENSE.md") == EXIT_FAILURE) return EXIT_FAILURE;
+      break;
+    default:
+      break;
+  }
+
+  return EXIT_SUCCESS;
+}
+
 static int directory_maker(char *file_path) {
   int check = MAKE_DIR(file_path);
   if (check != 0) fprintf(stderr, "-fatal: failed to create directory %s: %s\n", file_path, strerror(errno));
@@ -32,120 +60,108 @@ static FILE *file_opener(const char *file_path) {
   return fptr;
 }
 
-static int generic_project_maker(const char *dir_name, makefile_mode_t makefile_mode) {
-  char build_path[MAX_PATH_LEN];
-  char include_path[MAX_PATH_LEN];
-  char src_path[MAX_PATH_LEN];
+static int file_closer(FILE **fptr, const char *file_path) {
+  if (fclose(*fptr) != 0) {
+    fprintf(stderr, "-fatal: failed to close file %s: %s\n", file_path, strerror(errno));
+    return EXIT_FAILURE;
+  }
 
-  char main_path[MAX_PATH_LEN];
-  char readme_path[MAX_PATH_LEN];
-  char lic_path[MAX_PATH_LEN];
-  char makefile_path[MAX_PATH_LEN];
+  *fptr = NULL;
+  return EXIT_SUCCESS;
+}
 
-  if (file_path_maker(dir_name, build_path, "build") == EXIT_FAILURE) return EXIT_FAILURE;
-  if (file_path_maker(dir_name, include_path, "include") == EXIT_FAILURE) return EXIT_FAILURE;
-  if (file_path_maker(dir_name, src_path, "src") == EXIT_FAILURE) return EXIT_FAILURE;
+static int file_maker(project_paths_t *path, project_mode_t mode) {
+  FILE *main_c_fptr = file_opener(path->main_c);
+  if (!main_c_fptr) return EXIT_FAILURE;
+  populate_main(main_c_fptr);
+  if (file_closer(&main_c_fptr, path->main_c) == EXIT_FAILURE) goto cleanup_main;
 
-  if (directory_maker(build_path) == EXIT_FAILURE) return EXIT_FAILURE;
-  if (directory_maker(include_path) == EXIT_FAILURE) goto cleanup_build;
-  if (directory_maker(src_path) == EXIT_FAILURE) goto cleanup_include;
+  if (mode != BARE) {
+    FILE *makefile_fptr = file_opener(path->makefile);
+    if (!makefile_fptr) goto cleanup_main;
+    populate_makefile(makefile_fptr, mode);
+    if (file_closer(&makefile_fptr, path->makefile) == EXIT_FAILURE) goto cleanup_makefile;
+  }
 
-  if (file_path_maker(src_path, main_path, "main.c") == EXIT_FAILURE) goto cleanup_src;
-  FILE *main_fptr = file_opener(main_path);
-  if (!main_fptr) return EXIT_FAILURE;
-  populate_main(main_fptr);
-  fclose(main_fptr);
-
-  if (file_path_maker(dir_name, makefile_path, "Makefile") == EXIT_FAILURE) goto cleanup_main;
-  FILE *makefile_fptr = file_opener(makefile_path);
-  if (!makefile_fptr) goto cleanup_main;
-  populate_makefile(makefile_fptr, makefile_mode);
-  fclose(makefile_fptr);
-
-  if (file_path_maker(dir_name, readme_path, "README.md") == EXIT_FAILURE) goto cleanup_makefile;
-  FILE *readme_fptr = file_opener(readme_path);
+  FILE *readme_fptr = file_opener(path->readme);
   if (!readme_fptr) goto cleanup_makefile;
   populate_md(readme_fptr, README);
-  fclose(readme_fptr);
+  if (file_closer(&readme_fptr, path->readme) == EXIT_FAILURE) goto cleanup_readme;
 
-  if (file_path_maker(dir_name, lic_path, "LICENSE.md") == EXIT_FAILURE) goto cleanup_readme;
-  FILE *lic_fptr = file_opener(lic_path);
+  FILE *lic_fptr = file_opener(path->lic);
   if (!lic_fptr) goto cleanup_readme;
   populate_md(lic_fptr, LICENSE);
-  fclose(lic_fptr);
+  if (file_closer(&lic_fptr, path->lic) == EXIT_FAILURE) goto cleanup_lic;
 
   return EXIT_SUCCESS;
 
-	cleanup_readme:
-  remove(readme_path);
+  cleanup_lic:
+  remove(path->lic);
+  cleanup_readme:
+  remove(path->readme);
 	cleanup_makefile:
-  remove(makefile_path);
+  if (mode != BARE) remove(path->makefile);
 	cleanup_main:
-  remove(main_path);
-	cleanup_src:
-  rmdir(src_path);
-	cleanup_include:
-  rmdir(include_path);
-	cleanup_build:
-  rmdir(build_path);
+	remove(path->main_c);
+  return EXIT_FAILURE;
+}
+
+static int generic_project_maker(project_paths_t *path, project_mode_t mode) {
+  if (mode != BARE) {
+    if (directory_maker(path->build) == EXIT_FAILURE) return EXIT_FAILURE;
+    if (directory_maker(path->include) == EXIT_FAILURE) goto cleanup_build;
+    if (directory_maker(path->src) == EXIT_FAILURE) goto cleanup_include;
+  }
+
+  if (file_maker(path, mode) == EXIT_FAILURE) {
+    if (mode != BARE) goto cleanup_src;
+
+    return EXIT_FAILURE;
+  }
+
+  return EXIT_SUCCESS;
+
+  cleanup_src:
+  rmdir(path->src);
+  cleanup_include:
+  rmdir(path->include);
+  cleanup_build:
+  rmdir(path->build);
   return EXIT_FAILURE;
 }
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
-int option_bare(const char *dir_name) {
-  char main_path[MAX_PATH_LEN];
-  char readme_path[MAX_PATH_LEN];
-  char lic_path[MAX_PATH_LEN];
-
-  if (file_path_maker(dir_name, main_path, "main.c") == EXIT_FAILURE) return EXIT_FAILURE;
-  if (file_path_maker(dir_name, readme_path, "README.md") == EXIT_FAILURE) return EXIT_FAILURE;
-  if (file_path_maker(dir_name, lic_path, "LICENSE.md") == EXIT_FAILURE) return EXIT_FAILURE;
-
-  FILE *main_fptr = file_opener(main_path);
-  if (!main_fptr) return EXIT_FAILURE;
-  populate_main(main_fptr);
-  fclose(main_fptr);
-
-  FILE *readme_fptr = file_opener(readme_path);
-  if (!readme_fptr) goto cleanup_main;
-  populate_md(readme_fptr, README);
-  fclose(readme_fptr);
-
-  FILE *lic_fptr = file_opener(lic_path);
-  if (!lic_fptr) goto cleanup_readme;
-  populate_md(lic_fptr, LICENSE);
-  fclose(lic_fptr);
+int option_default(const char *dir_name) {
+  project_paths_t path = {0};
+  if (generate_paths(&path, dir_name, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (generic_project_maker(&path, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
-
-	cleanup_readme:
-  remove(readme_path);
-	cleanup_main:
-  remove(main_path);
-  return EXIT_FAILURE;
 }
 
-int option_default(const char *dir_name) {
-  return generic_project_maker(dir_name, DEFAULT);
+int option_bare(const char *dir_name) {
+  project_paths_t path = {0};
+  if (generate_paths(&path, dir_name, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (generic_project_maker(&path, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
+
+  return EXIT_SUCCESS;
 }
 
 int option_full(const char *dir_name) {
-  char bin_path[MAX_PATH_LEN];
-  char lib_path[MAX_PATH_LEN];
+  project_paths_t path = {0};
+  if (generate_paths(&path, dir_name, FULL) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (directory_maker(path.bin) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (directory_maker(path.lib) == EXIT_FAILURE) goto cleanup_bin;
 
-  if (generic_project_maker(dir_name, FULL) == EXIT_FAILURE) return EXIT_FAILURE;
-
-  if (file_path_maker(dir_name, bin_path, "bin") == EXIT_FAILURE) return EXIT_FAILURE;
-  if (file_path_maker(dir_name, lib_path, "lib") == EXIT_FAILURE) return EXIT_FAILURE;
-
-  if (directory_maker(bin_path) == EXIT_FAILURE) return EXIT_FAILURE;
-  if (directory_maker(lib_path) == EXIT_FAILURE) goto cleanup_bin;
+  if (generic_project_maker(&path, FULL) == EXIT_FAILURE) goto cleanup_lib;
 
   return EXIT_SUCCESS;
 
-	cleanup_bin:
-  rmdir(bin_path);
+  cleanup_lib:
+  rmdir(path.lib);
+  cleanup_bin:
+  rmdir(path.bin);
   return EXIT_FAILURE;
 }
 // ============================================================= PRIMARY ==
