@@ -12,8 +12,8 @@ static void print_usage(char *program) {
   fprintf(stderr,
     "\n"
     "USAGE:\n"
-    "  %s [flag] --name [project name]\n"
-    "  %s --name [project name] [flag]\n"
+    "  %s [flag] [project name]\n"
+    "  %s [project name] [flag]\n"
     "\n"
     "OPTIONS:\n"
     "   --help\n"
