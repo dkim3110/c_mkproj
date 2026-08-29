@@ -5,7 +5,7 @@ void populate_main(FILE *fptr) {
     "#include <stdio.h>\n"
     "\n"
     "int main(void) { // main(int argc, char *argv[]) \n"
-    "  printf(\"Hello, World!\");\n"
+    "  printf(\"Hello, World!\\n\");\n"
     "\n"
     "  return 0;\n"
     "}\n");
@@ -137,11 +137,7 @@ void populate_makefile(FILE *fptr, makefile_mode_t mode) {
         "\n"
         "-include $(DEPS)\n"
         "\n"
-        "run: all\n"
-        "\t@echo \" Running $(TARGET)...\"\n"
-        "\t@./$(TARGET)\n"
-        "\n"
-        ".PHONY: all clean debug run\n"
+        ".PHONY: all clean debug\n"
         , fptr
       );
       break;
@@ -180,11 +176,7 @@ void populate_makefile(FILE *fptr, makefile_mode_t mode) {
         "\n"
         "-include $(DEPS)\n"
         "\n"
-        "run: all\n"
-        "\t@echo \" Running $(TARGET)...\"\n"
-        "\t@./$(TARGET)\n"
-        "\n"
-        ".PHONY: all clean debug run\n"
+        ".PHONY: all clean debug\n"
         , fptr
       );
       break;
