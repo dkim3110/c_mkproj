@@ -33,7 +33,7 @@ sudo make install
 
 2. Deploy (Windows)
 
-  Move the compiled `mkproj.exe` to a directory included in your system's `PATH`. If using MSYS2, simply ditch `sudo` and run the above.
+  Move the compiled `mkproj.exe` to a directory included in your system's `PATH`. If using MSYS2/MinGW, simply ditch `sudo` and run the above.
 
 ## Usage
 
