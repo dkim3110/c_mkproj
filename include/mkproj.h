@@ -71,7 +71,7 @@ extern int option_full(const char *);
   /* ---------------------------------------------------- flag options -- */
 
   /* -- populate files -------------------------------------------------- */
-extern void populate_main(FILE *);
+extern void populate_main_c(FILE *);
 extern void populate_md(FILE *, md_type_t);
 extern void populate_makefile(FILE *, project_mode_t);
   /* -------------------------------------------------- populate files -- */
