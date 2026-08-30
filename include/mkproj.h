@@ -66,8 +66,8 @@ typedef struct {
 
 // == FUNCTIONS ===========================================================
   /* -- flag options ---------------------------------------------------- */
-extern int mkproj_generate_default(const char *);
 extern int mkproj_generate_bare(const char *);
+extern int mkproj_generate_default(const char *);
 extern int mkproj_generate_full(const char *);
   /* ---------------------------------------------------- flag options -- */
 
