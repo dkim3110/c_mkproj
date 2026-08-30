@@ -52,14 +52,14 @@ static int generate_paths(project_paths_t *path, const char *root, project_mode_
 
 static int directory_maker(char *file_path) {
   int check = MAKE_DIR(file_path);
-  if (check != 0) fprintf(stderr, "-fatal: failed to create directory %s: %s\n", file_path, strerror(errno));
+  if (check != 0) fprintf(stderr, "-fatal: failed to create directory '%s': %s\n", file_path, strerror(errno));
   return (check == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 } /* directory_maker() */
 
 static FILE *file_opener(const char *file_path) {
   FILE *fptr = fopen(file_path, "w");
   if (!fptr) {
-    fprintf(stderr, "-fatal: failed to create file %s: %s\n", file_path, strerror(errno));
+    fprintf(stderr, "-fatal: failed to create file '%s': %s\n", file_path, strerror(errno));
     return NULL;
   }
 
@@ -68,7 +68,7 @@ static FILE *file_opener(const char *file_path) {
 
 static int file_closer(FILE **fptr, const char *file_path) {
   if (fclose(*fptr) != 0) {
-    fprintf(stderr, "-fatal: failed to close file %s: %s\n", file_path, strerror(errno));
+    fprintf(stderr, "-fatal: failed to close file '%s': %s\n", file_path, strerror(errno));
     return EXIT_FAILURE;
   }
 
