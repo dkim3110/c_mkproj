@@ -67,8 +67,9 @@ void populate_md(FILE *fptr, md_type_t file_type) {
       break;
     case LICENSE: {
       time_t now = time(NULL);
-      struct tm *date = localtime(&now);
-      int year = date->tm_year + 1900;
+      struct tm date;
+      localtime_s(&date, &now);
+      int year = date.tm_year + 1900;
 
       fputs(
         "MIT License\n"
