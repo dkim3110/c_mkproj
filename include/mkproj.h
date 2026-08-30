@@ -72,9 +72,9 @@ extern int option_full(const char *);
   /* ---------------------------------------------------- flag options -- */
 
   /* -- populate files -------------------------------------------------- */
-extern void populate_main_c(FILE *);
-extern void populate_md(FILE *, md_type_t);
-extern void populate_makefile(FILE *, project_mode_t);
+extern void mkproj_write_main_c(FILE *);
+extern void mkproj_write_md(FILE *, md_type_t);
+extern void mkproj_write_makefile(FILE *, project_mode_t);
   /* -------------------------------------------------- populate files -- */
 // =========================================================== FUNCTIONS ==
 
