@@ -1,5 +1,10 @@
 #include "mkproj.h"
 
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #define EXIT_HELP (2)
 
 static flag_t g_flags_list[] = {
@@ -60,12 +65,12 @@ static int parse_args(int argc, char **argv, config_t *config) {
     if (strncmp(argv[n], "--help", 6) == 0) return EXIT_HELP;
 
     if (argv[n][0] != '-') {
-      if (config->parent_directory) {
+      if (config->root) {
         fprintf(stderr, "-fatal: too many arguments\n");
         return EXIT_FAILURE;
       }
 
-      config->parent_directory = argv[n];
+      config->root = argv[n];
     }
 
     if (argv[n][0] == '-') {
@@ -92,7 +97,7 @@ static int parse_args(int argc, char **argv, config_t *config) {
     }
   }
 
-  return (config->parent_directory) ? EXIT_SUCCESS : EXIT_FAILURE;
+  return (config->root) ? EXIT_SUCCESS : EXIT_FAILURE;
 } /* parse_args() */
 // ============================================================== HELPER ==
 
@@ -112,15 +117,15 @@ int main(int argc, char *argv[]) {
     return EXIT_SUCCESS;
   }
 
-  if ((arg_check == EXIT_FAILURE)) {
+  if (arg_check == EXIT_FAILURE) {
     if (config.flag == UNKNOWN) fprintf(stderr, "-fatal: unknown flag\n");
     else if (config.flag_count > 1) fprintf(stderr, "-fatal: conflicting flags\n");
-    else if (!config.parent_directory) fprintf(stderr, "-fatal: unable to determine name\n");
+    else if (!config.root) fprintf(stderr, "-fatal: unable to determine name\n");
 
     return EXIT_FAILURE;
   }
 
-  if (MAKE_DIR(config.parent_directory)) {
+  if (MAKE_DIR(config.root)) {
     fprintf(stderr, "-fatal: failed to create directory: %s\n", strerror(errno));
     return EXIT_FAILURE;
   }
@@ -128,22 +133,22 @@ int main(int argc, char *argv[]) {
   /* -- check flag ----------------------------------------------------- */
   switch (config.flag) {
     case BARE:
-      if (option_bare(config.parent_directory) == EXIT_FAILURE) goto cleanup_parent_directory;
+      if (option_bare(config.root) == EXIT_FAILURE) goto cleanup_root;
       break;
     case FULL:
-      if (option_full(config.parent_directory) == EXIT_FAILURE) goto cleanup_parent_directory;
+      if (option_full(config.root) == EXIT_FAILURE) goto cleanup_root;
       break;
     case DEFAULT:
     default:
-      if (option_default(config.parent_directory) == EXIT_FAILURE) goto cleanup_parent_directory;
+      if (option_default(config.root) == EXIT_FAILURE) goto cleanup_root;
       break;
   }
   /* ----------------------------------------------------- check flag -- */
 
   return EXIT_SUCCESS;
 
-  cleanup_parent_directory:
-  rmdir(config.parent_directory);
+  cleanup_root:
+  REMOVE_DIR(config.root);
   return EXIT_FAILURE;
 } /* main() */
 // ================================================================ MAIN ==

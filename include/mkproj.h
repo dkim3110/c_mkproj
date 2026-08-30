@@ -2,15 +2,11 @@
 #define MKPROJ_H_
 
 // == INCLUDES ============================================================
-#include <errno.h>
 #include <limits.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <sys/stat.h>
-#include <time.h>
 
-#if !defined _WIN32
+#ifdef _WIN32
+  #include <direct.h>
+#else
   #include <unistd.h>
 #endif
 // ============================================================ INCLUDES ==
@@ -32,21 +28,23 @@ typedef enum {
 
 typedef struct {
   char root[MAX_PATH_LEN];
+
   char bin[MAX_PATH_LEN];
   char build[MAX_PATH_LEN];
   char include[MAX_PATH_LEN];
   char lib[MAX_PATH_LEN];
   char src[MAX_PATH_LEN];
+
   char main_c[MAX_PATH_LEN];
-  char readme[MAX_PATH_LEN];
-  char lic[MAX_PATH_LEN];
   char makefile[MAX_PATH_LEN];
+  char lic[MAX_PATH_LEN];
+  char readme[MAX_PATH_LEN];
 } project_paths_t;
 
 typedef struct {
   int flag_count;
   project_mode_t flag;
-  char *parent_directory;
+  char *root;
 } config_t;
 
 typedef struct {
@@ -58,8 +56,10 @@ typedef struct {
 // == PREPROCESSORS =======================================================
 #ifdef _WIN32
   #define MAKE_DIR(file_path) (mkdir(file_path))
+  #define REMOVE_DIR(file_path) (_rmdir(file_path))
 #else
   #define MAKE_DIR(file_path) (mkdir(file_path, 0755))
+  #define REMOVE_DIR(file_path) (rmdir(file_path))
 #endif
 // ======================================================= PREPROCESSORS ==
 

@@ -1,5 +1,9 @@
 #include "mkproj.h"
 
+#include <errno.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 // == HELPER ==============================================================
 static int file_path_maker(const char *parent, char *child, const char *child_name) {
   int check = snprintf(child, MAX_PATH_LEN, "%s/%s", parent, child_name);
@@ -16,8 +20,8 @@ static int file_path_maker(const char *parent, char *child, const char *child_na
   return EXIT_SUCCESS;
 } /* file_path_maker() */
 
-static int generate_paths(project_paths_t *path, const char *parent_directory, project_mode_t mode) {
-  if (snprintf(path->root, MAX_PATH_LEN, "%s", parent_directory) >= MAX_PATH_LEN) return EXIT_FAILURE;
+static int generate_paths(project_paths_t *path, const char *root, project_mode_t mode) {
+  if (snprintf(path->root, MAX_PATH_LEN, "%s", root) >= MAX_PATH_LEN) return EXIT_FAILURE;
 
   switch (mode) {
     case FULL:
@@ -37,7 +41,9 @@ static int generate_paths(project_paths_t *path, const char *parent_directory, p
       if (file_path_maker(path->root, path->readme, "README.md") == EXIT_FAILURE) return EXIT_FAILURE;
       if (file_path_maker(path->root, path->lic, "LICENSE.md") == EXIT_FAILURE) return EXIT_FAILURE;
       break;
+    case UNKNOWN:
     default:
+      return EXIT_FAILURE;
       break;
   }
 
@@ -106,7 +112,7 @@ static int file_maker(project_paths_t *path, project_mode_t mode) {
   return EXIT_FAILURE;
 } /* file_maker() */
 
-static int generic_project_maker(project_paths_t *path, project_mode_t mode) {
+static int defaukt_project(project_paths_t *path, project_mode_t mode) {
   if (mode != BARE) {
     if (directory_maker(path->build) == EXIT_FAILURE) return EXIT_FAILURE;
     if (directory_maker(path->include) == EXIT_FAILURE) goto cleanup_build;
@@ -122,46 +128,49 @@ static int generic_project_maker(project_paths_t *path, project_mode_t mode) {
   return EXIT_SUCCESS;
 
   cleanup_src:
-  rmdir(path->src);
+  REMOVE_DIR(path->src);
   cleanup_include:
-  rmdir(path->include);
+  REMOVE_DIR(path->include);
   cleanup_build:
-  rmdir(path->build);
+  REMOVE_DIR(path->build);
   return EXIT_FAILURE;
-} /* generic_project_maker() */
+} /* defaukt_project() */
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
-int option_default(const char *parent_directory) {
+int option_default(const char *root) {
   project_paths_t path = {0};
-  if (generate_paths(&path, parent_directory, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
-  if (generic_project_maker(&path, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
+
+  if (generate_paths(&path, root, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (defaukt_project(&path, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 } /* option_default() */
 
-int option_bare(const char *parent_directory) {
+int option_bare(const char *root) {
   project_paths_t path = {0};
-  if (generate_paths(&path, parent_directory, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
-  if (generic_project_maker(&path, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
+
+  if (generate_paths(&path, root, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
+  if (defaukt_project(&path, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
 } /* option_bare() */
 
-int option_full(const char *parent_directory) {
+int option_full(const char *root) {
   project_paths_t path = {0};
-  if (generate_paths(&path, parent_directory, FULL) == EXIT_FAILURE) return EXIT_FAILURE;
+
+  if (generate_paths(&path, root, FULL) == EXIT_FAILURE) return EXIT_FAILURE;
   if (directory_maker(path.bin) == EXIT_FAILURE) return EXIT_FAILURE;
   if (directory_maker(path.lib) == EXIT_FAILURE) goto cleanup_bin;
 
-  if (generic_project_maker(&path, FULL) == EXIT_FAILURE) goto cleanup_lib;
+  if (defaukt_project(&path, FULL) == EXIT_FAILURE) goto cleanup_lib;
 
   return EXIT_SUCCESS;
 
   cleanup_lib:
-  rmdir(path.lib);
+  REMOVE_DIR(path.lib);
   cleanup_bin:
-  rmdir(path.bin);
+  REMOVE_DIR(path.bin);
   return EXIT_FAILURE;
 } /* option_full() */
 // ============================================================= PRIMARY ==

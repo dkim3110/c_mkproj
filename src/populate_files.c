@@ -1,5 +1,8 @@
 #include "mkproj.h"
 
+#include <stdio.h>
+#include <time.h>
+
 // == PRIMARY =============================================================
 void populate_main_c(FILE *fptr) {
   fprintf(fptr,
