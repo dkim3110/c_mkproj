@@ -31,9 +31,7 @@ sudo make install
 # To uninstall, run 'sudo make uninstall'
 ```
 
-2. Deploy (Windows)
-
-  Move the compiled `mkproj.exe` to a directory included in your system's `PATH`. If using MSYS2/MinGW, simply ditch `sudo` and run the above.
+*For Windows, move the compiled `mkproj.exe` to a directory included in your system's `PATH`. If using MSYS2/MinGW, simply ditch `sudo` and run the above.*
 
 ## Usage
 
