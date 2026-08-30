@@ -133,14 +133,14 @@ int main(int argc, char *argv[]) {
   /* -- check flag ----------------------------------------------------- */
   switch (config.flag) {
     case BARE:
-      if (mkproj_option_bare(config.root) == EXIT_FAILURE) goto cleanup_root;
+      if (mkproj_generate_bare(config.root) == EXIT_FAILURE) goto cleanup_root;
       break;
     case FULL:
-      if (mkproj_option_full(config.root) == EXIT_FAILURE) goto cleanup_root;
+      if (mkproj_generate_full(config.root) == EXIT_FAILURE) goto cleanup_root;
       break;
     case DEFAULT:
     default:
-      if (mkproj_option_default(config.root) == EXIT_FAILURE) goto cleanup_root;
+      if (mkproj_generate_default(config.root) == EXIT_FAILURE) goto cleanup_root;
       break;
   }
   /* ----------------------------------------------------- check flag -- */

@@ -138,25 +138,25 @@ static int defaukt_project(project_paths_t *path, project_mode_t mode) {
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
-int mkproj_option_default(const char *root) {
+int mkproj_generate_default(const char *root) {
   project_paths_t path = {0};
 
   if (generate_paths(&path, root, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
   if (defaukt_project(&path, DEFAULT) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
-} /* mkproj_option_default() */
+} /* mkproj_generate_default() */
 
-int mkproj_option_bare(const char *root) {
+int mkproj_generate_bare(const char *root) {
   project_paths_t path = {0};
 
   if (generate_paths(&path, root, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
   if (defaukt_project(&path, BARE) == EXIT_FAILURE) return EXIT_FAILURE;
 
   return EXIT_SUCCESS;
-} /* mkproj_option_bare() */
+} /* mkproj_generate_bare() */
 
-int mkproj_option_full(const char *root) {
+int mkproj_generate_full(const char *root) {
   project_paths_t path = {0};
 
   if (generate_paths(&path, root, FULL) == EXIT_FAILURE) return EXIT_FAILURE;
@@ -172,5 +172,5 @@ int mkproj_option_full(const char *root) {
   cleanup_bin:
   REMOVE_DIR(path.bin);
   return EXIT_FAILURE;
-} /* mkproj_option_full() */
+} /* mkproj_generate_full() */
 // ============================================================= PRIMARY ==
