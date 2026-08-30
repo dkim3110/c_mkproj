@@ -91,7 +91,7 @@ mkproj --help
 
 ### Makefile
 
-Both `--default` and `--full` will generate a Makefile. Running `make` creates a binary named `run` in `--default`, or `bin/run` in `--full`.
+Both `--default` and `--full` will generate a Makefile. Running `make` creates a binary named `run` in `--default`, or `bin/run` in `--full`. You can change the name of the output binary by editing the `TARGET` variable in the Makefile.
 
 ## License
 
