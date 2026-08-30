@@ -3,6 +3,7 @@
 
 // == INCLUDES ============================================================
 #include <limits.h>
+#include <stdio.h>
 
 #ifdef _WIN32
   #include <direct.h>
