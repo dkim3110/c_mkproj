@@ -69,9 +69,7 @@ static int parse_args(int argc, char **argv, config_t *config) {
       }
 
       config->root = argv[n];
-    }
-
-    if (argv[n][0] == '-') {
+    } else {
       /* -- verify flag ------------------------------------------------ */
       int flag_list_size = sizeof(g_flags_list) / sizeof(g_flags_list[0]);
       int is_valid = 0;
