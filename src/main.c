@@ -29,6 +29,7 @@ static void print_help_message(char *program) {
     "               Creates project in bare mode:\n"
     "                   project_name\n"
     "                   |--main.c\n"
+    "                   |--Makefile\n"
     "                   `--README.md\n"
     "\n"
     "   --full\n"
