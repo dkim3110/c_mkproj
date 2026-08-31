@@ -77,8 +77,17 @@ static int file_maker(project_paths_t *path, project_flag_t flag) {
 // == PRIMARY =============================================================
 int mkproj_generate_project(const char *root, project_flag_t flag) {
   project_paths_t path = {0};
+  int check = snprintf(path.root, MAX_PATH_LEN, "%s", root);
+  
+  if(check >= MAX_PATH_LEN) {
+    fprintf(stderr, "-fatal: name too long\n");
+    return EXIT_FAILURE;
+  }
 
-  if (snprintf(path.root, MAX_PATH_LEN, "%s", root) >= MAX_PATH_LEN) return EXIT_FAILURE;
+  if (check < 0) {
+    fprintf(stderr, "-fatal: encoding error\n");
+    return EXIT_FAILURE;
+  }
 
   switch (flag) {
     case FULL:
