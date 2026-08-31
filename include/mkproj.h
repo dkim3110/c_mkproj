@@ -22,11 +22,6 @@ typedef enum {
   UNKNOWN
 } project_mode_t;
 
-typedef enum {
-  README,
-  LICENSE
-} md_type_t;
-
 typedef struct {
   char root[MAX_PATH_LEN];
 
@@ -38,7 +33,6 @@ typedef struct {
 
   char main_c[MAX_PATH_LEN];
   char makefile[MAX_PATH_LEN];
-  char lic[MAX_PATH_LEN];
   char readme[MAX_PATH_LEN];
 } project_paths_t;
 
@@ -65,17 +59,15 @@ typedef struct {
 // ======================================================= PREPROCESSORS ==
 
 // == FUNCTIONS ===========================================================
-  /* -- flag options ---------------------------------------------------- */
-extern int mkproj_generate_bare(const char *);
-extern int mkproj_generate_default(const char *);
-extern int mkproj_generate_full(const char *);
-  /* ---------------------------------------------------- flag options -- */
+  /* -- generate -------------------------------------------------------- */
+  extern int mkproj_generate_project(const char *, project_mode_t);
+  /* -------------------------------------------------------- generate -- */
 
-  /* -- populate files -------------------------------------------------- */
+  /* -- write ----------------------------------------------------------- */
 extern void mkproj_write_main_c(FILE *);
-extern void mkproj_write_md(FILE *, md_type_t);
+extern void mkproj_write_readme(FILE *);
 extern void mkproj_write_makefile(FILE *, project_mode_t);
-  /* -------------------------------------------------- populate files -- */
+  /* ----------------------------------------------------------- write -- */
 // =========================================================== FUNCTIONS ==
 
 #endif // MKPROJ_H_

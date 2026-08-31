@@ -47,7 +47,7 @@ mkproj project_name --bare
 ```
 ```
 project_name/
-├── LICENSE.md
+├── Makefile
 ├── main.c
 └── README.md
 ```
@@ -62,7 +62,6 @@ project_name/
 ├── include/
 ├── src/
 │   └── main.c
-├── LICENSE.md
 ├── Makefile
 └── README.md
 ```
@@ -79,7 +78,6 @@ project_name/
 ├── lib/
 ├── src/
 │   └── main.c
-├── LICENSE.md
 ├── Makefile
 └── README.md
 ```
@@ -91,7 +89,7 @@ mkproj --help
 
 ### Makefile
 
-Both `--default` and `--full` will generate a Makefile. Running `make` creates a binary named `run` in `--default`, or `bin/run` in `--full`. You can change the name of the output binary by editing the `TARGET` variable in the Makefile.
+All templates come with a Makefile. Running `make` creates a binary named `run` (or `bin/run` in `--full`). You can change the name of the output binary by editing the `TARGET` variable in the Makefile.
 
 ## License
 

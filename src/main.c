@@ -28,7 +28,6 @@ static void print_help_message(char *program) {
     "   --bare\n"
     "               Creates project in bare mode:\n"
     "                   project_name\n"
-    "                   |--LICENSE.md\n"
     "                   |--main.c\n"
     "                   `--README.md\n"
     "\n"
@@ -41,7 +40,6 @@ static void print_help_message(char *program) {
     "                   |--lib\n"
     "                   |--src\n"
     "                   |  `--main.c\n"
-    "                   |--LICENSE.md\n"
     "                   |--Makefile\n"
     "                   |--README.md\n"
     "\n"
@@ -52,7 +50,6 @@ static void print_help_message(char *program) {
     "                   |--include\n"
     "                   |--src\n"
     "                   |  `--main.c\n"
-    "                   |--LICENSE.md\n"
     "                   |--Makefile\n"
     "                   |--README.md\n"
     "\n"
@@ -131,18 +128,7 @@ int main(int argc, char *argv[]) {
   }
 
   /* -- check flag ----------------------------------------------------- */
-  switch (config.flag) {
-    case BARE:
-      if (mkproj_generate_bare(config.root) == EXIT_FAILURE) goto cleanup_root;
-      break;
-    case FULL:
-      if (mkproj_generate_full(config.root) == EXIT_FAILURE) goto cleanup_root;
-      break;
-    case DEFAULT:
-    default:
-      if (mkproj_generate_default(config.root) == EXIT_FAILURE) goto cleanup_root;
-      break;
-  }
+  if (mkproj_generate_project(config.root, config.flag) == EXIT_FAILURE) goto cleanup_root;
   /* ----------------------------------------------------- check flag -- */
 
   return EXIT_SUCCESS;
