@@ -20,7 +20,7 @@ typedef enum {
   DEFAULT,
   FULL,
   UNKNOWN
-} project_mode_t;
+} project_flag_t;
 
 typedef struct {
   char root[MAX_PATH_LEN];
@@ -38,13 +38,13 @@ typedef struct {
 
 typedef struct {
   int flag_count;
-  project_mode_t flag;
+  project_flag_t flag;
   char *root;
 } config_t;
 
 typedef struct {
   char *name;
-  project_mode_t flag;
+  project_flag_t flag;
 } flag_t;
 // ========================================= CONSTANTS, ENUMS, & STRUCTS ==
 
@@ -60,13 +60,13 @@ typedef struct {
 
 // == FUNCTIONS ===========================================================
   /* -- generate -------------------------------------------------------- */
-  extern int mkproj_generate_project(const char *, project_mode_t);
+  extern int mkproj_generate_project(const char *, project_flag_t);
   /* -------------------------------------------------------- generate -- */
 
   /* -- write ----------------------------------------------------------- */
 extern void mkproj_write_main_c(FILE *);
 extern void mkproj_write_readme(FILE *);
-extern void mkproj_write_makefile(FILE *, project_mode_t);
+extern void mkproj_write_makefile(FILE *, project_flag_t);
   /* ----------------------------------------------------------- write -- */
 // =========================================================== FUNCTIONS ==
 

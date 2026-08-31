@@ -69,8 +69,8 @@ void mkproj_write_readme(FILE *fptr) {
   );
 } /* mkproj_write_readme() */
 
-void mkproj_write_makefile(FILE *fptr, project_mode_t mode) {
-  switch (mode) {
+void mkproj_write_makefile(FILE *fptr, project_flag_t flag) {
+  switch (flag) {
     case BARE:
       fputs(makefile_bare, fptr);
       break;

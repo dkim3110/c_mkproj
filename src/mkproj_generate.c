@@ -46,7 +46,7 @@ static int file_closer(FILE **fptr, const char *file_path) {
   return EXIT_SUCCESS;
 } /* file_closer() */
 
-static int file_maker(project_paths_t *path, project_mode_t mode) {
+static int file_maker(project_paths_t *path, project_flag_t flag) {
   FILE *main_c_fptr = file_opener(path->main_c);
   if (!main_c_fptr) return EXIT_FAILURE;
   mkproj_write_main_c(main_c_fptr);
@@ -54,7 +54,7 @@ static int file_maker(project_paths_t *path, project_mode_t mode) {
 
   FILE *makefile_fptr = file_opener(path->makefile);
   if (!makefile_fptr) goto cleanup_main;
-  mkproj_write_makefile(makefile_fptr, mode);
+  mkproj_write_makefile(makefile_fptr, flag);
   if (file_closer(&makefile_fptr, path->makefile) == EXIT_FAILURE) goto cleanup_makefile;
 
   FILE *readme_fptr = file_opener(path->readme);
@@ -75,12 +75,12 @@ static int file_maker(project_paths_t *path, project_mode_t mode) {
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
-int mkproj_generate_project(const char *root, project_mode_t mode) {
+int mkproj_generate_project(const char *root, project_flag_t flag) {
   project_paths_t path = {0};
 
   if (snprintf(path.root, MAX_PATH_LEN, "%s", root) >= MAX_PATH_LEN) return EXIT_FAILURE;
 
-  switch (mode) {
+  switch (flag) {
     case FULL:
       if (file_path_maker(path.root, path.bin, "bin") == EXIT_FAILURE) return EXIT_FAILURE;
       if (directory_maker(path.bin) == EXIT_FAILURE) return EXIT_FAILURE;
@@ -97,23 +97,23 @@ int mkproj_generate_project(const char *root, project_mode_t mode) {
       if (file_path_maker(path.root, path.src, "src") == EXIT_FAILURE) goto cleanup_include;
       if (directory_maker(path.src) == EXIT_FAILURE) goto cleanup_include;
     case BARE:
-      if (file_path_maker((mode == BARE) ? path.root : path.src, path.main_c, "main.c") == EXIT_FAILURE) {
-        if (mode != BARE) goto cleanup_src;
+      if (file_path_maker((flag == BARE) ? path.root : path.src, path.main_c, "main.c") == EXIT_FAILURE) {
+        if (flag != BARE) goto cleanup_src;
         return EXIT_FAILURE;
       }
 
       if (file_path_maker(path.root, path.makefile, "Makefile") == EXIT_FAILURE) {
-        if (mode != BARE) goto cleanup_src;
+        if (flag != BARE) goto cleanup_src;
         return EXIT_FAILURE;
       }
 
       if (file_path_maker(path.root, path.readme, "README.md") == EXIT_FAILURE) {
-        if (mode != BARE) goto cleanup_src;
+        if (flag != BARE) goto cleanup_src;
         return EXIT_FAILURE;
       }
 
-      if (file_maker(&path, mode) == EXIT_FAILURE) {
-        if (mode != BARE) goto cleanup_src;
+      if (file_maker(&path, flag) == EXIT_FAILURE) {
+        if (flag != BARE) goto cleanup_src;
         return EXIT_FAILURE;
       }
       break;

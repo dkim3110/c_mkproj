@@ -19,7 +19,7 @@ $(TARGET): $(OBJECTS)
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@echo " Building..."
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INC) -MMD -MP -c -o $@ $<
+	@$(CC) $(CFLAGS) $(INC) -MMD -MP $< -c -o $@
 
 debug:
 	@$(MAKE) clean
