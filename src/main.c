@@ -68,6 +68,11 @@ static int parse_args(int argc, char **argv, config_t *config) {
         return EXIT_FAILURE;
       }
 
+      if (strlen(argv[n]) > MAX_PATH_LEN) {
+        fprintf(stderr, "-fatal: name too long\n");
+        return EXIT_FAILURE;
+      }
+
       config->root = argv[n];
     } else {
       /* -- verify flag ------------------------------------------------ */
