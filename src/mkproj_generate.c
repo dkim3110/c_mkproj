@@ -135,9 +135,9 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
   cleanup_build:
   REMOVE_DIR(path.build);
   cleanup_lib:
-  REMOVE_DIR(path.lib);
+  if (flag == FULL) REMOVE_DIR(path.lib);
   cleanup_bin:
-  REMOVE_DIR(path.bin);
+  if (flag == FULL) REMOVE_DIR(path.bin);
   return EXIT_FAILURE;
 } /* mkproj_generate_project() */
 // ============================================================= PRIMARY ==
