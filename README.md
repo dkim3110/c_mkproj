@@ -12,9 +12,9 @@ Compatible with Linux and Windows (via MSYS2/MinGW or WSL)
 
 ## Requirements
 
-- `GCC`
+- GCC
   - If you have Clang, override with `make CC=clang`. 
-- GNU Make (to build this tool and to use the generated project Makefiles)
+- GNU Make
 
 ## Installation
 
@@ -89,7 +89,7 @@ mkproj --help
 
 ### Makefile
 
-All templates come with a Makefile. Running `make` creates a binary named `run` (or `bin/run` in `--full`). You can change the name of the output binary by editing the `TARGET` variable in the Makefile.
+All templates come with a `Makefile`. Running `make` creates a binary named `run` (or `bin/run` in `--full`). You can change the name of the output binary by editing the `TARGET` variable.
 
 ## License
 
