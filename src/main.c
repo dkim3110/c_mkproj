@@ -127,9 +127,7 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  /* -- check flag ----------------------------------------------------- */
   if (mkproj_generate_project(config.root, config.flag) == EXIT_FAILURE) goto cleanup_root;
-  /* ----------------------------------------------------- check flag -- */
 
   return EXIT_SUCCESS;
 
