@@ -2,11 +2,11 @@
 #define MAKEFILE_H_
 
 // == GLOBAL VARIABLES =====================================================
-static const char *makefile_bare = {
+static const char makefile_bare[] = {
   "CC := gcc\n"
   "TARGET := run\n"
   "SRCEXT := c\n"
-  "CFLAGS := -O0 -Wall -Werror\n"
+  "CFLAGS := -O0 -Wall -Wextra -Werror\n"
   "\n"
   "all: $(TARGET)\n"
   "\n"
@@ -24,7 +24,7 @@ static const char *makefile_bare = {
   "\n"
   ".PHONY: all clean debug\n"
 };
-static const char *makefile_default = {
+static const char makefile_default[] = {
   "CC := gcc\n"
   "SRCDIR := src\n"
   "BUILDDIR := build\n"
@@ -33,7 +33,7 @@ static const char *makefile_default = {
   "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"
   "OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"
   "DEPS := $(OBJECTS:.o=.d)\n"
-  "CFLAGS := -O0 -Wall -Werror\n"
+  "CFLAGS := -O0 -Wall -Wextra -Werror\n"
   "INC := -I include\n"
   "\n"
   "all: $(TARGET)\n"
@@ -59,7 +59,7 @@ static const char *makefile_default = {
   "\n"
   ".PHONY: all clean debug\n"
 };
-static const char *makefile_full = {
+static const char makefile_full[] = {
   "CC := gcc\n"
   "SRCDIR := src\n"
   "BUILDDIR := build\n"
@@ -68,7 +68,7 @@ static const char *makefile_full = {
   "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"
   "OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"
   "DEPS := $(OBJECTS:.o=.d)\n"
-  "CFLAGS := -O0 -Wall -Werror\n"
+  "CFLAGS := -O0 -Wall -Wextra -Werror\n"
   "LIB := -L lib\n"
   "INC := -I include\n"
   "\n"
