@@ -107,7 +107,6 @@ int main(int argc, char *argv[]) {
   config_t config = {0, DEFAULT, NULL};
   int arg_check = parse_args(argc, argv, &config);
 
-  // --help
   if (arg_check == EXIT_HELP) {
     print_help_message(argv[0]);
     return EXIT_SUCCESS;
@@ -126,12 +125,11 @@ int main(int argc, char *argv[]) {
     return EXIT_FAILURE;
   }
 
-  if (mkproj_generate_project(config.root, config.flag) == EXIT_FAILURE) goto cleanup_root;
+  if (mkproj_generate_project(config.root, config.flag) == EXIT_FAILURE) {
+    REMOVE_DIR(config.root);
+    return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS;
-
-  cleanup_root:
-  REMOVE_DIR(config.root);
-  return EXIT_FAILURE;
 } /* main() */
 // ================================================================ MAIN ==
