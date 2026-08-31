@@ -2,7 +2,7 @@
 #define MAKEFILE_H_
 
 // == GLOBAL VARIABLES =====================================================
-const char *makefile_bare = {
+static const char *makefile_bare = {
   "CC := gcc\n"
   "TARGET := run\n"
   "SRCEXT := c\n"
@@ -24,7 +24,7 @@ const char *makefile_bare = {
   "\n"
   ".PHONY: all clean debug\n"
 };
-const char *makefile_default = {
+static const char *makefile_default = {
   "CC := gcc\n"
   "SRCDIR := src\n"
   "BUILDDIR := build\n"
@@ -59,7 +59,7 @@ const char *makefile_default = {
   "\n"
   ".PHONY: all clean debug\n"
 };
-const char *makefile_full = {
+static const char *makefile_full = {
   "CC := gcc\n"
   "SRCDIR := src\n"
   "BUILDDIR := build\n"

@@ -87,6 +87,7 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 
       if (file_path_maker(path.root, path.lib, "lib") == EXIT_FAILURE) goto cleanup_bin;
       if (directory_maker(path.lib) == EXIT_FAILURE) goto cleanup_bin;
+      /* fallthrough */
     case DEFAULT:
       if (file_path_maker(path.root, path.build, "build") == EXIT_FAILURE) goto cleanup_lib;
       if (directory_maker(path.build) == EXIT_FAILURE) goto cleanup_lib;
@@ -96,6 +97,7 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 
       if (file_path_maker(path.root, path.src, "src") == EXIT_FAILURE) goto cleanup_include;
       if (directory_maker(path.src) == EXIT_FAILURE) goto cleanup_include;
+      /* fallthrough */
     case BARE:
       if (file_path_maker((flag == BARE) ? path.root : path.src, path.main_c, "main.c") == EXIT_FAILURE) {
         if (flag != BARE) goto cleanup_src;
@@ -137,7 +139,5 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
   cleanup_bin:
   REMOVE_DIR(path.bin);
   return EXIT_FAILURE;
-
-  return EXIT_SUCCESS;
 } /* mkproj_generate_project() */
 // ============================================================= PRIMARY ==
