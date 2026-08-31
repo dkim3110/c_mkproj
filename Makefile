@@ -27,7 +27,8 @@ debug:
 
 clean:
 	@echo " Cleaning..."
-	@$(RM) -r $(BUILDDIR)/* $(TARGET)
+	@find $(BUILDDIR) -type f -delete
+	@$(RM) $(TARGET)
 
 install: $(TARGET)
 	@echo " Installing to $(PREFIX)/bin..."
