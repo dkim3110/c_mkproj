@@ -31,7 +31,7 @@ make
 sudo make install
 
 # For Windows, move the compiled 'mkproj.exe' to a directory included in your system's 'PATH',
-# or simply run as '.\mkproj [project]'
+# or simply run as '.\mkproj'
 
 # If using MSYS2/MinGW, run the above without 'sudo'
 ```
