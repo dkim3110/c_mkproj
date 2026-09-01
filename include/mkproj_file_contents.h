@@ -177,16 +177,61 @@
   "7a5ff55ffa9081f2de27c315f5018afc)."
 
 #define GITIGNORE_CONTENTS                                                     \
-  "# Ignore the build and lib dirs\n"                                          \
-  "build/"                                                                     \
-  "*\n"                                                                        \
-  "lib/"                                                                       \
-  "*\n"                                                                        \
+  "# Prerequisites\n"                                                          \
+  "*.d\n"                                                                      \
   "\n"                                                                         \
-  "# Ignore any executables\n"                                                 \
-  "bin/"                                                                       \
-  "*\n"                                                                        \
-  "\n"
+  "# Object files\n"                                                           \
+  "*.o\n"                                                                      \
+  "*.ko\n"                                                                     \
+  "*.obj\n"                                                                    \
+  "*.elf\n"                                                                    \
+  "\n"                                                                         \
+  "# Linker output\n"                                                          \
+  "*.ilk\n"                                                                    \
+  "*.map\n"                                                                    \
+  "*.exp\n"                                                                    \
+  "\n"                                                                         \
+  "# Precompiled Headers\n"                                                    \
+  "*.gch\n"                                                                    \
+  "*.pch\n"                                                                    \
+  "\n"                                                                         \
+  "# Libraries\n"                                                              \
+  "*.lib\n"                                                                    \
+  "*.a\n"                                                                      \
+  "*.la\n"                                                                     \
+  "*.lo\n"                                                                     \
+  "\n"                                                                         \
+  "# Shared objects (inc. Windows DLLs)\n"                                     \
+  "*.dll\n"                                                                    \
+  "*.so\n"                                                                     \
+  "*.so.*\n"                                                                   \
+  "*.dylib\n"                                                                  \
+  "\n"                                                                         \
+  "# Executables\n"                                                            \
+  "*.exe\n"                                                                    \
+  "*.out\n"                                                                    \
+  "*.app\n"                                                                    \
+  "*.i*86\n"                                                                   \
+  "*.x86_64\n"                                                                 \
+  "*.hex\n"                                                                    \
+  "\n"                                                                         \
+  "# Debug files\n"                                                            \
+  "*.dSYM/\n"                                                                  \
+  "*.su\n"                                                                     \
+  "*.idb\n"                                                                    \
+  "*.pdb\n"                                                                    \
+  "\n"                                                                         \
+  "# Kernel Module Compile Results\n"                                          \
+  "*.mod*\n"                                                                   \
+  "*.cmd\n"                                                                    \
+  ".tmp_versions/\n"                                                           \
+  "modules.order\n"                                                            \
+  "Module.symvers\n"                                                           \
+  "Mkfile.old\n"                                                               \
+  "dkms.conf\n"                                                                \
+  "\n"                                                                         \
+  "# debug information files\n"                                                \
+  "*.dwo\n"
 // ============================================================ TEXT FILE ==
 
 // == C FILE ===============================================================
