@@ -44,7 +44,7 @@ sudo make install
 
 ### Flags
 
-You can set flags by including it in the arguments. Order doesn't matter, but only accepts one flag.
+You can set flags by including it in the arguments. Order doesn't matter, but it will only accept one flag.
 
 ---
 **BARE:** a minimal setup for quick scripts and tests.
