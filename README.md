@@ -30,7 +30,9 @@ make
 # To uninstall, run 'sudo make uninstall'
 sudo make install
 
-# For Windows, move the compiled 'mkproj.exe' to a directory included in your system's 'PATH', or simply run as '.\mkproj project'
+# For Windows, move the compiled 'mkproj.exe' to a directory included in your system's 'PATH',
+# or simply run as '.\mkproj [project]'
+
 # If using MSYS2/MinGW, run the above without 'sudo'
 ```
 
