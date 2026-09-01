@@ -23,10 +23,6 @@ $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INC) -MMD -MP $< -c -o $@
 
-debug:
-	@$(MAKE) clean
-	@$(MAKE) CFLAGS="$(CFLAGS) -g" all
-
 clean:
 	@echo " Cleaning..."
 	@find $(BUILDDIR) -type f -delete
@@ -43,4 +39,4 @@ uninstall:
 
 -include $(DEPS)
 
-.PHONY: all clean debug install uninstall
+.PHONY: all clean install uninstall
