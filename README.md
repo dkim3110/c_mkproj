@@ -116,9 +116,6 @@ project_name/
 ```
 ---
 You can use `-h` or `--help` to see the exact folder structures whenever you want.
-```
--h, --help
-```
 
 ### Makefile
 
