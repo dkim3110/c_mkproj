@@ -69,7 +69,7 @@ project_name/
 └── README.md
 ```
 ---
-**PLUS:** includes additional `bin` and `lib` directories to `--default` for larger, more complex projects.
+**PLUS:** includes additional directories to `--default` for larger projects.
 ```
 mkproj project_name --full
 ```
