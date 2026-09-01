@@ -48,7 +48,7 @@ static void print_help_message(char *program) {
 		"			|--src\n"
 		"			|  `--main.c\n"
 		"			|--Makefile\n"
-		"			|--README.md\n"
+		"			`--README.md\n"
 		"\n"
 	);
 	fprintf(stderr,
@@ -64,7 +64,7 @@ static void print_help_message(char *program) {
 		"			|--tests\n"
 		"			|  `--test_main.c\n"
 		"			|--Makefile\n"
-		"			|--README.md\n"
+		"			`--README.md\n"
 		"\n"
 	);
 	fprintf(stderr,
@@ -87,7 +87,7 @@ static void print_help_message(char *program) {
 		"			|  `--test_main.c\n"
 		"			|--.gitignore\n"
 		"			|--Makefile\n"
-		"			|--README.md\n"
+		"			`--README.md\n"
 		"\n"
 	);
 } /* print_help_message() */
