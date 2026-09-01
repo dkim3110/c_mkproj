@@ -26,23 +26,21 @@ static void print_help_message(char *program) {
 		, program, program
 	);
 	fprintf(stderr,
-		" %s, %s\n"
+		" -h, --help\n"
 		"		Prints this help message; overrides all arguments\n"
 		"\n"
-		, g_flags_list[3].short_name, g_flags_list[3].full_name
 	);
 	fprintf(stderr,
-		" %s, %s\n"
+		" -b, --bare\n"
 		"		Creates project in bare mode:\n"
 		"			project_name\n"
 		"			|--main.c\n"
 		"			|--Makefile\n"
 		"			`--README.md\n"
 		"\n"
-		, g_flags_list[0].short_name, g_flags_list[0].full_name
 	);
 	fprintf(stderr,
-		" %s, %s, [no flags]\n"
+		" -d, --default, [no flags]\n"
 		"		Creates project in default mode:\n"
 		"			project_name\n"
 		"			|--build\n"
@@ -52,10 +50,9 @@ static void print_help_message(char *program) {
 		"			|--Makefile\n"
 		"			|--README.md\n"
 		"\n"
-		, g_flags_list[1].short_name, g_flags_list[1].full_name
 	);
 	fprintf(stderr,
-		" %s, %s\n"
+		" -p, --plus\n"
 		"		Creates project in plus mode:\n"
 		"			project_name\n"
 		"			|--bin\n"
@@ -69,10 +66,9 @@ static void print_help_message(char *program) {
 		"			|--Makefile\n"
 		"			|--README.md\n"
 		"\n"
-		, g_flags_list[4].short_name, g_flags_list[4].full_name
 	);
 	fprintf(stderr,
-		" %s, %s\n"
+		" -f, --full\n"
 		"		Creates project in full mode:\n"
 		"			project_name\n"
 		"			|--bin\n"
@@ -93,14 +89,13 @@ static void print_help_message(char *program) {
 		"			|--Makefile\n"
 		"			|--README.md\n"
 		"\n"
-		, g_flags_list[2].short_name, g_flags_list[2].full_name
 	);
 } /* print_help_message() */
 
 static int parse_args(int argc, char **argv, config_t *config) {
 	for (int n = 1; n < argc; n++) {
-		if ((strcmp(argv[n], g_flags_list[3].short_name) == 0) ||
-				(strcmp(argv[n], g_flags_list[3].full_name) == 0)) return EXIT_HELP;
+		if ((strcmp(argv[n], "-h") == 0) ||
+				(strcmp(argv[n], "--help") == 0)) return EXIT_HELP;
 
 		if (argv[n][0] != '-') {
 			if (config->root) {
