@@ -19,18 +19,38 @@ typedef enum {
 	BARE,
 	DEFAULT,
 	FULL,
+	PLUS,
 	UNKNOWN
 } project_flag_t;
+
+typedef enum {
+  GITIGNORE,
+  MAKEFILE,
+  MAIN_C,
+  README,
+  TEST_MAIN_C
+} file_maker_mode_t;
 
 typedef struct {
 	char root[MAX_PATH_LEN];
 
 	char bin[MAX_PATH_LEN];
 	char build[MAX_PATH_LEN];
+
+	char data[MAX_PATH_LEN];
+	char raw[MAX_PATH_LEN];
+	char interim[MAX_PATH_LEN];
+	char input[MAX_PATH_LEN];
+	char output[MAX_PATH_LEN];
+
+	char docs[MAX_PATH_LEN];
 	char include[MAX_PATH_LEN];
 	char lib[MAX_PATH_LEN];
 	char src[MAX_PATH_LEN];
+	char tests[MAX_PATH_LEN];
+	char test_main_c[MAX_PATH_LEN];
 
+	char gitignore[MAX_PATH_LEN];
 	char main_c[MAX_PATH_LEN];
 	char makefile[MAX_PATH_LEN];
 	char readme[MAX_PATH_LEN];
@@ -59,15 +79,8 @@ typedef struct {
 // ======================================================= PREPROCESSORS ==
 
 // == FUNCTIONS ===========================================================
-/* -- generate -------------------------------------------------------- */
 extern int mkproj_generate_project(const char *, project_flag_t);
-/* -------------------------------------------------------- generate -- */
-
-/* -- write ----------------------------------------------------------- */
-extern void mkproj_write_main_c(FILE *);
-extern void mkproj_write_readme(FILE *);
-extern void mkproj_write_makefile(FILE *, project_flag_t);
-	/* ----------------------------------------------------------- write -- */
+extern void mkproj_write_file(FILE *, project_flag_t, file_maker_mode_t);
 // =========================================================== FUNCTIONS ==
 
 #endif // MKPROJ_H_
