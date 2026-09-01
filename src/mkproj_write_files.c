@@ -1,5 +1,5 @@
 #include "mkproj.h"
-#include "mkproj_files.h"
+#include "mkproj_file_contents.h"
 
 #include <stdio.h>
 
