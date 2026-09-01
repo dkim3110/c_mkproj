@@ -10,7 +10,7 @@ static flag_t g_flags_list[] = {
 	{"-b", "--bare", BARE},
 	{"-d", "--default", DEFAULT},
 	{"-f", "--full", FULL},
-	{"-h", "--help", HELP},
+	{"-h", "--help", UNKNOWN},
 	{"-p", "--plus", PLUS}
 };
 
@@ -94,6 +94,11 @@ static void print_help_message(char *program) {
 
 static int parse_args(int argc, char **argv, config_t *config) {
 	for (int n = 1; n < argc; n++) {
+		if ((strcmp(argv[n], "-h") == 0) ||
+				(strcmp(argv[n], "--help") == 0)) return EXIT_HELP;
+	}
+
+	for (int n = 1; n < argc; n++) {
 		if (argv[n][0] != '-') {
 			if (config->root) {
 				fprintf(stderr, "-fatal: too many arguments\n");
@@ -116,7 +121,6 @@ static int parse_args(int argc, char **argv, config_t *config) {
 						(strcmp(argv[n], g_flags_list[m].full_name) == 0)) {
 					is_valid = 1;
 					config->flag = g_flags_list[m].flag;
-					if (config->flag == HELP) return EXIT_HELP;
 					break;
 				}
 			}
