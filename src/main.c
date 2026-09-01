@@ -94,8 +94,6 @@ static void print_help_message(char *program) {
 
 static int parse_args(int argc, char **argv, config_t *config) {
 	for (int n = 1; n < argc; n++) {
-		if (config->flag == HELP) return EXIT_HELP;
-
 		if (argv[n][0] != '-') {
 			if (config->root) {
 				fprintf(stderr, "-fatal: too many arguments\n");
@@ -118,6 +116,7 @@ static int parse_args(int argc, char **argv, config_t *config) {
 						(strcmp(argv[n], g_flags_list[m].full_name) == 0)) {
 					is_valid = 1;
 					config->flag = g_flags_list[m].flag;
+					if (config->flag == HELP) return EXIT_HELP;
 					break;
 				}
 			}
