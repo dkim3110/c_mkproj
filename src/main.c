@@ -73,6 +73,7 @@ static void print_help_message(char *program) {
 		"		|  `--main.c\n"
 		"		|--tests\n"
 		"		|  `--test_main.c\n"
+		"		|--.gitignore\n"
 		"		|--Makefile\n"
 		"		|--README.md\n"
 		"\n"

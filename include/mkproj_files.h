@@ -103,13 +103,13 @@
   "\n"                                                                         \
   "$(TESTTARGET): $(TESTSOURCES) $(LIBOBJECTS)\n"                              \
   "\t@echo \" Building tests...\"\n"                                           \
-  "\t@echo \" Running tests...\"\n"                                            \
   "\t@mkdir -p $(dir $@)\n"                                                    \
   "\t@$(CC) $(CFLAGS) $(INC) $^ -o $@ $(LIB)\n"                                \
   "\n"                                                                         \
   "test: $(TESTTARGET)\n"                                                      \
+  "\t@echo \" Running tests...\"\n"                                            \
+  "\t@echo \" \"\n"                                                            \
   "\t@./$(TESTTARGET)\n"                                                       \
-  "\t@echo \"\""                                                               \
   "\n"                                                                         \
   "-include $(DEPS)\n"                                                         \
   "\n"                                                                         \

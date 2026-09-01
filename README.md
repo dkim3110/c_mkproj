@@ -87,7 +87,7 @@ project_name/
 └── README.md
 ```
 ---
-**FULL:** creates [JackWetherel](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git)
+**FULL:** creates a modified version of [JackWetherel](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git)
 ```
 mkproj project_name --full
 ```
@@ -105,8 +105,9 @@ project_name/
 ├── lib/
 ├── src/
 │   └── main.c
-├── tests
+├── tests/
 │   └── test_main.c
+├── .gitignore
 ├── Makefile
 └── README.md
 ```
@@ -118,7 +119,7 @@ mkproj --help
 
 ### Makefile
 
-All templates come with a `Makefile`. Running `make` creates a binary named `run` (or `bin/run` in `--full`). You can change the name of the output binary by editing the `TARGET` variable.
+All templates come with a `Makefile`. Running `make` creates a binary named `run` (or `bin/run` if the template has a `bin` directory). You can change the name by editing the `TARGET` variable.
 
 ## License
 
