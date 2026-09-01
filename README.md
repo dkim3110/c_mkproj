@@ -6,7 +6,7 @@ A lightweight command-line utility to generate C project scaffolding.
 
 ## Description
 
-`mkproj` is a lightweight, zero-dependency command-line utility written in C that automates the scaffolding of new C programming projects. It offers different initialization modes ranging from a barebones setup to a fully structured layout with `src`, `build`, `include`, and `lib` directories, alongside an auto-dependency tracking `Makefile`.
+`mkproj` is a lightweight, zero-dependency command-line utility written in C that automates the scaffolding of new C programming projects. It offers different initialization modes ranging from a barebones setup to a fully structured layout, alongside an auto-dependency tracking `Makefile`.
 
 Compatible with Linux and Windows (via MSYS2/MinGW or WSL)
 
@@ -41,7 +41,10 @@ sudo make install
 
 ### Flags
 
-**Bare:** a minimal setup for quick scripts and tests.
+You can set flags by including it in the arguments. Order doesn't matter, but only accepts one flag.
+
+---
+**BARE:** a minimal setup for quick scripts and tests.
 ```
 mkproj project_name --bare
 ```
@@ -52,7 +55,7 @@ project_name/
 └── README.md
 ```
 ---
-**Default:** creates a standard project structure.
+**DEFAULT:** creates a standard project structure.
 ```
 mkproj project_name [--default]
 ```
@@ -66,7 +69,7 @@ project_name/
 └── README.md
 ```
 ---
-**Full:** includes additional `bin` and `lib` directories to `--default` for larger, more complex projects.
+**PLUS:** includes additional `bin` and `lib` directories to `--default` for larger, more complex projects.
 ```
 mkproj project_name --full
 ```
@@ -78,6 +81,32 @@ project_name/
 ├── lib/
 ├── src/
 │   └── main.c
+├── tests
+│   └── test_main.c
+├── Makefile
+└── README.md
+```
+---
+**FULL:** creates [JackWetherel](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git)
+```
+mkproj project_name --full
+```
+```
+project_name/
+├── bin/
+├── build/
+├── data/
+│   ├── raw/
+│   ├── interim/
+│   ├── input/
+│   └── output/
+├── docs/
+├── include/
+├── lib/
+├── src/
+│   └── main.c
+├── tests
+│   └── test_main.c
 ├── Makefile
 └── README.md
 ```
