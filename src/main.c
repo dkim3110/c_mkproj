@@ -1,6 +1,5 @@
 #include "mkproj.h"
 
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -126,7 +125,9 @@ int main(int argc, char *argv[]) {
   }
 
   if (MAKE_DIR(config.root)) {
-    fprintf(stderr, "-fatal: failed to create directory: %s\n", strerror(errno));
+    fprintf(stderr, "-fatal: failed to create directory: ");
+    perror("");
+   	fprintf(stderr, "\n");
     return EXIT_FAILURE;
   }
 

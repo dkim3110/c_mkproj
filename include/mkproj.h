@@ -50,7 +50,7 @@ typedef struct {
 
 // == PREPROCESSORS =======================================================
 #ifdef _WIN32
-  #define MAKE_DIR(file_path) (mkdir(file_path))
+  #define MAKE_DIR(file_path) (_mkdir(file_path))
   #define REMOVE_DIR(file_path) (_rmdir(file_path))
 #else
   #define MAKE_DIR(file_path) (mkdir(file_path, 0755))
@@ -59,11 +59,11 @@ typedef struct {
 // ======================================================= PREPROCESSORS ==
 
 // == FUNCTIONS ===========================================================
-  /* -- generate -------------------------------------------------------- */
-  extern int mkproj_generate_project(const char *, project_flag_t);
-  /* -------------------------------------------------------- generate -- */
+/* -- generate -------------------------------------------------------- */
+extern int mkproj_generate_project(const char *, project_flag_t);
+/* -------------------------------------------------------- generate -- */
 
-  /* -- write ----------------------------------------------------------- */
+/* -- write ----------------------------------------------------------- */
 extern void mkproj_write_main_c(FILE *);
 extern void mkproj_write_readme(FILE *);
 extern void mkproj_write_makefile(FILE *, project_flag_t);

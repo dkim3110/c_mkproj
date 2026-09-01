@@ -72,14 +72,14 @@ void mkproj_write_readme(FILE *fptr) {
 void mkproj_write_makefile(FILE *fptr, project_flag_t flag) {
   switch (flag) {
     case BARE:
-      fputs(makefile_bare, fptr);
+      fputs(MAKEFILE_BARE, fptr);
       break;
     case FULL:
-      fputs(makefile_full, fptr);
+      fputs(MAKEFILE_FULL, fptr);
       break;
     case DEFAULT:
     default:
-      fputs(makefile_default, fptr);
+      fputs(MAKEFILE_DEFAULT, fptr);
       break;
   }
 } /* mkproj_write_makefile() */

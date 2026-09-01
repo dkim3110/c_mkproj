@@ -1,6 +1,5 @@
 #include "mkproj.h"
 
-#include <errno.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,14 +21,21 @@ static int file_path_maker(const char *parent, char *child, const char *child_na
 
 static int directory_maker(char *file_path) {
   int check = MAKE_DIR(file_path);
-  if (check != 0) fprintf(stderr, "-fatal: failed to create directory '%s': %s\n", file_path, strerror(errno));
+  if (check != 0) {
+    fprintf(stderr, "-fatal: failed to create directory '%s': ", file_path);
+    perror("");
+   	fprintf(stderr, "\n");
+  }
   return (check == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 } /* directory_maker() */
 
 static FILE *file_opener(const char *file_path) {
-  FILE *fptr = fopen(file_path, "w");
-  if (!fptr) {
-    fprintf(stderr, "-fatal: failed to create file '%s': %s\n", file_path, strerror(errno));
+  FILE *fptr;
+  int check = fopen_s(&fptr, file_path, "w");
+  if (!check) {
+    fprintf(stderr, "-fatal: failed to create file '%s': ", file_path);
+   	perror("");
+   	fprintf(stderr, "\n");
     return NULL;
   }
 
@@ -38,7 +44,9 @@ static FILE *file_opener(const char *file_path) {
 
 static int file_closer(FILE **fptr, const char *file_path) {
   if (fclose(*fptr) != 0) {
-    fprintf(stderr, "-fatal: failed to close file '%s': %s\n", file_path, strerror(errno));
+    fprintf(stderr, "-fatal: failed to close file '%s': ", file_path);
+    perror("");
+   	fprintf(stderr, "\n");
     return EXIT_FAILURE;
   }
 
@@ -78,7 +86,7 @@ static int file_maker(project_paths_t *path, project_flag_t flag) {
 int mkproj_generate_project(const char *root, project_flag_t flag) {
   project_paths_t path = {0};
   int check = snprintf(path.root, MAX_PATH_LEN, "%s", root);
-  
+
   if(check >= MAX_PATH_LEN) {
     fprintf(stderr, "-fatal: name too long\n");
     return EXIT_FAILURE;

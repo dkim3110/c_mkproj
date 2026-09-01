@@ -2,102 +2,103 @@
 #define MAKEFILE_H_
 
 // == GLOBAL VARIABLES =====================================================
-static const char makefile_bare[] = {
-  "CC := gcc\n"
-  "TARGET := run\n"
-  "SRCEXT := c\n"
-  "CFLAGS := -O0 -Wall -Wextra -Werror\n"
-  "\n"
-  "all: $(TARGET)\n"
-  "\n"
-  "$(TARGET): *.$(SRCEXT)\n"
-  "\t@echo \" Building...\"\n"
-  "\t@$(CC) $(CFLAGS) $^ -o $@\n"
-  "\n"
-  "debug:\n"
-  "\t@$(MAKE) clean\n"
-  "\t@$(MAKE) CFLAGS=\"$(CFLAGS) -g\" all\n"
-  "\n"
-  "clean:\n"
-  "\t@echo \" Cleaning...\"\n"
-  "\t@$(RM) $(TARGET)\n"
-  "\n"
+#define MAKEFILE_BARE                                                          \
+  "CC := gcc\n"                                                                \
+  "TARGET := run\n"                                                            \
+  "SRCEXT := c\n"                                                              \
+  "CFLAGS := -O0 -Wall -Wextra -Werror\n"                                      \
+  "\n"                                                                         \
+  "all: $(TARGET)\n"                                                           \
+  "\n"                                                                         \
+  "$(TARGET): *.$(SRCEXT)\n"                                                   \
+  "\t@echo \" Building...\"\n"                                                 \
+  "\t@$(CC) $(CFLAGS) $^ -o $@\n"                                              \
+  "\n"                                                                         \
+  "debug:\n"                                                                   \
+  "\t@$(MAKE) clean\n"                                                         \
+  "\t@$(MAKE) CFLAGS=\"$(CFLAGS) -g\" all\n"                                   \
+  "\n"                                                                         \
+  "clean:\n"                                                                   \
+  "\t@echo \" Cleaning...\"\n"                                                 \
+  "\t@$(RM) $(TARGET)\n"                                                       \
+  "\n"                                                                         \
   ".PHONY: all clean debug\n"
-};
-static const char makefile_default[] = {
-  "CC := gcc\n"
-  "SRCDIR := src\n"
-  "BUILDDIR := build\n"
-  "TARGET := run\n"
-  "SRCEXT := c\n"
-  "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"
-  "OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"
-  "DEPS := $(OBJECTS:.o=.d)\n"
-  "CFLAGS := -O0 -Wall -Wextra -Werror\n"
-  "INC := -I include\n"
-  "\n"
-  "all: $(TARGET)\n"
-  "\n"
-  "$(TARGET): $(OBJECTS)\n"
-  "\t@echo \" Linking...\"\n"
-  "\t@$(CC) $^ -o $@\n"
-  "\n"
-  "$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)\n"
-  "\t@echo \" Building...\"\n"
-  "\t@mkdir -p $(dir $@)\n"
-  "\t@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@\n"
-  "\n"
-  "debug:\n"
-  "\t@$(MAKE) clean\n"
-  "\t@$(MAKE) CFLAGS=\"$(CFLAGS) -g\" all\n"
-  "\n"
-  "clean:\n"
-  "\t@echo \" Cleaning...\"\n"
-  "\t@find $(BUILDDIR) -type f -delete\n"
-  "\t@$(RM) $(TARGET)"
-  "\n"
-  "-include $(DEPS)\n"
-  "\n"
+
+#define MAKEFILE_DEFAULT                                                       \
+  "CC := gcc\n"                                                                \
+  "SRCDIR := src\n"                                                            \
+  "BUILDDIR := build\n"                                                        \
+  "TARGET := run\n"                                                            \
+  "SRCEXT := c\n"                                                              \
+  "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"           \
+  "OBJECTS := $(patsubst "                                                     \
+  "$(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"                      \
+  "DEPS := $(OBJECTS:.o=.d)\n"                                                 \
+  "CFLAGS := -O0 -Wall -Wextra -Werror\n"                                      \
+  "INC := -I include\n"                                                        \
+  "\n"                                                                         \
+  "all: $(TARGET)\n"                                                           \
+  "\n"                                                                         \
+  "$(TARGET): $(OBJECTS)\n"                                                    \
+  "\t@echo \" Linking...\"\n"                                                  \
+  "\t@$(CC) $^ -o $@\n"                                                        \
+  "\n"                                                                         \
+  "$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)\n"                                   \
+  "\t@echo \" Building...\"\n"                                                 \
+  "\t@mkdir -p $(dir $@)\n"                                                    \
+  "\t@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@\n"                           \
+  "\n"                                                                         \
+  "debug:\n"                                                                   \
+  "\t@$(MAKE) clean\n"                                                         \
+  "\t@$(MAKE) CFLAGS=\"$(CFLAGS) -g\" all\n"                                   \
+  "\n"                                                                         \
+  "clean:\n"                                                                   \
+  "\t@echo \" Cleaning...\"\n"                                                 \
+  "\t@find $(BUILDDIR) -type f -delete\n"                                      \
+  "\t@$(RM) $(TARGET)\n"                                                       \
+  "\n"                                                                         \
+  "-include $(DEPS)\n"                                                         \
+  "\n"                                                                         \
   ".PHONY: all clean debug\n"
-};
-static const char makefile_full[] = {
-  "CC := gcc\n"
-  "SRCDIR := src\n"
-  "BUILDDIR := build\n"
-  "TARGET := bin/run\n"
-  "SRCEXT := c\n"
-  "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"
-  "OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"
-  "DEPS := $(OBJECTS:.o=.d)\n"
-  "CFLAGS := -O0 -Wall -Wextra -Werror\n"
-  "LIB := -L lib\n"
-  "INC := -I include\n"
-  "\n"
-  "all: $(TARGET)\n"
-  "\n"
-  "$(TARGET): $(OBJECTS)\n"
-  "\t@echo \" Linking...\"\n"
-  "\t@mkdir -p $(dir $@)\n"
-  "\t@$(CC) $^ -o $@ $(LIB)\n"
-  "\n"
-  "$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)\n"
-  "\t@echo \" Building...\"\n"
-  "\t@mkdir -p $(dir $@)\n"
-  "\t@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@\n"
-  "\n"
-  "debug:\n"
-  "\t@$(MAKE) clean\n"
-  "\t@$(MAKE) CFLAGS=\"$(CFLAGS) -g\" all\n"
-  "\n"
-  "clean:\n"
-  "\t@echo \" Cleaning...\"\n"
-  "\t@find $(BUILDDIR) -type f -delete\n"
-  "\t@$(RM) $(TARGET)"
-  "\n"
-  "-include $(DEPS)\n"
-  "\n"
-  ".PHONY: all clean debug\n"
-};
-// ===================================================== GLOBAL VARIABLES ==
+
+#define MAKEFILE_FULL                                                          \
+  "CC := gcc\n"                                                                \
+  "SRCDIR := src\n"                                                            \
+  "BUILDDIR := build\n"                                                        \
+  "TARGET := bin/run\n"                                                        \
+  "SRCEXT := c\n"                                                              \
+  "SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"           \
+  "OBJECTS := $(patsubst "                                                     \
+  "$(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"                      \
+  "DEPS := $(OBJECTS:.o=.d)\n"                                                 \
+  "CFLAGS := -O0 -Wall -Wextra -Werror\n"                                      \
+  "LIB := -L lib\n"                                                            \
+  "INC := -I include\n"                                                        \
+  "\n"                                                                         \
+  "all: $(TARGET)\n"                                                           \
+  "\n"                                                                         \
+  "$(TARGET): $(OBJECTS)\n"                                                    \
+  "\t@echo \" Linking...\"\n"                                                  \
+  "\t@mkdir -p $(dir $@)\n"                                                    \
+  "\t@$(CC) $^ -o $@ $(LIB)\n"                                                 \
+  "\n"                                                                         \
+  "$(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)\n"                                   \
+  "\t@echo \" Building...\"\n"                                                 \
+  "\t@mkdir -p $(dir $@)\n"                                                    \
+  "\t@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@\n"                           \
+  "\n"                                                                         \
+  "debug:\n"                                                                   \
+  "\t@$(MAKE) clean\n"                                                         \
+  "\t@$(MAKE) CFLAGS=\"$(CFLAGS) -g\" all\n"                                   \
+  "\n"                                                                         \
+  "clean:\n"                                                                   \
+  "\t@echo \" Cleaning...\"\n"                                                 \
+  "\t@find $(BUILDDIR) -type f -delete\n"                                      \
+  "\t@$(RM) $(TARGET)\n"                                                       \
+  "\n"                                                                         \
+  "-include $(DEPS)\n"                                                         \
+  "\n"                                                                         \
+  ".PHONY: all clean debug\n" // =====================================================
+                              // GLOBAL VARIABLES ==
 
 #endif // MAKEFILE_H_
