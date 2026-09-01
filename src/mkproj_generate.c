@@ -72,11 +72,11 @@ static int file_maker(project_paths_t *path, project_flag_t flag) {
 
   return EXIT_SUCCESS;
 
-  cleanup_readme:
+cleanup_readme:
   remove(path->readme);
-	cleanup_makefile:
+cleanup_makefile:
   remove(path->makefile);
-	cleanup_main:
+cleanup_main:
 	remove(path->main_c);
   return EXIT_FAILURE;
 } /* file_maker() */
@@ -145,15 +145,15 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 
   return EXIT_SUCCESS;
 
-  cleanup_src:
+cleanup_src:
   REMOVE_DIR(path.src);
-  cleanup_include:
+cleanup_include:
   REMOVE_DIR(path.include);
-  cleanup_build:
+cleanup_build:
   REMOVE_DIR(path.build);
-  cleanup_lib:
+cleanup_lib:
   if (flag == FULL) REMOVE_DIR(path.lib);
-  cleanup_bin:
+cleanup_bin:
   if (flag == FULL) REMOVE_DIR(path.bin);
   return EXIT_FAILURE;
 } /* mkproj_generate_project() */
