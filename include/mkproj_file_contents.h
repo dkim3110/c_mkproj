@@ -1,5 +1,5 @@
-#ifndef MKPROJ_FILES_H_
-#define MKPROJ_FILES_H_
+#ifndef MKPROJ_FILE_CONTENTS_H_
+#define MKPROJ_FILE_CONTENTS_H_
 
 // == MAKEFILE =============================================================
 #define MAKEFILE_BARE                                                          \
@@ -211,4 +211,4 @@
   "}\n"
 // =============================================================== C FILE ==
 
-#endif // MKPROJ_FILES_H_
+#endif // MKPROJ_FILE_CONTENTS_H_
