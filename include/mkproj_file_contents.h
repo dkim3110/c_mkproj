@@ -8,7 +8,7 @@
   "CC := gcc\n"                                                                \
   "TARGET := run\n"                                                            \
   "SRCEXT := c\n"                                                              \
-  "CFLAGS := -O0 -Wall -Wextra -Werror\n"                                      \
+  "CFLAGS := -O1 -Wall -Wextra -Werror\n"                                      \
   "\n"                                                                         \
   "all: $(TARGET)\n"                                                           \
   "\n"                                                                         \
@@ -38,7 +38,7 @@
   "OBJECTS := $(patsubst "                                                     \
   "$(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"                      \
   "DEPS := $(OBJECTS:.o=.d)\n"                                                 \
-  "CFLAGS := -O0 -Wall -Wextra -Werror\n"                                      \
+  "CFLAGS := -O1 -Wall -Wextra -Werror\n"                                      \
   "INC := -I include\n"                                                        \
   "\n"                                                                         \
   "all: $(TARGET)\n"                                                           \
@@ -82,7 +82,7 @@
   "$(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"                      \
   "DEPS := $(OBJECTS:.o=.d)\n"                                                 \
   "LIBOBJECTS := $(filter-out $(BUILDDIR)/main.o,$(OBJECTS))\n"                \
-  "CFLAGS := -O0 -Wall -Wextra -Werror\n"                                      \
+  "CFLAGS := -O1 -Wall -Wextra -Werror\n"                                      \
   "LIB := -L lib\n"                                                            \
   "INC := -I include\n"                                                        \
   "\n"                                                                         \
