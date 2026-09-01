@@ -18,20 +18,21 @@ Compatible with Linux and Windows (via MSYS2/MinGW or WSL)
 
 ## Installation
 
-1. Build (Linux and Windows)
+1. Build
 ```bash
 git clone https://github.com/dkim3110/c_mkproj.git
 cd c_mkproj
 make
 ```
 
-2. Deploy (Linux)
+2. Deploy
 ```bash
-sudo make install
 # To uninstall, run 'sudo make uninstall'
-```
+sudo make install
 
-*For Windows, move the compiled `mkproj.exe` to a directory included in your system's `PATH`. If using MSYS2/MinGW, simply ditch `sudo` and run the above.*
+# For Windows, move the compiled 'mkproj.exe' to a directory included in your system's 'PATH', or simply run as '.\mkproj project'
+# If using MSYS2/MinGW, run the above without 'sudo'
+```
 
 ## Usage
 
