@@ -49,7 +49,7 @@ You can set flags by including it in the arguments. Order doesn't matter, but on
 ---
 **BARE:** a minimal setup for quick scripts and tests.
 ```
-mkproj project_name --bare
+-b, --bare
 ```
 ```Makefile
 project_name/
@@ -58,9 +58,9 @@ project_name/
 └── README.md
 ```
 ---
-**DEFAULT:** creates a standard project structure.
+**DEFAULT:** a standard project structure.
 ```
-mkproj project_name [--default]
+-d, --default, [no flags]
 ```
 ```Makefile
 project_name/
@@ -74,7 +74,7 @@ project_name/
 ---
 **PLUS:** includes additional directories to `--default` for larger projects.
 ```
-mkproj project_name --plus
+-p, --plus
 ```
 ```Makefile
 project_name/
@@ -90,9 +90,9 @@ project_name/
 └── README.md
 ```
 ---
-**FULL:** creates a modified version of [Jack Wetherell](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git)
+**FULL:** a modified version of [Jack Wetherell](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git)
 ```
-mkproj project_name --full
+-f, --full
 ```
 ```Makefile
 project_name/
@@ -115,9 +115,9 @@ project_name/
 └── README.md
 ```
 ---
-You can use `--help` to see the exact folder structures whenever you want.
+You can use `-h` or `--help` to see the exact folder structures whenever you want.
 ```
-mkproj --help
+-h, --help
 ```
 
 ### Makefile

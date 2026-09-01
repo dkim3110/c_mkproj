@@ -65,7 +65,8 @@ typedef struct {
 } config_t;
 
 typedef struct {
-	char *name;
+  char short_name[3];
+  char *full_name;
 	project_flag_t flag;
 } flag_t;
 // ========================================= CONSTANTS, ENUMS, & STRUCTS ==

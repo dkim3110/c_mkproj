@@ -7,11 +7,11 @@
 #define EXIT_HELP (2)
 
 static flag_t g_flags_list[] = {
-	{"--bare", BARE},
-	{"--default", DEFAULT},
-	{"--full", FULL},
-	{"--help", UNKNOWN},
-	{"--plus", PLUS}
+	{"-b", "--bare", BARE},
+	{"-d", "--default", DEFAULT},
+	{"-f", "--full", FULL},
+	{"-h", "--help", UNKNOWN},
+	{"-p", "--plus", PLUS}
 };
 
 // == HELPER ==============================================================
@@ -23,67 +23,84 @@ static void print_help_message(char *program) {
 		" %s project_name [flag]\n"
 		"\n"
 		"OPTIONS:\n"
-		" --help\n"
-		"	Prints this help message; overrides all arguments\n"
-		" --bare\n"
-		"	Creates project in bare mode:\n"
-		"		project_name\n"
-		"		|--main.c\n"
-		"		|--Makefile\n"
-		"		`--README.md\n"
-		"\n"
-		" --default, [no flags]\n"
-		"	Creates project in default mode:\n"
-		"		project_name\n"
-		"		|--build\n"
-		"		|--include\n"
-		"		|--src\n"
-		"		|  `--main.c\n"
-		"		|--Makefile\n"
-		"		|--README.md\n"
-		"\n"
-		" --plus\n"
-		"	Creates project in plus mode:\n"
-		"		project_name\n"
-		"		|--bin\n"
-		"		|--build\n"
-		"		|--include\n"
-		"		|--lib\n"
-		"		|--src\n"
-		"		|  `--main.c\n"
-		"		|--tests\n"
-		"		|  `--test_main.c\n"
-		"		|--Makefile\n"
-		"		|--README.md\n"
-		"\n"
-		" --full\n"
-		"	Creates project in full mode:\n"
-		"		project_name\n"
-		"		|--bin\n"
-		"		|--build\n"
-		"		|--data\n"
-		"		|  `--raw\n"
-		"		|  `--interim\n"
-		"		|  `--input\n"
-		"		|  `--output\n"
-		"		|--docs\n"
-		"		|--include\n"
-		"		|--lib\n"
-		"		|--src\n"
-		"		|  `--main.c\n"
-		"		|--tests\n"
-		"		|  `--test_main.c\n"
-		"		|--.gitignore\n"
-		"		|--Makefile\n"
-		"		|--README.md\n"
-		"\n"
 		, program, program
+	);
+	fprintf(stderr,
+		" %s, %s\n"
+		"		Prints this help message; overrides all arguments\n"
+		"\n"
+		, g_flags_list[3].short_name, g_flags_list[3].full_name
+	);
+	fprintf(stderr,
+		" %s, %s\n"
+		"		Creates project in bare mode:\n"
+		"			project_name\n"
+		"			|--main.c\n"
+		"			|--Makefile\n"
+		"			`--README.md\n"
+		"\n"
+		, g_flags_list[0].short_name, g_flags_list[0].full_name
+	);
+	fprintf(stderr,
+		" %s, %s, [no flags]\n"
+		"		Creates project in default mode:\n"
+		"			project_name\n"
+		"			|--build\n"
+		"			|--include\n"
+		"			|--src\n"
+		"			|  `--main.c\n"
+		"			|--Makefile\n"
+		"			|--README.md\n"
+		"\n"
+		, g_flags_list[1].short_name, g_flags_list[1].full_name
+	);
+	fprintf(stderr,
+		" %s, %s\n"
+		"		Creates project in plus mode:\n"
+		"			project_name\n"
+		"			|--bin\n"
+		"			|--build\n"
+		"			|--include\n"
+		"			|--lib\n"
+		"			|--src\n"
+		"			|  `--main.c\n"
+		"			|--tests\n"
+		"			|  `--test_main.c\n"
+		"			|--Makefile\n"
+		"			|--README.md\n"
+		"\n"
+		, g_flags_list[4].short_name, g_flags_list[4].full_name
+	);
+	fprintf(stderr,
+		" %s, %s\n"
+		"		Creates project in full mode:\n"
+		"			project_name\n"
+		"			|--bin\n"
+		"			|--build\n"
+		"			|--data\n"
+		"			|  `--raw\n"
+		"			|  `--interim\n"
+		"			|  `--input\n"
+		"			|  `--output\n"
+		"			|--docs\n"
+		"			|--include\n"
+		"			|--lib\n"
+		"			|--src\n"
+		"			|  `--main.c\n"
+		"			|--tests\n"
+		"			|  `--test_main.c\n"
+		"			|--.gitignore\n"
+		"			|--Makefile\n"
+		"			|--README.md\n"
+		"\n"
+		, g_flags_list[2].short_name, g_flags_list[2].full_name
 	);
 } /* print_help_message() */
 
 static int parse_args(int argc, char **argv, config_t *config) {
 	for (int n = 1; n < argc; n++) {
-		if (strcmp(argv[n], "--help") == 0) return EXIT_HELP;
+		if ((strcmp(argv[n], g_flags_list[3].short_name) == 0) ||
+				(strcmp(argv[n], g_flags_list[3].full_name) == 0)) return EXIT_HELP;
 
 		if (argv[n][0] != '-') {
 			if (config->root) {
@@ -103,7 +120,8 @@ static int parse_args(int argc, char **argv, config_t *config) {
 			int is_valid = 0;
 
 			for (int m = 0; m < flag_list_size; m++) {
-				if (strcmp(argv[n], g_flags_list[m].name) == 0) {
+				if ((strcmp(argv[n], g_flags_list[m].short_name) == 0) ||
+						(strcmp(argv[n], g_flags_list[m].full_name) == 0)) {
 					is_valid = 1;
 					config->flag = g_flags_list[m].flag;
 					break;
