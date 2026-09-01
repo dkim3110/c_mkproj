@@ -98,7 +98,7 @@
   "\n"                                                                         \
   "-include $(DEPS)\n"                                                         \
   "\n"                                                                         \
-  ".PHONY: all clean debug\n" // =====================================================
-                              // GLOBAL VARIABLES ==
+  ".PHONY: all clean debug\n"
+// ===================================================== GLOBAL VARIABLES ==
 
 #endif // MAKEFILE_H_
