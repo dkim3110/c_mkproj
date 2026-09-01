@@ -34,4 +34,4 @@ SOFTWARE.
 ### README Template
 - **Author:** DomPizzie
 - **Source:** https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc
-- **Usage:** The base structure for the generated `README.md` files was adapted from this public template.
+- **Usage:** The base structure for the generated `README.md` files was taken from this public template.
