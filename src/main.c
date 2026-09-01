@@ -10,7 +10,7 @@ static flag_t g_flags_list[] = {
 	{"-b", "--bare", BARE},
 	{"-d", "--default", DEFAULT},
 	{"-f", "--full", FULL},
-	{"-h", "--help", UNKNOWN},
+	{"-h", "--help", HELP},
 	{"-p", "--plus", PLUS}
 };
 
@@ -94,8 +94,7 @@ static void print_help_message(char *program) {
 
 static int parse_args(int argc, char **argv, config_t *config) {
 	for (int n = 1; n < argc; n++) {
-		if ((strcmp(argv[n], "-h") == 0) ||
-				(strcmp(argv[n], "--help") == 0)) return EXIT_HELP;
+		if (config->flag == HELP) return EXIT_HELP;
 
 		if (argv[n][0] != '-') {
 			if (config->root) {

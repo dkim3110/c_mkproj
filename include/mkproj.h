@@ -21,6 +21,7 @@ typedef enum {
 	BARE,
 	DEFAULT,
 	FULL,
+	HELP,
 	PLUS,
 	UNKNOWN
 } project_flag_t;
