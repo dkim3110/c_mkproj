@@ -1,3 +1,5 @@
+# Based on original Makefile by Jack Wetherell, licensed under MIT. Modified by Daniel Inhoi Kim.
+
 CC := gcc
 SRCDIR := src
 BUILDDIR := build

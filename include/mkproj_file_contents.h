@@ -3,6 +3,8 @@
 
 // == MAKEFILE =============================================================
 #define MAKEFILE_BARE                                                          \
+  "# Based on original Makefile by Jack Wetherell, licensed under MIT. "       \
+  "Modified by Daniel Inhoi Kim.\n"                                            \
   "CC := gcc\n"                                                                \
   "TARGET := run\n"                                                            \
   "SRCEXT := c\n"                                                              \
@@ -25,6 +27,8 @@
   ".PHONY: all clean debug\n"
 
 #define MAKEFILE_DEFAULT                                                       \
+  "# Based on original Makefile by Jack Wetherell, licensed under MIT. "       \
+  "Modified by Daniel Inhoi Kim.\n"                                            \
   "CC := gcc\n"                                                                \
   "SRCDIR := src\n"                                                            \
   "BUILDDIR := build\n"                                                        \
@@ -62,6 +66,8 @@
   ".PHONY: all clean debug\n"
 
 #define MAKEFILE_FULL                                                          \
+  "# Based on original Makefile by Jack Wetherell, licensed under MIT. "       \
+  "Modified by Daniel Inhoi Kim.\n"                                            \
   "CC := gcc\n"                                                                \
   "SRCDIR := src\n"                                                            \
   "BUILDDIR := build\n"                                                        \
