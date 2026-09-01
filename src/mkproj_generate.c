@@ -1,3 +1,4 @@
+#define _CRT_SECURE_NO_WARNINGS
 #include "mkproj.h"
 
 #include <stdio.h>
@@ -22,19 +23,18 @@ static int file_path_maker(const char *parent, char *child, const char *child_na
 static int directory_maker(char *file_path) {
 	int check = MAKE_DIR(file_path);
 	if (check != 0) {
-		fprintf(stderr, "-fatal: failed to create directory '%s': ", file_path);
-		perror("");
+		fprintf(stderr, "-fatal: failed to create directory ");
+		perror(file_path);
 	 	fprintf(stderr, "\n");
 	}
 	return (check == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 } /* directory_maker() */
 
 static FILE *file_opener(const char *file_path) {
-	FILE *fptr;
-	errno_t check = fopen_s(&fptr, file_path, "w");
-	if (check != 0) {
-		fprintf(stderr, "-fatal: failed to create file '%s': ", file_path);
-	 	perror("");
+	FILE *fptr = fopen(file_path, "w");
+	if (!fptr) {
+		fprintf(stderr, "-fatal: failed to create file ");
+	 	perror(file_path);
 	 	fprintf(stderr, "\n");
 		return NULL;
 	}
@@ -44,8 +44,8 @@ static FILE *file_opener(const char *file_path) {
 
 static int file_closer(FILE **fptr, const char *file_path) {
 	if (fclose(*fptr) != 0) {
-		fprintf(stderr, "-fatal: failed to close file '%s': ", file_path);
-		perror("");
+		fprintf(stderr, "-fatal: failed to close file ");
+		perror(file_path);
 	 	fprintf(stderr, "\n");
 		return EXIT_FAILURE;
 	}
@@ -56,9 +56,8 @@ static int file_closer(FILE **fptr, const char *file_path) {
 
 static int file_maker(char *file_path, project_flag_t flag, file_maker_mode_t mode) {
 	FILE *fptr = file_opener(file_path);
-	if (!fptr) return EXIT_FAILURE;
-	mkproj_write_file(fptr, flag, mode);
-	if (file_closer(&fptr, file_path) == EXIT_FAILURE) return EXIT_FAILURE;
+	if ((!fptr) || (mkproj_write_file(fptr, flag, mode) == EXIT_FAILURE) ||
+			(file_closer(&fptr, file_path) == EXIT_FAILURE)) return EXIT_FAILURE;
 
 	return EXIT_SUCCESS;
 } /* file_maker() */
@@ -67,8 +66,8 @@ static int file_maker(char *file_path, project_flag_t flag, file_maker_mode_t mo
 // == PRIMARY =============================================================
 int mkproj_generate_project(const char *root, project_flag_t flag) {
 	project_paths_t path = {0};
-	int check = snprintf(path.root, MAX_PATH_LEN, "%s", root);
 
+	int check = snprintf(path.root, MAX_PATH_LEN, "%s", root);
 	if(check >= MAX_PATH_LEN) {
 		fprintf(stderr, "-fatal: name too long\n");
 		return EXIT_FAILURE;
@@ -151,15 +150,15 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 	return EXIT_SUCCESS;
 
 cleanup_readme:
-	remove(path.readme);
+	if (path.readme[0] != '\0') remove(path.readme);
 cleanup_main_c:
-	remove(path.main_c);
+	if (path.main_c[0] != '\0') remove(path.main_c);
 cleanup_src:
-	REMOVE_DIR(path.src);
+	if (path.src[0] != '\0') REMOVE_DIR(path.src);
 cleanup_include:
-	REMOVE_DIR(path.include);
+	if (path.include[0] != '\0') REMOVE_DIR(path.include);
 cleanup_build:
-	REMOVE_DIR(path.build);
+	if (path.build[0] != '\0') REMOVE_DIR(path.build);
 cleanup_test_main_c:
 	if (path.test_main_c[0] != '\0') remove(path.test_main_c);
 cleanup_tests:

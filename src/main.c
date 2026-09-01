@@ -83,7 +83,7 @@ static void print_help_message(char *program) {
 
 static int parse_args(int argc, char **argv, config_t *config) {
 	for (int n = 1; n < argc; n++) {
-		if (strncmp(argv[n], "--help", 6) == 0) return EXIT_HELP;
+		if (strcmp(argv[n], "--help") == 0) return EXIT_HELP;
 
 		if (argv[n][0] != '-') {
 			if (config->root) {
@@ -91,7 +91,7 @@ static int parse_args(int argc, char **argv, config_t *config) {
 				return EXIT_FAILURE;
 			}
 
-			if (strlen(argv[n]) > MAX_PATH_LEN) {
+			if (strlen(argv[n]) >= MAX_PATH_LEN) {
 				fprintf(stderr, "-fatal: name too long\n");
 				return EXIT_FAILURE;
 			}
@@ -149,8 +149,7 @@ int main(int argc, char *argv[]) {
 	}
 
 	if (MAKE_DIR(config.root)) {
-		fprintf(stderr, "-fatal: failed to create directory: ");
-		perror("");
+		perror("-fatal: failed to create directory");
 	 	fprintf(stderr, "\n");
 		return EXIT_FAILURE;
 	}

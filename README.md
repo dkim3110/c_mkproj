@@ -128,4 +128,4 @@ All templates come with a `Makefile`. Running `make` creates a binary named `run
 ## Acknowledgments
 
 - Inspired by [Jack Wetherell](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git).
-- README template by [DomPizzie](https://gist.github.com/DomPizzie). You can see it [here](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc).
+- README template by [DomPizzie](https://github.com/DomPizzie). You can see it [here](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc).

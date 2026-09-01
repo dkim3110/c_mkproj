@@ -2,9 +2,10 @@
 #include "mkproj_file_contents.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
 // == HELPER ==============================================================
-static char *handle_makefile(project_flag_t flag) {
+static const char *handle_makefile(project_flag_t flag) {
 	switch (flag) {
 		case BARE:
 			return MAKEFILE_BARE;
@@ -19,12 +20,14 @@ static char *handle_makefile(project_flag_t flag) {
 			return MAKEFILE_DEFAULT;
 			break;
 	}
+
+	return NULL;
 } /* handle_makefile() */
 // ============================================================== HELPER ==
 
 // == PRIMARY =============================================================
-void mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
-	char *contents = NULL;
+int mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
+	const char *contents = NULL;
 
 	switch (mode) {
 		case MAKEFILE:
@@ -47,6 +50,13 @@ void mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) 
 			break;
 	}
 
-	if (fputs(contents, fptr) == EOF) fprintf(stderr, "-error: could not write to file\n");
+	if ((!contents) || (fputs(contents, fptr) == EOF)) {
+		perror("-fatal: could not write to file");
+		fprintf(stderr, "\n");
+
+		return EXIT_FAILURE;
+	}
+
+	return EXIT_SUCCESS;
 }/* mkproj_write_file() */
 // ============================================================= PRIMARY ==

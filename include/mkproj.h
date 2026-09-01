@@ -9,6 +9,8 @@
 	#include <direct.h>
 #else
 	#include <unistd.h>
+	#include <sys/stat.h>
+  #include <sys/types.h>
 #endif
 // ============================================================ INCLUDES ==
 
@@ -80,7 +82,7 @@ typedef struct {
 
 // == FUNCTIONS ===========================================================
 extern int mkproj_generate_project(const char *, project_flag_t);
-extern void mkproj_write_file(FILE *, project_flag_t, file_maker_mode_t);
+extern int mkproj_write_file(FILE *, project_flag_t, file_maker_mode_t);
 // =========================================================== FUNCTIONS ==
 
 #endif // MKPROJ_H_
