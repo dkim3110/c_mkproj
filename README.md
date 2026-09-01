@@ -121,6 +121,10 @@ mkproj --help
 
 All templates come with a `Makefile`. Running `make` creates a binary named `run` (or `bin/run` if the template has a `bin` directory). You can change the name by editing the `TARGET` variable.
 
+## Credits
+
+See [CREDITS.md](CREDITS.md)
+
 ## License
 
 **MIT** - see [LICENSE.md](LICENSE.md).
