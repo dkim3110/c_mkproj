@@ -31,8 +31,8 @@ static int directory_maker(char *file_path) {
 
 static FILE *file_opener(const char *file_path) {
 	FILE *fptr;
-	int check = fopen_s(&fptr, file_path, "w");
-	if (!check) {
+	errno_t check = fopen_s(&fptr, file_path, "w");
+	if (check != 0) {
 		fprintf(stderr, "-fatal: failed to create file '%s': ", file_path);
 	 	perror("");
 	 	fprintf(stderr, "\n");
