@@ -41,6 +41,8 @@ sudo make install
 - Navigate to the directory where you want to create your new project.
 - Run the program using your desired project name, and an optional mode flag.
   - Note that project names cannot begin with a hyphen (`-`) to prevent conflicts with flag parsing.
+ 
+### Example
 
 ### Flags
 
@@ -51,71 +53,150 @@ You can set flags by including it in the arguments. Order doesn't matter, but it
 ```
 -b, --bare
 ```
-```Makefile
-project_name/
+```bash
+$ mkproj project_name --bare
+$ tree -a project_name
+project_name
 ├── Makefile
-├── main.c
-└── README.md
+├── README.md
+└── main.c
+
+1 directory, 3 files
 ```
 ---
 **DEFAULT:** a standard project structure.
 ```
 -d, --default, [no flags]
 ```
-```Makefile
-project_name/
-├── build/
-├── include/
-├── src/
-│   └── main.c
+```bash
+$ mkproj project_name
+$ tree -a project_name
+project_name
 ├── Makefile
-└── README.md
+├── README.md
+├── build
+├── include
+└── src
+    └── main.c
+
+4 directories, 3 files
 ```
 ---
 **PLUS:** includes additional directories to `--default` for larger projects.
 ```
 -p, --plus
 ```
-```Makefile
-project_name/
-├── bin/
-├── build/
-├── include/
-├── lib/
-├── src/
-│   └── main.c
-├── tests
-│   └── test_main.c
+```bash
+$ mkproj project_name --plus
+$ tree -a project_name
+project_name
 ├── Makefile
-└── README.md
+├── README.md
+├── bin
+├── build
+├── include
+├── lib
+├── src
+│   └── main.c
+└── tests
+    └── test_main.c
+
+7 directories, 4 files
 ```
 ---
 **FULL:** a modified version of [Jack Wetherell](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git)
 ```
 -f, --full
 ```
-```Makefile
-project_name/
-├── bin/
-├── build/
-├── data/
-│   ├── raw/
-│   ├── interim/
-│   ├── input/
-│   └── output/
-├── docs/
-├── include/
-├── lib/
-├── src/
-│   └── main.c
-├── tests/
-│   └── test_main.c
+```bash
+$ mkproj project_name --full
+$ tree -a project_name
+project_name
 ├── .gitignore
 ├── Makefile
-└── README.md
+├── README.md
+├── bin
+├── build
+├── data
+│   ├── input
+│   ├── interim
+│   ├── output
+│   └── raw
+├── docs
+├── include
+├── lib
+├── src
+│   └── main.c
+└── tests
+    └── test_main.c
+
+13 directories, 5 files
 ```
 ---
 You can use `-h` or `--help` to see the exact folder structures whenever you want.
+```
+$ mkproj --help
+
+USAGE:
+ mkproj [flag] project_name
+ mkproj project_name [flag]
+
+OPTIONS:
+ -h, --help
+                Prints this help message; overrides all arguments
+
+ -b, --bare
+                Creates project in bare mode:
+                        project_name
+                        |--main.c
+                        |--Makefile
+                        `--README.md
+
+ -d, --default, [no flags]
+                Creates project in default mode:
+                        project_name
+                        |--build
+                        |--include
+                        |--src
+                        |  `--main.c
+                        |--Makefile
+                        `--README.md
+
+ -p, --plus
+                Creates project in plus mode:
+                        project_name
+                        |--bin
+                        |--build
+                        |--include
+                        |--lib
+                        |--src
+                        |  `--main.c
+                        |--tests
+                        |  `--test_main.c
+                        |--Makefile
+                        `--README.md
+
+ -f, --full
+                Creates project in full mode:
+                        project_name
+                        |--bin
+                        |--build
+                        |--data
+                        |  `--raw
+                        |  `--interim
+                        |  `--input
+                        |  `--output
+                        |--docs
+                        |--include
+                        |--lib
+                        |--src
+                        |  `--main.c
+                        |--tests
+                        |  `--test_main.c
+                        |--.gitignore
+                        |--Makefile
+                        `--README.md
+```
 
 ### Makefile
 
@@ -137,7 +218,6 @@ make test
 # Builds 'bin/tester' from 'tests/*.c', links it against the library objects (everything in 'build/' except 'main.o'), and runs it.
 # Only available on projects made with '--plus' or beyond.
 ```
-
 
 ## Credits
 
