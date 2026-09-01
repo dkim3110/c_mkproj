@@ -200,7 +200,7 @@ OPTIONS:
 
 ### Makefile
 
-All templates come with a `Makefile`. Running `make` creates a binary named `run` (or `bin/run` if the template has a `bin` directory). You can change the name by editing the `TARGET` variable. Additionally, any `.h` files included in `.c` files are automatically tracked using `-MMD -MP`.
+All templates come with a dedicated `Makefile`. Running `make` creates a binary named `run` (or `bin/run` if the template has a `bin` directory). You can change the name by editing the `TARGET` variable. Additionally, any `.h` files included in `.c` files are automatically tracked using `-MMD -MP`.
 
 **Commands**
 
@@ -215,8 +215,8 @@ make debug
 # Runs 'make clean', then rebuilds with '-g'.
 
 make test
-# Builds 'bin/tester' from 'tests/*.c', links it against the library objects (everything in 'build/' except 'main.o'), and runs it.
-# Only available on projects made with '--plus' or beyond.
+# Builds 'bin/tester' from 'tests/*.c', links it against the library objects (everything in 'build/' except 'main.o'),
+# and runs it. Only available on templates '--plus' and beyond.
 ```
 
 ## Credits
