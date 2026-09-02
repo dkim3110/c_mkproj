@@ -43,8 +43,6 @@ sudo make install
 - Navigate to the directory where you want to create your new project.
 - Run the program using your desired project name, and an optional mode flag.
   - Note that project names cannot begin with a hyphen (`-`) to prevent conflicts with flag parsing.
- 
-### Example
 
 ### Flags
 
