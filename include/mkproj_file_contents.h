@@ -177,6 +177,9 @@
   "7a5ff55ffa9081f2de27c315f5018afc)."
 
 #define GITIGNORE_CONTENTS                                                     \
+  "# Project Specific\n"                                                       \
+  "tests/\n"                                                                   \
+  "\n"                                                                         \
   "# Prerequisites\n"                                                          \
   "*.d\n"                                                                      \
   "\n"                                                                         \
@@ -248,8 +251,7 @@
 #define TEST_MAIN_C_CONTENTS                                                   \
   "#include <stdio.h>\n"                                                       \
   "\n"                                                                         \
-  "int main(/"                                                                 \
-  "* int argc, char *argv[] */) {\n"                                           \
+  "int main(void) {\n"                                                         \
   "\tprintf(\"This is a test!\\n\");"                                          \
   "\n"                                                                         \
   "\treturn 0;\n"                                                              \
