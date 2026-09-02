@@ -59,11 +59,12 @@ You can set flags by including it in the arguments. Order doesn't matter, but it
 $ mkproj project_name --bare
 $ tree -a project_name
 project_name
+├── main.c
+├── main.h
 ├── Makefile
-├── README.md
-└── main.c
+└── README.md
 
-1 directory, 3 files
+1 directory, 4 files
 ```
 ---
 **DEFAULT:** a standard project structure.
@@ -74,14 +75,15 @@ project_name
 $ mkproj project_name
 $ tree -a project_name
 project_name
-├── Makefile
-├── README.md
 ├── build
 ├── include
+│   └── main.h
+├── Makefile
+├── README.md
 └── src
     └── main.c
 
-4 directories, 3 files
+4 directories, 4 files
 ```
 ---
 **PLUS:** includes additional directories to `--default` for larger projects.
@@ -92,18 +94,19 @@ project_name
 $ mkproj project_name --plus
 $ tree -a project_name
 project_name
-├── Makefile
-├── README.md
 ├── bin
 ├── build
 ├── include
+│   └── main.h
 ├── lib
+├── Makefile
+├── README.md
 ├── src
 │   └── main.c
 └── tests
     └── test_main.c
 
-7 directories, 4 files
+7 directories, 5 files
 ```
 ---
 **FULL:** a modified version of [Jack Wetherell](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git)
@@ -114,9 +117,6 @@ project_name
 $ mkproj project_name --full
 $ tree -a project_name
 project_name
-├── .gitignore
-├── Makefile
-├── README.md
 ├── bin
 ├── build
 ├── data
@@ -125,80 +125,21 @@ project_name
 │   ├── output
 │   └── raw
 ├── docs
+├── .gitignore
 ├── include
+│   └── main.h
 ├── lib
+├── Makefile
+├── README.md
 ├── src
 │   └── main.c
 └── tests
     └── test_main.c
 
-13 directories, 5 files
+13 directories, 6 files
 ```
 ---
 You can use `-h` or `--help` to see the exact folder structures whenever you want.
-```
-$ mkproj --help
-
-USAGE:
- mkproj [flag] project_name
- mkproj project_name [flag]
-
-OPTIONS:
- -h, --help
-                Prints this help message; overrides all arguments
-
- -b, --bare
-                Creates project in bare mode:
-                        project_name
-                        |--main.c
-                        |--Makefile
-                        `--README.md
-
- -d, --default, [no flags]
-                Creates project in default mode:
-                        project_name
-                        |--build
-                        |--include
-                        |--src
-                        |  `--main.c
-                        |--Makefile
-                        `--README.md
-
- -p, --plus
-                Creates project in plus mode:
-                        project_name
-                        |--bin
-                        |--build
-                        |--include
-                        |--lib
-                        |--src
-                        |  `--main.c
-                        |--tests
-                        |  `--test_main.c
-                        |--Makefile
-                        `--README.md
-
- -f, --full
-                Creates project in full mode:
-                        project_name
-                        |--bin
-                        |--build
-                        |--data
-                        |  `--raw
-                        |  `--interim
-                        |  `--input
-                        |  `--output
-                        |--docs
-                        |--include
-                        |--lib
-                        |--src
-                        |  `--main.c
-                        |--tests
-                        |  `--test_main.c
-                        |--.gitignore
-                        |--Makefile
-                        `--README.md
-```
 
 ### Makefile
 

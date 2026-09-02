@@ -45,6 +45,9 @@ int mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
 		case GITIGNORE:
 			contents = GITIGNORE_CONTENTS;
 			break;
+		case HEADER:
+			contents = HEADER_CONTENTS;
+			break;
 		default:
 			contents = "";
 			break;

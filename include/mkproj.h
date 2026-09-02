@@ -29,6 +29,7 @@ typedef enum {
   GITIGNORE,
   MAKEFILE,
   MAIN_C,
+  HEADER,
   README,
   TEST_MAIN_C
 } file_maker_mode_t;
@@ -53,6 +54,7 @@ typedef struct {
 	char test_main_c[MAX_PATH_LEN];
 
 	char gitignore[MAX_PATH_LEN];
+	char header[MAX_PATH_LEN];
 	char main_c[MAX_PATH_LEN];
 	char makefile[MAX_PATH_LEN];
 	char readme[MAX_PATH_LEN];

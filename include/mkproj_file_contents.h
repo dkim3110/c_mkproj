@@ -239,11 +239,13 @@
 
 // == C FILE ===============================================================
 #define MAIN_C_CONTENTS                                                        \
+  "#include \"main.h\"\n"                                                      \
+  "\n"                                                                         \
   "#include <stdio.h>\n"                                                       \
   "\n"                                                                         \
   "int main(/"                                                                 \
   "* int argc, char *argv[] */) {\n"                                           \
-  "\tprintf(\"Hello, World!\\n\");"                                            \
+  "\tprintf(PRINT_STRING);"                                                    \
   "\n"                                                                         \
   "\treturn 0;\n"                                                              \
   "}\n"
@@ -256,6 +258,14 @@
   "\n"                                                                         \
   "\treturn 0;\n"                                                              \
   "}\n"
+
+#define HEADER_CONTENTS                                                        \
+  "#ifndef MAIN_H_\n"                                                          \
+  "#define MAIN_H_\n"                                                          \
+  "\n"                                                                         \
+  "#define PRINT_STRING (\"Hello, World!\\n\")"                                \
+  "\n"                                                                         \
+  "#endif // MAIN_H_"
 // =============================================================== C FILE ==
 
 #endif // MKPROJ_FILE_CONTENTS_H_

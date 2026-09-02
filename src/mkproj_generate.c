@@ -126,19 +126,16 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 			/* fallthrough */
 		case BARE:
 			if ((file_path_maker((flag == BARE) ? path.root : path.src, path.main_c, "main.c") == EXIT_FAILURE) ||
+					(file_path_maker((flag == BARE) ? path.root : path.include, path.header, "main.h") == EXIT_FAILURE) ||
 					(file_path_maker(path.root, path.makefile, "Makefile") == EXIT_FAILURE) ||
 					(file_path_maker(path.root, path.readme, "README.md") == EXIT_FAILURE)) {
-				if (flag != BARE) goto cleanup_src;
-				return EXIT_FAILURE;
+				goto cleanup_src;
 			}
 
-			if (file_maker(path.main_c, flag, MAIN_C) == EXIT_FAILURE) {
-				if (flag != BARE) goto cleanup_src;
-				return EXIT_FAILURE;
-			}
-
+			if (file_maker(path.main_c, flag, MAIN_C) == EXIT_FAILURE) goto cleanup_src;
 			if (file_maker(path.readme, flag, README) == EXIT_FAILURE) goto cleanup_main_c;
 			if (file_maker(path.makefile, flag, MAKEFILE) == EXIT_FAILURE) goto cleanup_readme;
+			if (file_maker(path.header, flag, HEADER) == EXIT_FAILURE) goto cleanup_makefile;
 			break;
 		case UNKNOWN:
 		default:
@@ -149,6 +146,8 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 
 	return EXIT_SUCCESS;
 
+cleanup_makefile:
+	if (path.makefile[0] != '\0') remove(path.makefile);
 cleanup_readme:
 	if (path.readme[0] != '\0') remove(path.readme);
 cleanup_main_c:
