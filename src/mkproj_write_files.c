@@ -9,16 +9,13 @@ static const char *handle_makefile(project_flag_t flag) {
 	switch (flag) {
 		case BARE:
 			return MAKEFILE_BARE;
-			break;
 		case PLUS:
 			/* fallthrough */
 		case FULL:
 			return MAKEFILE_FULL;
-			break;
 		case DEFAULT:
 		default:
 			return MAKEFILE_DEFAULT;
-			break;
 	}
 
 	return NULL;
