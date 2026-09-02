@@ -220,16 +220,13 @@ make test
 # Builds 'bin/tester' from 'tests/*.c', links it against the library objects (everything in 'build/' except 'main.o'),
 # and runs it. Only available on templates '--plus' and beyond.
 ```
-
-## Credits
-
-See [CREDITS.md](CREDITS.md)
-
 ## License
 
 **MIT** - see [LICENSE.md](LICENSE.md).
 
 ## Acknowledgments
+
+See [CREDITS.md](CREDITS.md).
 
 - Inspired by [Jack Wetherell](https://github.com/JackWetherell)'s [c-project-structure](https://github.com/JackWetherell/c-project-structure.git).
 - README template by [DomPizzie](https://github.com/DomPizzie). You can see it [here](https://gist.github.com/DomPizzie/7a5ff55ffa9081f2de27c315f5018afc).
