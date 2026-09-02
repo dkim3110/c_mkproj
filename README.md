@@ -208,10 +208,10 @@ All templates come with a dedicated `Makefile`. Running `make` creates a binary 
 
 ```Makefile
 make
-# Builds 'run' ('bin/run') from 'src/*.c'.
+# Builds program executable.
 
 make clean
-# Cleans 'build/' and removes binary.
+# Cleans 'build/' if it exists and removes executable.
 
 make debug
 # Runs 'make clean', then rebuilds with '-g'.
