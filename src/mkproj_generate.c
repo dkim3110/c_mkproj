@@ -126,17 +126,12 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 			/* fallthrough */
 		case BARE:
 			if ((file_path_maker((flag == BARE) ? path.root : path.src, path.main_c, "main.c") == EXIT_FAILURE) ||
-					(file_path_maker(path.root, path.makefile, "Makefile") == EXIT_FAILURE) ||
-					(file_path_maker(path.root, path.readme, "README.md") == EXIT_FAILURE)) {
-				if (flag != BARE) goto cleanup_src;
-				return EXIT_FAILURE;
+				(file_path_maker(path.root, path.makefile, "Makefile") == EXIT_FAILURE) ||
+				(file_path_maker(path.root, path.readme, "README.md") == EXIT_FAILURE)) {
+				goto cleanup_src;
 			}
 
-			if (file_maker(path.main_c, flag, MAIN_C) == EXIT_FAILURE) {
-				if (flag != BARE) goto cleanup_src;
-				return EXIT_FAILURE;
-			}
-
+			if (file_maker(path.main_c, flag, MAIN_C) == EXIT_FAILURE) goto cleanup_src;
 			if (file_maker(path.readme, flag, README) == EXIT_FAILURE) goto cleanup_main_c;
 			if (file_maker(path.makefile, flag, MAKEFILE) == EXIT_FAILURE) goto cleanup_readme;
 			break;
