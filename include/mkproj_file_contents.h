@@ -263,7 +263,7 @@
   "#ifndef MAIN_H_\n"                                                          \
   "#define MAIN_H_\n"                                                          \
   "\n"                                                                         \
-  "#define PRINT_STRING (\"Hello, World!\\n\")"                                \
+  "#define PRINT_STRING (\"Hello, World!\\n\")\n"                              \
   "\n"                                                                         \
   "#endif // MAIN_H_"
 // =============================================================== C FILE ==
