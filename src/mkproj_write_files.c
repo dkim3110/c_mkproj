@@ -52,7 +52,6 @@ int mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
 
 	if ((!contents) || (fputs(contents, fptr) == EOF)) {
 		perror("-fatal: could not write to file");
-		fprintf(stderr, "\n");
 
 		return EXIT_FAILURE;
 	}

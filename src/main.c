@@ -169,7 +169,6 @@ int main(int argc, char *argv[]) {
 
 	if (MAKE_DIR(config.root)) {
 		perror("-fatal: failed to create directory");
-	 	fprintf(stderr, "\n");
 		return EXIT_FAILURE;
 	}
 

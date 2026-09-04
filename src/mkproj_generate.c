@@ -25,7 +25,6 @@ static int directory_maker(char *file_path) {
 	if (check != 0) {
 		fprintf(stderr, "-fatal: failed to create directory ");
 		perror(file_path);
-	 	fprintf(stderr, "\n");
 	}
 	return (check == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
 } /* directory_maker() */
@@ -35,7 +34,6 @@ static FILE *file_opener(const char *file_path) {
 	if (!fptr) {
 		fprintf(stderr, "-fatal: failed to create file ");
 	 	perror(file_path);
-	 	fprintf(stderr, "\n");
 		return NULL;
 	}
 
@@ -46,7 +44,6 @@ static int file_closer(FILE **fptr, const char *file_path) {
 	if (fclose(*fptr) != 0) {
 		fprintf(stderr, "-fatal: failed to close file ");
 		perror(file_path);
-	 	fprintf(stderr, "\n");
 		return EXIT_FAILURE;
 	}
 
