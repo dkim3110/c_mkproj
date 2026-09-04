@@ -96,7 +96,7 @@ static void print_help_message(char *program) {
 	);
 } /* print_help_message() */
 
-static int parse_args(int argc, char **argv, config_t *config) {
+static int parse_args(int argc, char *argv[], config_t *config) {
 	for (int n = 1; n < argc; n++) {
 		if ((strcmp(argv[n], "-h") == 0) ||
 				(strcmp(argv[n], "--help") == 0)) return EXIT_HELP;
