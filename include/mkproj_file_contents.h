@@ -243,8 +243,7 @@
   "\n"                                                                         \
   "#include <stdio.h>\n"                                                       \
   "\n"                                                                         \
-  "int main(/"                                                                 \
-  "* int argc, char *argv[] */) {\n"                                           \
+  "int main(int argc, char *argv[]) {\n"                                       \
   "\tprintf(PRINT_STRING);"                                                    \
   "\n"                                                                         \
   "\treturn 0;\n"                                                              \
