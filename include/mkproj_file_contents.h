@@ -235,6 +235,11 @@
   "\n"                                                                         \
   "# debug information files\n"                                                \
   "*.dwo\n"
+
+#define CLANGD_CONTENTS                                                        \
+  "CompileFlags:\n"                                                            \
+  "\tAdd: [-xc]\n"
+
 // ============================================================ TEXT FILE ==
 
 // == C FILE ===============================================================

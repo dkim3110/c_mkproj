@@ -27,6 +27,7 @@ typedef enum {
 
 typedef enum {
   GITIGNORE,
+  CLANGD,
   MAKEFILE,
   MAIN_C,
   HEADER,
@@ -54,6 +55,7 @@ typedef struct {
 	char test_main_c[MAX_PATH_LEN];
 
 	char gitignore[MAX_PATH_LEN];
+	char clangd[MAX_PATH_LEN];
 	char header[MAX_PATH_LEN];
 	char main_c[MAX_PATH_LEN];
 	char makefile[MAX_PATH_LEN];
