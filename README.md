@@ -57,6 +57,7 @@ You can set flags by including it in the arguments. Order doesn't matter, but it
 $ mkproj project_name --bare
 $ tree -a project_name
 project_name
+├── .clangd
 ├── main.c
 ├── main.h
 ├── Makefile
@@ -73,6 +74,7 @@ project_name
 $ mkproj project_name
 $ tree -a project_name
 project_name
+├── .clangd
 ├── build
 ├── include
 │   └── main.h
@@ -92,6 +94,7 @@ project_name
 $ mkproj project_name --plus
 $ tree -a project_name
 project_name
+├── .clangd
 ├── bin
 ├── build
 ├── include
@@ -115,6 +118,8 @@ project_name
 $ mkproj project_name --full
 $ tree -a project_name
 project_name
+├── .clangd
+├── .gitignore
 ├── bin
 ├── build
 ├── data
@@ -123,7 +128,6 @@ project_name
 │   ├── output
 │   └── raw
 ├── docs
-├── .gitignore
 ├── include
 │   └── main.h
 ├── lib
