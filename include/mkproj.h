@@ -1,7 +1,7 @@
 #ifndef MKPROJ_H_
 #define MKPROJ_H_
 
-// == INCLUDES ====================================================================
+// == INCLUDES ================================================================
 #include <limits.h>
 #include <stdbool.h>
 #include <stdio.h>
@@ -13,7 +13,7 @@
 	#include <sys/stat.h>
   #include <sys/types.h>
 #endif
-// ==================================================================== INCLUDES ==
+// ================================================================ INCLUDES ==
 
 // == CONSTANTS, ENUMS, & STRUCTS =============================================
 #define MAX_PATH_LEN (4096)
@@ -88,7 +88,7 @@ typedef struct {
 } flag_t;
 // ============================================= CONSTANTS, ENUMS, & STRUCTS ==
 
-// == PREPROCESSORS ===============================================================
+// == PREPROCESSORS ===========================================================
 #ifdef _WIN32
 	#define MAKE_DIR(file_path) (_mkdir(file_path))
 	#define REMOVE_DIR(file_path) (_rmdir(file_path))
@@ -96,11 +96,11 @@ typedef struct {
 	#define MAKE_DIR(file_path) (mkdir(file_path, 0777))
 	#define REMOVE_DIR(file_path) (rmdir(file_path))
 #endif
-// =============================================================== PREPROCESSORS ==
+// =========================================================== PREPROCESSORS ==
 
-// == FUNCTIONS ===================================================================
+// == FUNCTIONS ===============================================================
 extern int mkproj_generate_project(const char *, project_flag_t);
 extern int mkproj_write_file(FILE *, project_flag_t, file_maker_mode_t);
-// =================================================================== FUNCTIONS ==
+// =============================================================== FUNCTIONS ==
 
 #endif // MKPROJ_H_

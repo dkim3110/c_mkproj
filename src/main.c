@@ -14,7 +14,7 @@ static flag_t g_flags_list[] = {
 	{"-p", "--plus", PLUS}
 };
 
-// == HELPER ======================================================================
+// == HELPER ==================================================================
 static void print_help_message(char *program) {
 	fprintf(stderr,
 		"\n"
@@ -114,9 +114,9 @@ static int parse_args(int argc, char *argv[], config_t *config) {
 
 	return (config->root) ? EXIT_SUCCESS : EXIT_FAILURE;
 } /* parse_args() */
-// ====================================================================== HELPER ==
+// ================================================================== HELPER ==
 
-// == MAIN ========================================================================
+// == MAIN ====================================================================
 int main(int argc, char *argv[]) {
 	if (argc < 2) {
 		fprintf(stderr, "-fatal: no arguments given\n");
@@ -151,4 +151,4 @@ int main(int argc, char *argv[]) {
 
 	return EXIT_SUCCESS;
 } /* main() */
-// ======================================================================== MAIN ==
+// ==================================================================== MAIN ==

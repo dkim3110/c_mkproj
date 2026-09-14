@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// == HELPER ======================================================================
+// == HELPER ==================================================================
 static int file_path_maker(const char *parent, char *child, const char *child_name) {
 	int check = snprintf(child, MAX_PATH_LEN, "%s/%s", parent, child_name);
 	if (check >= MAX_PATH_LEN) {
@@ -59,9 +59,9 @@ static int file_maker(char *file_path, project_flag_t flag, file_maker_mode_t mo
 
 	return EXIT_SUCCESS;
 } /* file_maker() */
-// ====================================================================== HELPER ==
+// ================================================================== HELPER ==
 
-// == PRIMARY =====================================================================
+// == PRIMARY =================================================================
 int mkproj_generate_project(const char *root, project_flag_t requested_flag) {
 	char current_path[MAX_PATH_LEN];
 	int layout_size = sizeof(PROJECT_LAYOUT) / sizeof(PROJECT_LAYOUT[0]);
@@ -110,4 +110,4 @@ int mkproj_generate_project(const char *root, project_flag_t requested_flag) {
 
 	return EXIT_SUCCESS;
 } /* mkproj_generate_project() */
-// ===================================================================== PRIMARY ==
+// ================================================================= PRIMARY ==
