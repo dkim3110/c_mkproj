@@ -8,12 +8,12 @@
 static int file_path_maker(const char *parent, char *child, const char *child_name) {
 	int check = snprintf(child, MAX_PATH_LEN, "%s/%s", parent, child_name);
 	if(check >= MAX_PATH_LEN) {
-		fprintf(stderr, "-fatal: name too long\n");
+		fputs("-fatal: name too long\n", stderr);
 		return EXIT_FAILURE;
 	}
 
 	if (check < 0) {
-		fprintf(stderr, "-fatal: encoding error\n");
+		fputs("-fatal: encoding error\n", stderr);
 		return EXIT_FAILURE;
 	}
 
@@ -66,12 +66,12 @@ int mkproj_generate_project(const char *root, project_flag_t flag) {
 
 	int check = snprintf(path.root, MAX_PATH_LEN, "%s", root);
 	if(check >= MAX_PATH_LEN) {
-		fprintf(stderr, "-fatal: name too long\n");
+		fputs("-fatal: name too long\n", stderr);
 		return EXIT_FAILURE;
 	}
 
 	if (check < 0) {
-		fprintf(stderr, "-fatal: encoding error\n");
+		fputs("-fatal: encoding error\n", stderr);
 		return EXIT_FAILURE;
 	}
 
