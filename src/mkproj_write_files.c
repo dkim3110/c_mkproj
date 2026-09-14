@@ -30,8 +30,8 @@ int mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
 		case MAKEFILE:
 			contents = handle_makefile(flag);
 			break;
-		case TEST_MAIN_C:
-			contents = TEST_MAIN_C_CONTENTS;
+		case TEST_C:
+			contents = TEST_C_CONTENTS;
 			break;
 		case MAIN_C:
 			contents = MAIN_C_CONTENTS;

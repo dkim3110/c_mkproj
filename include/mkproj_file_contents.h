@@ -254,7 +254,7 @@
   "\treturn 0;\n"                                                              \
   "}\n"
 
-#define TEST_MAIN_C_CONTENTS                                                   \
+#define TEST_C_CONTENTS                                                   \
   "#include <stdio.h>\n"                                                       \
   "\n"                                                                         \
   "int main(void) {\n"                                                         \
