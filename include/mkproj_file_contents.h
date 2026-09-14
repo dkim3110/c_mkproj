@@ -238,7 +238,7 @@
 
 #define CLANGD_CONTENTS                                                        \
   "CompileFlags:\n"                                                            \
-  "\tAdd: [-xc]\n"
+  "  Add: [-xc]\n"
 
 // ============================================================ TEXT FILE ==
 

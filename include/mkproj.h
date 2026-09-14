@@ -80,7 +80,7 @@ typedef struct {
 	#define MAKE_DIR(file_path) (_mkdir(file_path))
 	#define REMOVE_DIR(file_path) (_rmdir(file_path))
 #else
-	#define MAKE_DIR(file_path) (mkdir(file_path, 0755))
+	#define MAKE_DIR(file_path) (mkdir(file_path, 0777))
 	#define REMOVE_DIR(file_path) (rmdir(file_path))
 #endif
 // ======================================================= PREPROCESSORS ==
