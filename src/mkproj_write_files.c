@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-// == HELPER ==============================================================
+// == HELPER ======================================================================
 static const char *handle_makefile(project_flag_t flag) {
 	switch (flag) {
 		case BARE:
@@ -20,9 +20,9 @@ static const char *handle_makefile(project_flag_t flag) {
 
 	return NULL;
 } /* handle_makefile() */
-// ============================================================== HELPER ==
+// ====================================================================== HELPER ==
 
-// == PRIMARY =============================================================
+// == PRIMARY =====================================================================
 int mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
 	const char *contents = NULL;
 
@@ -61,4 +61,4 @@ int mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
 
 	return EXIT_SUCCESS;
 }/* mkproj_write_file() */
-// ============================================================= PRIMARY ==
+// ===================================================================== PRIMARY ==
