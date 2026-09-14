@@ -3,6 +3,7 @@
 
 // == INCLUDES ============================================================
 #include <limits.h>
+#include <stdbool.h>
 #include <stdio.h>
 
 #ifdef _WIN32
@@ -18,49 +19,61 @@
 #define MAX_PATH_LEN (4096)
 
 typedef enum {
-	BARE,
-	DEFAULT,
-	FULL,
-	PLUS,
-	UNKNOWN
+	BARE = 0,
+	DEFAULT = 1,
+	FULL = 2,
+	PLUS = 3,
+	UNKNOWN = 4
 } project_flag_t;
 
 typedef enum {
+	NONE = 0,
   GITIGNORE,
   CLANGD,
   MAKEFILE,
   MAIN_C,
   HEADER,
   README,
-  TEST_MAIN_C
+  TEST_C
 } file_maker_mode_t;
 
+#define F_BARE    (1 << BARE)
+#define F_DEFAULT (1 << DEFAULT)
+#define F_FULL    (1 << FULL)
+#define F_PLUS    (1 << PLUS)
+#define F_ALL     (F_BARE | F_DEFAULT | F_FULL | F_PLUS)
+#define F_NOTBARE (F_DEFAULT | F_FULL | F_PLUS)
+
 typedef struct {
-	char root[MAX_PATH_LEN];
+	const char *rel_path;
+	bool is_dir;
+	file_maker_mode_t mode;
+	int flags;
+} project_node_t;
 
-	char bin[MAX_PATH_LEN];
-	char build[MAX_PATH_LEN];
+static const project_node_t PROJECT_LAYOUT[] = {
+    {.rel_path = "bin",            .is_dir = true, .mode = NONE,       .flags = F_PLUS | F_FULL},
+    {.rel_path = "build",          .is_dir = true, .mode = NONE,       .flags = F_NOTBARE},
+    {.rel_path = "data",           .is_dir = true, .mode = NONE,       .flags = F_FULL},
+    {.rel_path = "data/raw",       .is_dir = true, .mode = NONE,       .flags = F_FULL},
+    {.rel_path = "data/interim",   .is_dir = true, .mode = NONE,       .flags = F_FULL},
+    {.rel_path = "data/input",     .is_dir = true, .mode = NONE,       .flags = F_FULL},
+    {.rel_path = "data/output",    .is_dir = true, .mode = NONE,       .flags = F_FULL},
+    {.rel_path = "include",        .is_dir = true, .mode = NONE,       .flags = F_NOTBARE},
+    {.rel_path = "src",            .is_dir = true, .mode = NONE,       .flags = F_NOTBARE},
+    {.rel_path = "tests",          .is_dir = true, .mode = NONE,       .flags = F_PLUS | F_FULL},
 
-	char data[MAX_PATH_LEN];
-	char raw[MAX_PATH_LEN];
-	char interim[MAX_PATH_LEN];
-	char input[MAX_PATH_LEN];
-	char output[MAX_PATH_LEN];
+    {.rel_path = ".clangd",        .is_dir = false, .mode = CLANGD,    .flags = F_ALL},
+    {.rel_path = ".gitignore",     .is_dir = false, .mode = GITIGNORE, .flags = F_FULL},
+    {.rel_path = "Makefile",       .is_dir = false, .mode = MAKEFILE,  .flags = F_ALL},
+    {.rel_path = "README.md",      .is_dir = false, .mode = README,    .flags = F_ALL},
+    {.rel_path = "tests/test.c",   .is_dir = false, .mode = TEST_C,    .flags = F_PLUS | F_FULL},
 
-	char docs[MAX_PATH_LEN];
-	char include[MAX_PATH_LEN];
-	char lib[MAX_PATH_LEN];
-	char src[MAX_PATH_LEN];
-	char tests[MAX_PATH_LEN];
-	char test_main_c[MAX_PATH_LEN];
-
-	char gitignore[MAX_PATH_LEN];
-	char clangd[MAX_PATH_LEN];
-	char header[MAX_PATH_LEN];
-	char main_c[MAX_PATH_LEN];
-	char makefile[MAX_PATH_LEN];
-	char readme[MAX_PATH_LEN];
-} project_paths_t;
+    {.rel_path = "include/main.h", .is_dir = false, .mode = HEADER,    .flags = F_NOTBARE},
+    {.rel_path = "src/main.c",     .is_dir = false, .mode = MAIN_C,    .flags = F_NOTBARE},
+    {.rel_path = "main.h",         .is_dir = false, .mode = HEADER,    .flags = F_BARE},
+    {.rel_path = "main.c",         .is_dir = false, .mode = MAIN_C,    .flags = F_BARE}
+};
 
 typedef struct {
 	int flag_count;
