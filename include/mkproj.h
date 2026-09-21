@@ -45,6 +45,7 @@ static const project_node_t PROJECT_LAYOUT[] = {
 	{.rel_path = "data/interim", .is_dir = true, .mode = NONE, .flags = F_FULL},
 	{.rel_path = "data/input", .is_dir = true, .mode = NONE, .flags = F_FULL},
 	{.rel_path = "data/output", .is_dir = true, .mode = NONE, .flags = F_FULL},
+	{.rel_path = "docs", .is_dir = true, .mode = NONE, .flags = F_FULL},
 	{.rel_path = "include", .is_dir = true, .mode = NONE, .flags = F_NOTBARE},
 	{.rel_path = "lib", .is_dir = true, .mode = NONE, .flags = F_PLUS | F_FULL},
 	{.rel_path = "src", .is_dir = true, .mode = NONE, .flags = F_NOTBARE},
