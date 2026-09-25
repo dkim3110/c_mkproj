@@ -66,21 +66,21 @@
 	".PHONY: all clean debug\n"
 
 #define MAKEFILE_FULL                                                                                                       \
-	"# Based on original Makefile by Jack Wetherell, licensed under MIT. "                                                    \
-	"Modified by Daniel Inhoi Kim.\n"                                                                                         \
+	"# Based on original Makefile by Jack Wetherell, licensed under MIT. Modified by Daniel Inhoi Kim.\n"                     \
 	"CC := gcc\n"                                                                                                             \
 	"SRCDIR := src\n"                                                                                                         \
 	"BUILDDIR := build\n"                                                                                                     \
+	"TESTBUILDDIR := $(BUILDDIR)/tests\n"                                                                                     \
 	"TESTDIR := tests\n"                                                                                                      \
 	"TARGET := bin/run\n"                                                                                                     \
 	"TESTTARGET := bin/tester\n"                                                                                              \
 	"SRCEXT := c\n"                                                                                                           \
 	"SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')\n"                                                        \
-	"TESTSOURCES := $(wildcard $(TESTDIR)/"                                                                                   \
-	"*.$(SRCEXT))\n"                                                                                                          \
-	"OBJECTS := $(patsubst "                                                                                                  \
-	"$(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"                                                                   \
+	"TESTSOURCES := $(wildcard $(TESTDIR)/*.$(SRCEXT))\n"                                                                     \
+	"OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))\n"                                             \
+	"TESTOBJECTS  := $(patsubst $(TESTDIR)/%,$(TESTBUILDDIR)/%,$(TESTSOURCES:.$(SRCEXT)=.o))\n"                               \
 	"DEPS := $(OBJECTS:.o=.d)\n"                                                                                              \
+	"TESTDEPS := $(TESTOBJECTS:.o=.d)\n"                                                                                      \
 	"LIBOBJECTS := $(filter-out $(BUILDDIR)/main.o,$(OBJECTS))\n"                                                             \
 	"CFLAGS := -O1 -Wall -Wextra\n"                                                                                           \
 	"LIB := -L lib\n"                                                                                                         \
@@ -107,19 +107,26 @@
 	"\t@find $(BUILDDIR) -type f -delete\n"                                                                                   \
 	"\t@$(RM) $(TARGET) $(TESTTARGET)\n"                                                                                      \
 	"\n"                                                                                                                      \
-	"$(TESTTARGET): $(TESTSOURCES) $(LIBOBJECTS)\n"                                                                           \
-	"\t@echo \" Building tests...\"\n"                                                                                        \
+	"$(TESTBUILDDIR)/%.o: $(TESTDIR)/%.$(SRCEXT)\n"                                                                           \
+	"\t@echo \" Building tests $<...\"\n"                                                                                     \
 	"\t@mkdir -p $(dir $@)\n"                                                                                                 \
-	"\t@$(CC) $(CFLAGS) $(INC) $^ -o $@ $(LIB)\n"                                                                             \
+	"\t@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@\n"                                                                        \
+	"\n"                                                                                                                      \
+	"$(TESTTARGET): $(LIBOBJECTS) $(TESTOBJECTS)\n"                                                                           \
+	"\t@echo \" Linking tests...\"\n"                                                                                         \
+	"\t@mkdir -p $(dir $@)\n"                                                                                                 \
+	"\t@$(CC) $^ -o $@ $(LIB)\n"                                                                                              \
 	"\n"                                                                                                                      \
 	"test: $(TESTTARGET)\n"                                                                                                   \
 	"\t@echo \" Running tests...\"\n"                                                                                         \
-	"\t@echo \" \"\n"                                                                                                         \
+	"\t@echo \"\"\n"                                                                                                          \
 	"\t@./$(TESTTARGET)\n"                                                                                                    \
 	"\n"                                                                                                                      \
 	"-include $(DEPS)\n"                                                                                                      \
+	"-include $(TESTDEPS)\n"                                                                                                  \
 	"\n"                                                                                                                      \
-	".PHONY: all clean debug test\n"
+	".PHONY: all clean debug test\n"                                                                                          \
+	"\n"
 // ================================================================= MAKEFILE ==
 
 // == TEXT FILE ================================================================
