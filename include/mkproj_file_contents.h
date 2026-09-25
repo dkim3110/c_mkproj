@@ -273,9 +273,9 @@
 	"\tdouble elapsed_time = (double)(end.tv_sec - start.tv_sec) * 1e6 + (double)(end.tv_nsec - start.tv_nsec) / 1e3;\n"      \
 	"\n"                                                                                                                      \
 	"\tif (!test_result) {\n"                                                                                                 \
-	"\t\tfprintf(stderr, \"FAILURE \n\n [%s] does not work as intended.\n\", function_name);\n"                               \
+	"\t\tfprintf(stderr, \"FAILURE \\n\\n [%s] does not work as intended.\\n\", function_name);\n"                            \
 	"\t\treturn TEST_FAILURE;\n"                                                                                              \
-	"\t} else fprintf(stderr, \"SUCCESS - %06.3f μs\n\", elapsed_time);\n"                                                    \
+	"\t} else fprintf(stderr, \"SUCCESS - %06.3f μs\\n\", elapsed_time);\n"                                                   \
 	"\n"                                                                                                                      \
 	"\treturn TEST_SUCCESS;\n"                                                                                                \
 	"}\n"                                                                                                                     \
@@ -285,10 +285,10 @@
 	"}\n"                                                                                                                     \
 	"\n"                                                                                                                      \
 	"int main(void) {\n"                                                                                                      \
-	"\tif (!test_runner(dummy_test, \"dummy_test()\")) exit(TEST_FAILURE);\n"                                                 \
+	"\tif (!test_runner(dummy_test, \"dummy_test()\")) exit(EXIT_FAILURE);\n"                                                 \
 	"\n"                                                                                                                      \
-	"\tfputs(\"\n All tests passed.\n\", stderr);\n"                                                                          \
-	"\texit(TEST_SUCCESS);\n"                                                                                                 \
+	"\tfputs(\"\\n All tests passed.\\n\", stderr);\n"                                                                        \
+	"\texit(EXIT_SUCCESS);\n"                                                                                                 \
 	"}\n"
 
 #define HEADER_CONTENTS                                                                                                     \
