@@ -65,11 +65,11 @@ int mkproj_write_file(FILE *fptr, project_flag_t flag, file_maker_mode_t mode) {
 		case GITIGNORE: contents = GITIGNORE_CONTENTS; break;
 		case CLANGD:		contents = CLANGD_CONTENTS; break;
 		case HEADER:		contents = HEADER_CONTENTS; break;
-		default:				contents = ""; break;
+		default:				contents = NULL; break;
 	}
 
 	if ((!contents) || (fputs(contents, fptr) == EOF)) {
-		perror("-fatal: could not write to file");
+		fputs("-fatal: could not write to file\n", stderr);
 
 		return EXIT_FAILURE;
 	}
