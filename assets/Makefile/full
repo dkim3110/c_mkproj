@@ -14,7 +14,7 @@ TESTOBJECTS  := $(patsubst $(TESTDIR)/%,$(TESTBUILDDIR)/%,$(TESTSOURCES:.$(SRCEX
 DEPS := $(OBJECTS:.o=.d)
 TESTDEPS := $(TESTOBJECTS:.o=.d)
 LIBOBJECTS := $(filter-out $(BUILDDIR)/main.o,$(OBJECTS))
-CFLAGS := -O1 -Wall -Wextra
+CFLAGS := -O1 -Wall -Wextra -std=c23
 LIB := -L lib
 INC := -I include
 
@@ -58,4 +58,3 @@ test: $(TESTTARGET)
 -include $(TESTDEPS)
 
 .PHONY: all clean debug test
-

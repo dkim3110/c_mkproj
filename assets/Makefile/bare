@@ -2,7 +2,7 @@
 CC := gcc
 TARGET := run
 SRCEXT := c
-CFLAGS := -O1 -Wall -Wextra
+CFLAGS := -O1 -Wall -Wextra -std=c23
 
 all: $(TARGET)
 
