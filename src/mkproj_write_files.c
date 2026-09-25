@@ -42,11 +42,10 @@ const char HEADER_CONTENTS[] = {
 // == HELPER ==================================================================
 static const char *handle_makefile(project_flag_t flag) {
 	switch (flag) {
-		case BARE: return MAKEFILE_BARE;
-		case PLUS:
-			/* fallthrough */
+		case BARE:		return MAKEFILE_BARE;
+		case PLUS:		/* fallthrough */
 		case FULL:		return MAKEFILE_FULL;
-		case DEFAULT:
+		case DEFAULT: /* fallthrough */
 		default:			return MAKEFILE_DEFAULT;
 	}
 
