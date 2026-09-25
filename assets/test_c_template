@@ -1,0 +1,35 @@
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+
+#define TEST_SUCCESS (true)
+#define TEST_FAILURE (false)
+
+static bool test_runner(bool (*test_function)(), const char *function_name) {
+	fprintf(stderr, "Testing function [%s]: ", function_name);
+
+	struct timespec start, end;
+	clock_gettime(CLOCK_MONOTONIC, &start);
+	bool test_result = test_function();
+	clock_gettime(CLOCK_MONOTONIC, &end);
+	double elapsed_time = (double)(end.tv_sec - start.tv_sec) * 1e6 + (double)(end.tv_nsec - start.tv_nsec) / 1e3;
+
+	if (!test_result) {
+		fprintf(stderr, "FAILURE \n\n [%s] does not work as intended.\n", function_name);
+		return TEST_FAILURE;
+	} else fprintf(stderr, "SUCCESS - %06.3f μs\n", elapsed_time);
+
+	return TEST_SUCCESS;
+}
+
+static bool dummy_test() {
+	return (1 + 2 == 3) ? TEST_SUCCESS : TEST_FAILURE;
+}
+
+int main(void) {
+	if (!test_runner(dummy_test, "dummy_test()")) exit(EXIT_FAILURE);
+
+	fputs("\n All tests passed.\n", stderr);
+	exit(EXIT_SUCCESS);
+}

@@ -8,7 +8,7 @@ SRCEXT := c
 SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 DEPS := $(OBJECTS:.o=.d)
-CFLAGS := -O1 -Wall -Wextra
+CFLAGS := -O1 -Wall -Wextra -std=c23
 INC := -I include
 PREFIX ?= /usr/local
 

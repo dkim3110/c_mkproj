@@ -1,0 +1,8 @@
+#include "main.h"
+
+#include <stdio.h>
+
+int main(int argc, char *argv[]) {
+	printf("%s", PRINT_STRING);
+	return 0;
+}

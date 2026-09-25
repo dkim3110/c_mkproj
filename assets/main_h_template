@@ -1,0 +1,6 @@
+#ifndef MAIN_H_
+#define MAIN_H_
+
+#define PRINT_STRING ("Hello, World!\n")
+
+#endif // MAIN_H_

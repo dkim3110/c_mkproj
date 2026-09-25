@@ -1,0 +1,21 @@
+# Based on original Makefile by Jack Wetherell, licensed under MIT. Modified by Daniel Inhoi Kim.
+CC := gcc
+TARGET := run
+SRCEXT := c
+CFLAGS := -O1 -Wall -Wextra
+
+all: $(TARGET)
+
+$(TARGET): *.$(SRCEXT)
+	@echo " Building..."
+	@$(CC) $(CFLAGS) $^ -o $@
+
+debug:
+	@$(MAKE) clean
+	@$(MAKE) CFLAGS="$(CFLAGS) -g" all
+
+clean:
+	@echo " Cleaning..."
+	@$(RM) $(TARGET)
+
+.PHONY: all clean debug
