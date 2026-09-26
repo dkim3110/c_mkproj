@@ -31,14 +31,14 @@ static inline double delta_time(struct timespec start, struct timespec end, doub
 	return elapsed_sec * unit;
 }
 
-static bool test_runner(bool (*test_function)(mem_arena *), mem_arena *arena, const char *function_name) {
+static bool test_runner(bool (*test_function)(), const char *function_name) {
 	elapsed_time_t benchmark = (elapsed_time_t){.symbol = MICROSEC_SYMBOL, .unit = MICROSECONDS};
 
 	fprintf(stderr, "Testing function [%s]: ", function_name);
 
 	struct timespec start, end;
 	clock_gettime(CLOCK_MONOTONIC, &start);
-	bool test_result = test_function(arena);
+	bool test_result = test_function();
 	clock_gettime(CLOCK_MONOTONIC, &end);
 
 	if (!test_result) {
