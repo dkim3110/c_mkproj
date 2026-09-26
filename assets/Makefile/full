@@ -40,7 +40,7 @@ clean:
 	@$(RM) $(TARGET) $(TESTTARGET)
 
 $(TESTBUILDDIR)/%.o: $(TESTDIR)/%.$(SRCEXT)
-	@echo " Building tests $<..."
+	@echo " Building tests..."
 	@mkdir -p $(dir $@)
 	@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@
 

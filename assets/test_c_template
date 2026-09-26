@@ -16,7 +16,7 @@ static bool test_runner(bool (*test_function)(), const char *function_name) {
 	double elapsed_time = (double)(end.tv_sec - start.tv_sec) * 1e6 + (double)(end.tv_nsec - start.tv_nsec) / 1e3;
 
 	if (!test_result) {
-		fprintf(stderr, "FAILURE \n\n [%s] does not work as intended.\n", function_name);
+		fprintf(stderr, "\n\n [%s] does not work as intended.\n", function_name);
 		return TEST_FAILURE;
 	} else fprintf(stderr, "SUCCESS - %06.3f μs\n", elapsed_time);
 
