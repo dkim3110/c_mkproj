@@ -18,11 +18,6 @@
 #define NANOSECONDS		 (1e9)
 #define NANOSEC_SYMBOL "ns"
 
-typedef struct {
-	char *symbol;
-	double unit;
-} elapsed_time_t;
-
 static inline double delta_time(struct timespec start, struct timespec end, double unit) {
 	double start_sec = (double)start.tv_sec + (start.tv_nsec * 1e-9);
 	double end_sec = (double)end.tv_sec + (end.tv_nsec * 1e-9);
@@ -32,8 +27,6 @@ static inline double delta_time(struct timespec start, struct timespec end, doub
 }
 
 static bool test_runner(bool (*test_function)(), const char *function_name) {
-	elapsed_time_t benchmark = (elapsed_time_t){.symbol = MICROSEC_SYMBOL, .unit = MICROSECONDS};
-
 	fprintf(stderr, "Testing function [%s]: ", function_name);
 
 	struct timespec start, end;
@@ -44,7 +37,7 @@ static bool test_runner(bool (*test_function)(), const char *function_name) {
 	if (!test_result) {
 		fprintf(stderr, "\n\n [%s] does not work as intended.\n", function_name);
 		return TEST_FAILURE;
-	} else fprintf(stderr, "SUCCESS - %06.3f%s\n", delta_time(start, end, benchmark.unit), benchmark.symbol);
+	} else fprintf(stderr, "SUCCESS - %06.3f%s\n", delta_time(start, end, MICROSEC_SYMBOL), MICROSECONDS);
 
 	return TEST_SUCCESS;
 }
@@ -54,8 +47,13 @@ static bool dummy_test() {
 }
 
 int main(void) {
+	struct timespec start, end;
+	clock_gettime(CLOCK_MONOTONIC, &start);
+
 	if (!test_runner(dummy_test, "dummy_test()")) exit(EXIT_FAILURE);
 
+	clock_gettime(CLOCK_MONOTONIC, &end);
 	fputs("\n All tests passed.\n", stderr);
+	fprintf(stderr, "Time elapsed: %06.3f%s\n", delta_time(start, end, MILLISECONDS), MILLISEC_SYMBOL);
 	exit(EXIT_SUCCESS);
 }
