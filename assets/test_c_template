@@ -37,7 +37,7 @@ static bool test_runner(bool (*test_function)(), const char *function_name) {
 	if (!test_result) {
 		fprintf(stderr, "\n\n [%s] does not work as intended.\n", function_name);
 		return TEST_FAILURE;
-	} else fprintf(stderr, "SUCCESS - %06.3f%s\n", delta_time(start, end, MICROSEC_SYMBOL), MICROSECONDS);
+	} else fprintf(stderr, "SUCCESS - %06.3f%s\n", delta_time(start, end, MICROSECONDS), MICROSEC_SYMBOL);
 
 	return TEST_SUCCESS;
 }
