@@ -1,2 +1,2 @@
 CompileFlags:
-  Add: [-xc, -fno-parse-all-comments]
+  Add: [-xc]
