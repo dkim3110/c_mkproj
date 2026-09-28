@@ -48,7 +48,7 @@ static bool test_runner(bool (*test_function)(), const char *function_name) {
 // == TESTS ===================================================================
 
 static bool dummy_test() {
-	if (1 + 2 == 3) {
+	if (1 + 2 != 3) {
 		print_error("test failed!");
 		return TEST_FAILURE;
 	}
