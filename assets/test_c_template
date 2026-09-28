@@ -27,6 +27,12 @@ static inline double delta_time(struct timespec start, struct timespec end, doub
 	return elapsed_sec * unit;
 }
 
+static inline void print_error(const char *message) {
+	fputs("\n  -error: ", stderr);
+	fputs(message, stderr);
+	fputs("\n\n", stderr);
+}
+
 static bool test_runner(bool (*test_function)(), const char *function_name) {
 	fprintf(stderr, "Testing function [%s]: ", function_name);
 
@@ -35,13 +41,22 @@ static bool test_runner(bool (*test_function)(), const char *function_name) {
 	assert(test_function());
 	clock_gettime(CLOCK_MONOTONIC, &end);
 
-	fprintf(stderr, "SUCCESS - %06.3f%s\n", delta_time(start, end, MICROSECONDS), MICROSEC_SYMBOL);
+	fprintf(stderr, "SUCCESS - finished in %07.3f%s\n", delta_time(start, end, MICROSECONDS), MICROSEC_SYMBOL);
 	return TEST_SUCCESS;
 }
 
+// == TESTS ===================================================================
+
 static bool dummy_test() {
-	return (1 + 2 == 3) ? TEST_SUCCESS : TEST_FAILURE;
+	if (1 + 2 == 3) {
+		print_error("test failed!");
+		return TEST_FAILURE;
+	}
+
+	return TEST_SUCCESS;
 }
+
+// =================================================================== TESTS ==
 
 int main(void) {
 	struct timespec start, end;
