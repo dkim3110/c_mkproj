@@ -17,6 +17,7 @@ Compatible with Linux and Windows (via MSYS2/MinGW or WSL).
 - GCC
   - If you have Clang, override with `make CC=clang`. 
 - GNU Make
+- C23
 
 ## Installation
 
