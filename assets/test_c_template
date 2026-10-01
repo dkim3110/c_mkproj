@@ -1,71 +1,94 @@
-#include <assert.h>
 #include <stdbool.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
-#define TEST_SUCCESS (true)
-#define TEST_FAILURE (false)
+// == FRAMEWORK ===============================================================
 
-#define SECONDS		 (1)
-#define SEC_SYMBOL "s"
+static int g_tests_run = 0;
+static int g_tests_failed = 0;
+static int g_checks_failed = 0;
 
-#define MILLISECONDS		(1e3)
-#define MILLISEC_SYMBOL "ms"
+#define TEST_FAIL(...)                                                                                                 \
+  do {                                                                                                                 \
+    g_checks_failed++;                                                                                                 \
+    fprintf(stderr, "    %s:%d: ", __FILE__, __LINE__);                                                                \
+    fprintf(stderr, __VA_ARGS__);                                                                                      \
+    fputc('\n', stderr);                                                                                               \
+  } while (0)
 
-#define MICROSECONDS		(1e6)
-#define MICROSEC_SYMBOL "μs"
+#define TEST_AFFIRM(cond)                                                                                              \
+  do {                                                                                                                 \
+    if (!(cond)) TEST_FAIL("TEST_AFFIRM failed: %s", #cond);                                                           \
+  } while (0)
 
-#define NANOSECONDS		 (1e9)
-#define NANOSEC_SYMBOL "ns"
+#define TEST_ASSERT(cond)                                                                                              \
+  do {                                                                                                                 \
+    if (!(cond)) {                                                                                                     \
+      TEST_FAIL("TEST_ASSERT failed: %s", #cond);                                                                      \
+      return;                                                                                                          \
+    }                                                                                                                  \
+  } while (0)
 
-static inline double delta_time(struct timespec start, struct timespec end, double unit) {
-	double start_sec = (double)start.tv_sec + (start.tv_nsec * 1e-9);
-	double end_sec = (double)end.tv_sec + (end.tv_nsec * 1e-9);
-	double elapsed_sec = end_sec - start_sec;
-
-	return elapsed_sec * unit;
+static inline double time_elapsed(struct timespec start, struct timespec end) {
+  return ((double)(end.tv_sec - start.tv_sec) * 1e6) + ((double)(end.tv_nsec - start.tv_nsec) / 1e3);
 }
 
-static inline void print_error(const char *message) {
-	fputs("\n  -error: ", stderr);
-	fputs(message, stderr);
-	fputs("\n\n", stderr);
+static inline void test_runner(const char *name, void (*test_function)(void)) {
+  struct timespec start, end;
+
+  g_checks_failed = 0;
+  fprintf(stderr, "[TEST] %s\n", name);
+
+  timespec_get(&start, TIME_UTC);
+  test_function();
+  timespec_get(&end, TIME_UTC);
+
+  g_tests_run++;
+  if (g_checks_failed > 0) {
+    g_tests_failed++;
+    fprintf(stderr, "[FAIL] %s (%d failed check%s)\n", name, g_checks_failed, (g_checks_failed == 1) ? "" : "s");
+  } else fprintf(stderr, "[PASS] %s (%.1f us)\n", name, time_elapsed(start, end));
 }
 
-static bool test_runner(bool (*test_function)(), const char *function_name) {
-	fprintf(stderr, "Testing function [%s]: ", function_name);
+// =============================================================== FRAMEWORK ==
 
-	struct timespec start, end;
-	clock_gettime(CLOCK_MONOTONIC, &start);
-	assert(test_function());
-	clock_gettime(CLOCK_MONOTONIC, &end);
+// == TEST LIST ===============================================================
 
-	fprintf(stderr, "SUCCESS - finished in %07.3f%s\n", delta_time(start, end, MICROSECONDS), MICROSEC_SYMBOL);
-	return TEST_SUCCESS;
-}
+#define TESTS(X) X(dummy_test)
+
+#define TEST_DECLARE(name) static void name(void);
+TESTS(TEST_DECLARE)
+
+// =============================================================== TEST LIST ==
 
 // == TESTS ===================================================================
 
-static bool dummy_test() {
-	if (1 + 2 != 3) {
-		print_error("test failed!");
-		return TEST_FAILURE;
-	}
-
-	return TEST_SUCCESS;
+static inline void dummy_test(void) {
+  TEST_AFFIRM(1 + 2 == 3);
+  TEST_ASSERT(2 * 2 == 4);
 }
 
 // =================================================================== TESTS ==
 
+// == MAIN ====================================================================
+#define test_runner(name) test_runner(#name, name);
+
 int main(void) {
-	struct timespec start, end;
-	clock_gettime(CLOCK_MONOTONIC, &start);
+  struct timespec start, end;
 
-	test_runner(dummy_test, "dummy_test()");
+  timespec_get(&start, TIME_UTC);
+  TESTS(test_runner)
+  timespec_get(&end, TIME_UTC);
 
-	clock_gettime(CLOCK_MONOTONIC, &end);
-	fputs("\n All tests passed.\n", stderr);
-	fprintf(stderr, "Time elapsed: %06.3f%s\n", delta_time(start, end, MILLISECONDS), MILLISEC_SYMBOL);
-	exit(EXIT_SUCCESS);
-}
+  fprintf(stderr,
+          "\n%d tested, %d passed, %d failed (%.3f ms)\n",
+          g_tests_run,
+          g_tests_run - g_tests_failed,
+          g_tests_failed,
+          time_elapsed(start, end) / 1e3);
+
+  return (g_tests_failed == 0) ? EXIT_SUCCESS : EXIT_FAILURE;
+} /* main() */
+// ==================================================================== MAIN ==

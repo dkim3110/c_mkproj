@@ -1,5 +1,5 @@
 # Project Specific
-tests/
+bin/
 
 # Prerequisites
 *.d

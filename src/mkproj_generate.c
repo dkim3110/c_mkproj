@@ -54,8 +54,9 @@ static int file_closer(FILE **fptr, const char *file_path) {
 static int file_maker(char *file_path, project_flag_t flag, file_maker_mode_t mode) {
   FILE *fptr = file_opener(file_path);
   if ((!fptr) || (mkproj_write_file(fptr, flag, mode) == EXIT_FAILURE) ||
-      (file_closer(&fptr, file_path) == EXIT_FAILURE))
+      (file_closer(&fptr, file_path) == EXIT_FAILURE)) {
     return EXIT_FAILURE;
+  }
 
   return EXIT_SUCCESS;
 } /* file_maker() */
