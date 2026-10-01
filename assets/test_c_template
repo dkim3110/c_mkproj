@@ -10,53 +10,43 @@ static int g_tests_run = 0;
 static int g_tests_failed = 0;
 static int g_checks_failed = 0;
 
-#define TEST_FAIL(...)                                                                                                 \
+#define TEST_LOG_FAILURE(...)                                                                                          \
   do {                                                                                                                 \
     g_checks_failed++;                                                                                                 \
-    fprintf(stderr, "    %s:%d: ", __FILE__, __LINE__);                                                                \
+    fprintf(stderr, "\n\t%s:%d: ", __FILE__, __LINE__);                                                                \
     fprintf(stderr, __VA_ARGS__);                                                                                      \
-    fputc('\n', stderr);                                                                                               \
   } while (0)
 
-#define TEST_AFFIRM(cond)                                                                                              \
+#ifndef TEST_ASSERT
+#define TEST_ASSERT(condition)                                                                                         \
   do {                                                                                                                 \
-    if (!(cond)) TEST_FAIL("TEST_AFFIRM failed: %s", #cond);                                                           \
+    if (!(condition)) TEST_LOG_FAILURE("TEST_ASSERT failed: '%s'", #condition);                                        \
   } while (0)
-
-#define TEST_ASSERT(cond)                                                                                              \
-  do {                                                                                                                 \
-    if (!(cond)) {                                                                                                     \
-      TEST_FAIL("TEST_ASSERT failed: %s", #cond);                                                                      \
-      return;                                                                                                          \
-    }                                                                                                                  \
-  } while (0)
+#endif // TEST_ASSERT
 
 static inline double time_elapsed(struct timespec start, struct timespec end) {
   return ((double)(end.tv_sec - start.tv_sec) * 1e6) + ((double)(end.tv_nsec - start.tv_nsec) / 1e3);
 }
 
 static inline void test_runner(const char *name, void (*test_function)(void)) {
-  struct timespec start, end;
-
   g_checks_failed = 0;
-  fprintf(stderr, "[TEST] %s\n", name);
-
-  timespec_get(&start, TIME_UTC);
+  fprintf(stderr, "[TEST] %s", name);
   test_function();
-  timespec_get(&end, TIME_UTC);
 
   g_tests_run++;
   if (g_checks_failed > 0) {
     g_tests_failed++;
-    fprintf(stderr, "[FAIL] %s (%d failed check%s)\n", name, g_checks_failed, (g_checks_failed == 1) ? "" : "s");
-  } else fprintf(stderr, "[PASS] %s (%.1f us)\n", name, time_elapsed(start, end));
+    fprintf(stderr, "\n[FAIL] %s (%d failed check%s)\n", name, g_checks_failed, (g_checks_failed == 1) ? "" : "s");
+  } else fprintf(stderr, "\n[PASS] %s\n\n", name);
 }
 
 // =============================================================== FRAMEWORK ==
 
 // == TEST LIST ===============================================================
 
-#define TESTS(X) X(dummy_test)
+#define TESTS(X)                                                                                                       \
+  X(dummy_success)                                                                                                     \
+  X(dummy_failure)
 
 #define TEST_DECLARE(name) static void name(void);
 TESTS(TEST_DECLARE)
@@ -65,9 +55,12 @@ TESTS(TEST_DECLARE)
 
 // == TESTS ===================================================================
 
-static inline void dummy_test(void) {
-  TEST_AFFIRM(1 + 2 == 3);
-  TEST_ASSERT(2 * 2 == 4);
+static inline void dummy_success(void) {
+  TEST_ASSERT(2 + 2 == 4);
+}
+
+static inline void dummy_failure(void) {
+  TEST_ASSERT(1 + 2 != 3);
 }
 
 // =================================================================== TESTS ==
@@ -83,7 +76,7 @@ int main(void) {
   timespec_get(&end, TIME_UTC);
 
   fprintf(stderr,
-          "\n%d tested, %d passed, %d failed (%.3f ms)\n",
+          "\n%d tests: %d passed, %d failed (%06.3f ms)\n\n",
           g_tests_run,
           g_tests_run - g_tests_failed,
           g_tests_failed,
