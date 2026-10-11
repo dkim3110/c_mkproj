@@ -13,17 +13,21 @@ static flag_t g_flags_list[] = {{"-b", "--bare", BARE},
                                 {"-p", "--plus", PLUS}};
 
 // == HELPER ==================================================================
-static void print_help_message(char *program) {
+static void print_usage(char *program) {
   fprintf(stderr,
           "\n"
           "USAGE:\n"
           " %s [flag] project_name\n"
           " %s project_name [flag]\n"
-          "\n"
-          "OPTIONS:\n",
+          "\n",
           program,
           program);
+}
+
+static void print_help_message(char *program) {
+  print_usage(program);
   fprintf(stderr,
+          "OPTIONS:\n"
           " -?, --help\tPrints this help message; overrides all arguments\n"
           "\n");
   fprintf(stderr,
@@ -112,7 +116,7 @@ static int parse_args(int argc, char *argv[], config_t *config) {
 int main(int argc, char *argv[]) {
   if (argc < 2) {
     fprintf(stderr, "-fatal: no arguments given\n");
-    print_help_message(argv[0]);
+    print_usage(argv[0]);
     return EXIT_FAILURE;
   }
 
@@ -129,6 +133,7 @@ int main(int argc, char *argv[]) {
     else if (config.flag_count > 1) fprintf(stderr, "-fatal: conflicting flags\n");
     else if (!config.root) fprintf(stderr, "-fatal: unable to determine name\n");
 
+    print_usage(argv[0]);
     return EXIT_FAILURE;
   }
 
