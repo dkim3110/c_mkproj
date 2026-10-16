@@ -1,8 +1,6 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#define PROGRAM       argv[0]
-
 extern void error_exit(const char *prog, const char *msg);
 extern void perror_exit(const char *prog, const char *msg);
 

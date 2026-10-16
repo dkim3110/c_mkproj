@@ -15,5 +15,5 @@ void perror_exit(const char *prog, const char *msg) {
 }
 
 int main(int argc, char *argv[]) {
-	perror_exit(PROGRAM, "Hello, World!");
+	perror_exit(argv[0], "Hello, World!");
 }
