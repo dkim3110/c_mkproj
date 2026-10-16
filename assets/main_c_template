@@ -1,8 +1,19 @@
 #include "main.h"
 
 #include <stdio.h>
+#include <stdlib.h>
 
-int main(/*int argc, char *argv[]*/) {
-	printf("%s", PRINT_STRING);
-	return 0;
+void error_exit(const char *prog, const char *msg) {
+  fprintf(stderr, "%s: %s\n", prog, msg);
+  exit(EXIT_FAILURE);
+}
+
+void perror_exit(const char *prog, const char *msg) {
+  fprintf(stderr, "%s : ", prog);
+  perror(msg);
+  exit(EXIT_FAILURE);
+}
+
+int main(int argc, char *argv[]) {
+	perror_exit(PROGRAM, "Hello, World!");
 }

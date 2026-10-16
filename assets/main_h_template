@@ -1,6 +1,9 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-#define PRINT_STRING ("Hello, World!\n")
+#define PROGRAM       argv[0]
+
+extern void error_exit(const char *prog, const char *msg);
+extern void perror_exit(const char *prog, const char *msg);
 
 #endif // MAIN_H_
