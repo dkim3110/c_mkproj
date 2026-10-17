@@ -9,7 +9,7 @@ void error_exit(const char *prog, const char *msg) {
 }
 
 void perror_exit(const char *prog, const char *msg) {
-  fprintf(stderr, "%s : ", prog);
+  fprintf(stderr, "%s: ", prog);
   perror(msg);
   exit(EXIT_FAILURE);
 }
