@@ -37,28 +37,29 @@ typedef struct {
 } project_node_t;
 
 static const project_node_t PROJECT_LAYOUT[] = {
-  {.rel_path = "bin", .is_dir = true, .mode = NONE, .flags = F_PLUS | F_FULL},
-  {.rel_path = "build", .is_dir = true, .mode = NONE, .flags = F_NOTBARE},
-  {.rel_path = "data", .is_dir = true, .mode = NONE, .flags = F_FULL},
-  {.rel_path = "data/raw", .is_dir = true, .mode = NONE, .flags = F_FULL},
-  {.rel_path = "data/interim", .is_dir = true, .mode = NONE, .flags = F_FULL},
-  {.rel_path = "data/input", .is_dir = true, .mode = NONE, .flags = F_FULL},
-  {.rel_path = "data/output", .is_dir = true, .mode = NONE, .flags = F_FULL},
-  {.rel_path = "docs", .is_dir = true, .mode = NONE, .flags = F_FULL},
-  {.rel_path = "include", .is_dir = true, .mode = NONE, .flags = F_NOTBARE},
-  {.rel_path = "lib", .is_dir = true, .mode = NONE, .flags = F_PLUS | F_FULL},
-  {.rel_path = "src", .is_dir = true, .mode = NONE, .flags = F_NOTBARE},
-  {.rel_path = "tests", .is_dir = true, .mode = NONE, .flags = F_PLUS | F_FULL},
+  {.rel_path = "bin",            .is_dir = true,  .mode = NONE,      .flags = F_PLUS | F_FULL},
+  {.rel_path = "build",          .is_dir = true,  .mode = NONE,      .flags = F_NOTBARE      },
+  {.rel_path = "data",           .is_dir = true,  .mode = NONE,      .flags = F_FULL         },
+  {.rel_path = "data/raw",       .is_dir = true,  .mode = NONE,      .flags = F_FULL         },
+  {.rel_path = "data/interim",   .is_dir = true,  .mode = NONE,      .flags = F_FULL         },
+  {.rel_path = "data/input",     .is_dir = true,  .mode = NONE,      .flags = F_FULL         },
+  {.rel_path = "data/output",    .is_dir = true,  .mode = NONE,      .flags = F_FULL         },
+  {.rel_path = "docs",           .is_dir = true,  .mode = NONE,      .flags = F_FULL         },
+  {.rel_path = "include",        .is_dir = true,  .mode = NONE,      .flags = F_NOTBARE      },
+  {.rel_path = "lib",            .is_dir = true,  .mode = NONE,      .flags = F_PLUS | F_FULL},
+  {.rel_path = "src",            .is_dir = true,  .mode = NONE,      .flags = F_NOTBARE      },
+  {.rel_path = "tests",          .is_dir = true,  .mode = NONE,      .flags = F_PLUS | F_FULL},
 
-  {.rel_path = ".gitignore", .is_dir = false, .mode = GITIGNORE, .flags = F_FULL},
-  {.rel_path = "Makefile", .is_dir = false, .mode = MAKEFILE, .flags = F_ALL},
-  {.rel_path = "README.md", .is_dir = false, .mode = README, .flags = F_ALL},
-  {.rel_path = "tests/test.c", .is_dir = false, .mode = TEST_C, .flags = F_PLUS | F_FULL},
+  {.rel_path = ".gitignore",     .is_dir = false, .mode = GITIGNORE, .flags = F_FULL         },
+  {.rel_path = "Makefile",       .is_dir = false, .mode = MAKEFILE,  .flags = F_ALL          },
+  {.rel_path = "README.md",      .is_dir = false, .mode = README,    .flags = F_ALL          },
+  {.rel_path = "tests/test.c",   .is_dir = false, .mode = TEST_C,    .flags = F_PLUS | F_FULL},
 
-  {.rel_path = "include/main.h", .is_dir = false, .mode = HEADER, .flags = F_NOTBARE},
-  {.rel_path = "src/main.c", .is_dir = false, .mode = MAIN_C, .flags = F_NOTBARE},
-  {.rel_path = "main.h", .is_dir = false, .mode = HEADER, .flags = F_BARE},
-  {.rel_path = "main.c", .is_dir = false, .mode = MAIN_C, .flags = F_BARE}};
+  {.rel_path = "include/main.h", .is_dir = false, .mode = HEADER,    .flags = F_NOTBARE      },
+  {.rel_path = "src/main.c",     .is_dir = false, .mode = MAIN_C,    .flags = F_NOTBARE      },
+  {.rel_path = "main.h",         .is_dir = false, .mode = HEADER,    .flags = F_BARE         },
+  {.rel_path = "main.c",         .is_dir = false, .mode = MAIN_C,    .flags = F_BARE         }
+};
 
 typedef struct {
   int flag_count;
