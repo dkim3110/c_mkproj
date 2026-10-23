@@ -1,60 +1,80 @@
-# Based on original Makefile by Jack Wetherell, licensed under MIT. Modified by Daniel Inhoi Kim.
-CC := gcc
+CC ?= gcc
+CWARNINGS := -Wall -Wextra
+override CPPFLAGS += -MMD -MP -I include
+
+MODE ?= release
 SRCDIR := src
-BUILDDIR := build
-TESTBUILDDIR := $(BUILDDIR)/tests
 TESTDIR := tests
-TARGET := bin/run
-TESTTARGET := bin/tester
 SRCEXT := c
-SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
-TESTSOURCES := $(wildcard $(TESTDIR)/*.$(SRCEXT))
+
+ifeq ($(MODE),debug)
+	BUILDDIR := build/debug
+	TESTBUILDDIR := build/tests/debug
+
+	TARGET := bin/debug
+	TESTTARGET := bin/tester_debug
+	OPTFLAGS := -O0 -g -fsanitize=address,undefined
+	override LDFLAGS += -fsanitize=address,undefined
+else
+	BUILDDIR := build/release
+	TESTBUILDDIR := build/tests/release
+
+	TARGET := bin/run
+	TESTTARGET := bin/tester_release
+	OPTFLAGS := -O3 -DNDEBUG
+endif
+
+SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)' | sort)
+TESTSOURCES := $(shell find $(TESTDIR) -type f -name '*.$(SRCEXT)' | sort)
+
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
-TESTOBJECTS  := $(patsubst $(TESTDIR)/%,$(TESTBUILDDIR)/%,$(TESTSOURCES:.$(SRCEXT)=.o))
+TESTOBJECTS := $(patsubst $(TESTDIR)/%,$(TESTBUILDDIR)/%,$(TESTSOURCES:.$(SRCEXT)=.o))
+LIBOBJECTS := $(filter-out $(BUILDDIR)/main.o,$(OBJECTS))
+
 DEPS := $(OBJECTS:.o=.d)
 TESTDEPS := $(TESTOBJECTS:.o=.d)
-LIBOBJECTS := $(filter-out $(BUILDDIR)/main.o,$(OBJECTS))
-CFLAGS := -O1 -Wall -Wextra -D_GNU_SOURCE
-LIB := -L lib
-INC := -I include
+override CFLAGS += $(OPTFLAGS) $(CWARNINGS)
+
+override LDFLAGS += -L lib
+LDLIBS +=
 
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS)
-	@echo " Linking..."
-	@mkdir -p $(dir $@)
-	@$(CC) $^ -o $@ $(LIB)
-
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@echo " Building..."
+	@printf "[BUILDING]: "
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@
-
-debug:
-	@$(MAKE) clean
-	@$(MAKE) CFLAGS="$(CFLAGS) -g" all
-
-clean:
-	@echo " Cleaning..."
-	@find $(BUILDDIR) -type f -delete
-	@$(RM) $(TARGET) $(TESTTARGET)
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
 
 $(TESTBUILDDIR)/%.o: $(TESTDIR)/%.$(SRCEXT)
-	@echo " Building tests..."
+	@printf "[BUILDING]: "
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS)
+	@printf "[LINKING]: "
+	@mkdir -p $(dir $@)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
 $(TESTTARGET): $(LIBOBJECTS) $(TESTOBJECTS)
-	@echo " Linking tests..."
+	@printf "[LINKING]: "
 	@mkdir -p $(dir $@)
-	@$(CC) $^ -o $@ $(LIB)
+	$(CC) $(LDFLAGS) $^ -o $@ $(LDLIBS)
 
-test: $(TESTTARGET)
-	@echo " Running tests..."
-	@echo ""
+debug:
+	@$(MAKE) --no-print-directory MODE=debug all
+
+clean:
+	@printf "[CLEANING]: "
+	rm -rf build/ bin/
+
+test:
+	@$(MAKE) --no-print-directory MODE=debug test-release
+
+test-release: $(TESTTARGET)
+	@printf "[RUNNING]: ./$(TESTTARGET)\n\n"
 	@./$(TESTTARGET)
 
 -include $(DEPS)
 -include $(TESTDEPS)
 
-.PHONY: all clean debug test
+.PHONY: all clean debug test test-release

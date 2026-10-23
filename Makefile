@@ -1,41 +1,42 @@
-# Based on original Makefile by Jack Wetherell, licensed under MIT. Modified by Daniel Inhoi Kim.
+CC ?= gcc
+CWARNINGS := -Wall -Wextra
+override CPPFLAGS += -MMD -MP -I include
 
-CC := gcc
 SRCDIR := src
-BUILDDIR := build
-TARGET := mkproj
 SRCEXT := c
-SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
+TARGET := mkproj
+BUILDDIR := build
+PREFIX := /usr/local
+
+SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)' | sort)
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+
 DEPS := $(OBJECTS:.o=.d)
-CFLAGS := -O3 -Wall -Wextra
-INC := -I include
-PREFIX ?= /usr/local
+CFLAGS := -O3 $(CWARNINGS)
 
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS)
-	@echo " Linking..."
-	@$(CC) $^ -o $@
-
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@echo " Building..."
+	@printf "[BUILDING]: "
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INC) -MMD -MP $< -c -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS)
+	@printf "[LINKING]: "
+	$(CC) $^ -o $@
 
 clean:
-	@echo " Cleaning..."
-	@find $(BUILDDIR) -type f -delete
-	@$(RM) $(TARGET)
+	@printf "[CLEANING]: "
+	rm -rf $(BUILDDIR) $(TARGET)
 
 install: $(TARGET)
-	@echo " Installing to $(PREFIX)/bin..."
+	@printf "[INSTALLING]: "
 	@mkdir -p $(PREFIX)/bin
-	@install -m 755 $(TARGET) $(PREFIX)/bin/$(TARGET)
+	install -m 755 $(TARGET) $(PREFIX)/bin/$(TARGET)
 
 uninstall:
-	@echo " Uninstalling from $(PREFIX)/bin..."
-	@$(RM) $(PREFIX)/bin/$(TARGET)
+	@printf "[UNINSTALLING]: "
+	$(RM) $(PREFIX)/bin/$(TARGET)
 
 -include $(DEPS)
 

@@ -1,34 +1,43 @@
-# Based on original Makefile by Jack Wetherell, licensed under MIT. Modified by Daniel Inhoi Kim.
-CC := gcc
+CC ?= gcc
+CWARNINGS := -Wall -Wextra
+override CPPFLAGS += -MMD -MP -I include
+
+MODE ?= release
 SRCDIR := src
-BUILDDIR := build
-TARGET := run
 SRCEXT := c
-SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)')
+TARGET := run
+BUILDDIR := build
+
+ifeq ($(MODE),debug)
+	OPTFLAGS := -O0 -g
+else
+	OPTFLAGS := -O3
+endif
+
+SOURCES := $(shell find $(SRCDIR) -type f -name '*.$(SRCEXT)' | sort)
 OBJECTS := $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+
 DEPS := $(OBJECTS:.o=.d)
-CFLAGS := -O1 -Wall -Wextra
-INC := -I include
+override CFLAGS += $(OPTFLAGS) $(CWARNINGS)
 
 all: $(TARGET)
 
-$(TARGET): $(OBJECTS)
-	@echo " Linking..."
-	@$(CC) $^ -o $@
-
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
-	@echo " Building..."
+	@printf "[BUILDING]: "
 	@mkdir -p $(dir $@)
-	@$(CC) $(CFLAGS) $(INC) -MMD -MP -c $< -o $@
+	$(CC) $(CFLAGS) $(CPPFLAGS) -c $< -o $@
+
+$(TARGET): $(OBJECTS)
+	@printf "[LINKING]: "
+	$(CC) $^ -o $@
 
 debug:
-	@$(MAKE) clean
-	@$(MAKE) CFLAGS="$(CFLAGS) -g" all
+	@$(MAKE) --no-print-directory clean
+	@$(MAKE) --no-print-directory MODE=debug all
 
 clean:
-	@echo " Cleaning..."
-	@find $(BUILDDIR) -type f -delete
-	@$(RM) $(TARGET)
+	@printf "[CLEANING]: "
+	rm -rf $(BUILDDIR) $(TARGET)
 
 -include $(DEPS)
 
