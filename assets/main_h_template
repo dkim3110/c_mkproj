@@ -1,6 +1,9 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #define error_exit(prog, fmt, ...)                                                                                               \
   do {                                                                                                                           \
     fprintf(stderr, "%s: " fmt "\n", (prog), ##__VA_ARGS__);                                                                     \
