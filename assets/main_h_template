@@ -1,7 +1,17 @@
 #ifndef MAIN_H_
 #define MAIN_H_
 
-extern void error_exit(const char *prog, const char *msg);
-extern void perror_exit(const char *prog, const char *msg);
+#define error_exit(prog, fmt, ...)                                                                                               \
+  do {                                                                                                                           \
+    fprintf(stderr, "%s: " fmt "\n", (prog), ##__VA_ARGS__);                                                                     \
+    exit(EXIT_FAILURE);                                                                                                          \
+  } while (false)
+
+#define perror_exit(prog, fmt, ...)                                                                                              \
+  do {                                                                                                                           \
+    fprintf(stderr, "%s: " fmt " ", (prog), ##__VA_ARGS__);                                                                      \
+    perror("\b");                                                                                                                \
+    exit(EXIT_FAILURE);                                                                                                          \
+  } while (false)
 
 #endif // MAIN_H_

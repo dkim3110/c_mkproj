@@ -3,17 +3,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void error_exit(const char *prog, const char *msg) {
-  fprintf(stderr, "%s: %s\n", prog, msg);
-  exit(EXIT_FAILURE);
-}
-
-void perror_exit(const char *prog, const char *msg) {
-  fprintf(stderr, "%s: ", prog);
-  perror(msg);
-  exit(EXIT_FAILURE);
-}
-
 int main(int argc, char *argv[]) {
 	if (argc > 0) perror_exit(argv[0], "Hello, World!");
 }
