@@ -8,14 +8,14 @@
 
 #define error_exit(prog, fmt, ...)                                                                                               \
   do {                                                                                                                           \
-    fprintf(stderr, "%s: " fmt "\n", (prog), __VA_OPT__(__VA_ARGS__, ));                                                         \
+    fprintf(stderr, "%s: " fmt "\n", (prog)__VA_OPT__(, ) __VA_ARGS__));                                                         \
     exit(EXIT_FAILURE);                                                                                                          \
   } while (0)
 
 #define perror_exit(prog, fmt, ...)                                                                                              \
   do {                                                                                                                           \
     int perror_exit__saved_errno = errno;                                                                                        \
-    fprintf(stderr, "%s: " fmt ": %s\n", (prog), __VA_OPT__(__VA_ARGS__, ), strerror(perror_exit__saved_errno));                 \
+    fprintf(stderr, "%s: " fmt ": %s\n", (prog), __VA_OPT__(__VA_ARGS__, ) strerror(perror_exit__saved_errno));                  \
     exit(EXIT_FAILURE);                                                                                                          \
   } while (0)
 
