@@ -12,11 +12,6 @@
     exit(EXIT_FAILURE);                                                                                                          \
   } while (0)
 
-#define perror_exit(prog, fmt, ...)                                                                                              \
-  do {                                                                                                                           \
-    int perror_exit__saved_errno = errno;                                                                                        \
-    fprintf(stderr, "%s: " fmt ": %s\n", (prog), __VA_OPT__(__VA_ARGS__, ) strerror(perror_exit__saved_errno));                  \
-    exit(EXIT_FAILURE);                                                                                                          \
-  } while (0)
+#define perror_exit(prog, fmt, ...) error_exit(prog, fmt ": %s" __VA_OPT__(, ) __VA_ARGS__, strerror(errno))
 
 #endif // MAIN_H_
