@@ -4,10 +4,13 @@ SRCEXT := c
 CWARNINGS := -Wall -Wextra
 CFLAGS := -O3
 
-all: $(TARGET)
+all:
+	@$(MAKE) --no-print-directory clean
+	@$(MAKE) --no-print-directory default
+
+default: $(TARGET)
 
 $(TARGET): *.$(SRCEXT)
-	@$(MAKE) --no-print-directory clean
 	@printf "[BUILDING]: "
 	$(CC) $(CFLAGS) $(CWARNINGS) $^ -o $@
 
@@ -19,4 +22,4 @@ clean:
 	@printf "[CLEANING]: "
 	$(RM) $(TARGET)
 
-.PHONY: all clean debug
+.PHONY: all clean debug default
